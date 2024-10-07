@@ -25,8 +25,6 @@ namespace LezzetKitabi
             var serviceProvider = services.BuildServiceProvider();
 
             Application.Run(serviceProvider.GetService<Form1>());
-
-
         }
     }
 }

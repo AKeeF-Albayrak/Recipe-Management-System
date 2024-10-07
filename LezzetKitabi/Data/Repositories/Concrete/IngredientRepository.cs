@@ -10,7 +10,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 {
     public class IngredientRepository : IIngredientRepository
     {
-        public bool AddEntity(Ingredient entity)
+        public bool AddEntity()
         {
             MessageBox.Show("Ya mia", "Başlık", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return true;

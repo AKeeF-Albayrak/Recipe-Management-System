@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LezzetKitabi.Services.Abstract;
+using LezzetKitabi.Services.Concrete;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,14 +14,16 @@ namespace LezzetKitabi.Forms
 {
     public partial class Form2 : Form
     {
-        public Form2()
+        private readonly IIngredientService _ingredientService;
+        public Form2(IIngredientService ingredientService)
         {
             InitializeComponent();
+            _ingredientService = ingredientService;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            _ingredientService.AddEntity();
         }
     }
 }

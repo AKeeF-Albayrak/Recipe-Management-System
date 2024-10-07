@@ -9,6 +9,6 @@ namespace LezzetKitabi.Data.Repositories.Abstract
 {
     public interface IIngredientRepository : IBaseRepository<Ingredient>
     {
-
+        
     }
 }
