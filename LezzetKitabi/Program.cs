@@ -1,17 +1,32 @@
+using LezzetKitabi.Data.Repositories.Abstract;
+using LezzetKitabi.Data.Repositories.Concrete;
+using LezzetKitabi.Forms;
+using LezzetKitabi.Services.Abstract;
+using LezzetKitabi.Services.Concrete;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace LezzetKitabi
 {
     internal static class Program
     {
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            var services = new ServiceCollection();
+            services.AddScoped<IIngredientRepository, IngredientRepository>();
+            services.AddScoped<IIngredientService, IngredientService>();
+            services.AddScoped<Form1>();
+            services.AddScoped<Form2>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            Application.Run(serviceProvider.GetService<Form1>());
+
+
         }
     }
 }
