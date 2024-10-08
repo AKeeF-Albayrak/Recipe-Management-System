@@ -1,13 +1,16 @@
+using LezzetKitabi.Application.Services;
 using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Data.Repositories.Concrete;
 using LezzetKitabi.Domain.Contracts;
 using LezzetKitabi.Forms;
+using System.Windows.Forms;
 using LezzetKitabi.Services.Abstract;
 using LezzetKitabi.Services.Concrete;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using System.Data.SqlClient;
+using LezzetKitabi.Forms.Controls;
 
 namespace LezzetKitabi
 {
@@ -20,26 +23,30 @@ namespace LezzetKitabi
         [STAThread]
         static void Main()
         {
-            /*var services = new ServiceCollection();
+            var services = new ServiceCollection();
 
-            // Servislerin kaydý
+            //Saving Services
             services.AddScoped<IIngredientService, IngredientService>();
             services.AddScoped<IRecipeService, RecipeService>();
 
-            // Repository'yi kaydediyoruz
+            //Saving Repos
             services.AddScoped<IIngredientRepository, IngredientRepository>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
 
-            // Formlarý kaydediyoruz
-            services.AddScoped<Form1>();
-            services.AddScoped<Form2>();
+            //Saving Forms
+            services.AddScoped<MainForm>();
+
+            //Adding Controls
+            services.AddScoped<IngredientControl>();
+            services.AddScoped<RecipeControl>();
+            services.AddScoped<SearchControl>();
 
             services.AddScoped<IDbConnection>(sp => new SqlConnection(ConstVariables.ConnectionString));
 
             var serviceProvider = services.BuildServiceProvider();
 
-            Application.Run(serviceProvider.GetService<Form1>());*/
-            Application.Run(new MainForm());
+            // MainForm'u IServiceProvider olarak geçiyoruz
+            System.Windows.Forms.Application.Run(serviceProvider.GetService<MainForm>());
         }
     }
 }

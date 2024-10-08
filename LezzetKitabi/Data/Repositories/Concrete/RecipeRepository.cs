@@ -25,7 +25,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             return await _dbConnection.QueryAsync<Recipe>(sql);
         }
 
-        public async Task<Recipe> GetByIdAsync(int id)
+        public async Task<Recipe> GetByIdAsync(Guid id)
         {
             var sql = "SELECT * FROM Recipes WHERE Id = @Id";
             return await _dbConnection.QueryFirstOrDefaultAsync<Recipe>(sql, new { Id = id });
@@ -43,7 +43,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             await _dbConnection.ExecuteAsync(sql, recipe);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid id)
         {
             var sql = "DELETE FROM Recipes WHERE Id = @Id";
             await _dbConnection.ExecuteAsync(sql, new { Id = id });

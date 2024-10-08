@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,10 @@ namespace LezzetKitabi.Forms.Controls
 {
     public partial class SearchControl : UserControl
     {
-        public SearchControl()
+        private readonly IServiceProvider _serviceProvider;
+        public SearchControl(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             InitializeComponent();
         }
     }

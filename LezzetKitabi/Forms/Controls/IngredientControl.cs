@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LezzetKitabi.Services.Abstract;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,19 @@ namespace LezzetKitabi.Forms.Controls
 {
     public partial class IngredientControl : UserControl
     {
-        public IngredientControl()
+        private readonly IServiceProvider _serviceProvider;
+        public IngredientControl(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var ingredientService = _serviceProvider.GetService<IIngredientService>();
+
+            // Servisi kullan
+            ingredientService.Test();
         }
     }
 }

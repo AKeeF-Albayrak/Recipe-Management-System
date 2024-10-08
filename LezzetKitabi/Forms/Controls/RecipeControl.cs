@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,10 @@ namespace LezzetKitabi.Forms.Controls
 {
     public partial class RecipeControl : UserControl
     {
-        public RecipeControl()
+        private readonly IServiceProvider _serviceProvider;
+        public RecipeControl(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             InitializeComponent();
         }
     }

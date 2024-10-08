@@ -1,4 +1,5 @@
-﻿using LezzetKitabi.Forms.Controls;
+﻿using LezzetKitabi.Data.Repositories.Abstract;
+using LezzetKitabi.Forms.Controls;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -9,12 +10,13 @@ namespace LezzetKitabi.Forms
 {
     public partial class MainForm : Form
     {
+        private readonly IServiceProvider _serviceProvider;
         private bool isAnimating = false;
-        public MainForm()
+        public MainForm( IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             InitializeComponent();
-
-            LoadForm(new SearchControl());
+            LoadForm(new SearchControl(serviceProvider));
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -79,17 +81,17 @@ namespace LezzetKitabi.Forms
 
         private void buttonRecipe_Click(object sender, EventArgs e)
         {
-            LoadForm(new RecipeControl());
+            LoadForm(new RecipeControl(_serviceProvider));
         }
 
         private void buttonIngredient_Click(object sender, EventArgs e)
         {
-            LoadForm(new IngredientControl());
+            LoadForm(new IngredientControl(_serviceProvider));
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            LoadForm(new SearchControl());
+            LoadForm(new SearchControl(_serviceProvider));
         }
     }
 }
