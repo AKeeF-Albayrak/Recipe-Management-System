@@ -20,6 +20,7 @@ namespace LezzetKitabi.Forms.Controls
         {
             _serviceProvider = serviceProvider;
             InitializeComponent();
+            InitializeDataGridView();
         }
 
         private void InitializeDataGridView()
