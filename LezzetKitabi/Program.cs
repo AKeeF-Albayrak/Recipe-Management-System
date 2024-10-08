@@ -20,7 +20,7 @@ namespace LezzetKitabi
         [STAThread]
         static void Main()
         {
-            var services = new ServiceCollection();
+            /*var services = new ServiceCollection();
 
             // Servislerin kaydý
             services.AddScoped<IIngredientService, IngredientService>();
@@ -38,7 +38,8 @@ namespace LezzetKitabi
 
             var serviceProvider = services.BuildServiceProvider();
 
-            Application.Run(serviceProvider.GetService<Form1>());
+            Application.Run(serviceProvider.GetService<Form1>());*/
+            Application.Run(new MainForm());
         }
     }
 }
