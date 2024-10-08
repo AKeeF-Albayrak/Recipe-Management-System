@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Domain.Entities
 {
-    internal class Recipe
+    public class Recipe : BaseEntity
     {
+        public string RecipeName { get; set; }
+        public string Category { get; set; }
+        public int PreparationTime { get; set; }
+        public string Instructions { get; set; }
 
+        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }
 }

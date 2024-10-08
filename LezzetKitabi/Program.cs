@@ -17,7 +17,7 @@ namespace LezzetKitabi
         static void Main()
         {
             var services = new ServiceCollection();
-            services.AddScoped<IIngredientRepository, IngredientRepository>();
+            //services.AddScoped<>
             services.AddScoped<IIngredientService, IngredientService>();
             services.AddScoped<Form1>();
             services.AddScoped<Form2>();

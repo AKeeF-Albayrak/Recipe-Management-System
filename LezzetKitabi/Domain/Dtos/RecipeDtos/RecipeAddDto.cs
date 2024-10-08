@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LezzetKitabi.Domain.Entities
+namespace LezzetKitabi.Domain.Dtos.RecipeDtos
 {
-    public class BaseEntity
+    internal class RecipeAddDto
     {
-        public Guid Id { get; set; }
     }
 }
