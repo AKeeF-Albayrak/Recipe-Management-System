@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroSet_UI.Controls;
 
 namespace LezzetKitabi.Forms.Controls
 {
@@ -21,12 +22,64 @@ namespace LezzetKitabi.Forms.Controls
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void InitializeDataGridView()
         {
-            var ingredientService = _serviceProvider.GetService<IIngredientService>();
+            // Sütunları tanımla
+            dataGridView.ColumnCount = 4;
+            dataGridView.Columns[0].Name = "Malzeme Adı";
+            dataGridView.Columns[1].Name = "Toplam Miktar";
+            dataGridView.Columns[2].Name = "Birim";
+            dataGridView.Columns[3].Name = "Birim Fiyatı";
 
-            // Servisi kullan
-            ingredientService.Test();
+            // Düzenleme ve Silme Butonlarını ekle
+            DataGridViewButtonColumn editButton = new DataGridViewButtonColumn();
+            editButton.Name = "Düzenle";
+            editButton.Text = "Düzenle";
+            editButton.UseColumnTextForButtonValue = true;
+            dataGridView.Columns.Add(editButton);
+
+            DataGridViewButtonColumn deleteButton = new DataGridViewButtonColumn();
+            deleteButton.Name = "Sil";
+            deleteButton.Text = "Sil";
+            deleteButton.UseColumnTextForButtonValue = true;
+            dataGridView.Columns.Add(deleteButton);
+
+            // Hücre çizgilerini göster
+            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            dataGridView.GridColor = Color.Black;
+
+            // CellClick olayını yakala
+            dataGridView.CellClick += dataGridView_CellClick;
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            // Yeni veri ekle
+            string[] row = new string[]
+            {
+                txtIngredientName.Text,
+                txtTotalQuantity.Text,
+                txtUnit.Text,
+                txtUnitPrice.Text
+            };
+            dataGridView.Rows.Add(row);
+
+            // TextBox'ları temizle
+            txtIngredientName.Clear();
+            txtTotalQuantity.Clear();
+            txtUnit.Clear();
+            txtUnitPrice.Clear();
+        }
+
+        // CellClick olayında silme işlemi
+        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Sil sütununa tıklandıysa
+            if (e.ColumnIndex == dataGridView.Columns["Sil"].Index && e.RowIndex >= 0)
+            {
+                // İlgili satırı sil
+                dataGridView.Rows.RemoveAt(e.RowIndex);
+            }
         }
     }
 }

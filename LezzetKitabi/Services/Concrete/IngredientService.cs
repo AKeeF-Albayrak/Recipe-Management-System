@@ -56,7 +56,7 @@ namespace LezzetKitabi.Application.Services
         {
             var ingredient = new Ingredient
             {
-                Id = ingredientDto.Id, // DTO'dan Id'yi alıyoruz
+                Id = Guid.NewGuid(),
                 IngredientName = ingredientDto.IngredientName,
                 TotalQuantity = ingredientDto.TotalQuantity,
                 Unit = ingredientDto.Unit,
