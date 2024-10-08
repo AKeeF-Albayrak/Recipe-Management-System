@@ -17,10 +17,5 @@ namespace LezzetKitabi.Services.Concrete
         {
             _ingredientRepository = ingredientRepository;
         }
-
-        public void AddEntity()
-        {
-            _ingredientRepository.AddEntity();
-        }
     }
 }

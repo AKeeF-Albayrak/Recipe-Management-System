@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Domain.Dtos.RecipeDtos
 {
-    internal class RecipeAddDto
+    public class RecipeAddDto
     {
+
     }
 }

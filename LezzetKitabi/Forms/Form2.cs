@@ -23,7 +23,7 @@ namespace LezzetKitabi.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _ingredientService.AddEntity();
+            
         }
     }
 }

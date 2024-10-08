@@ -19,6 +19,7 @@ namespace LezzetKitabi
             var services = new ServiceCollection();
             //services.AddScoped<>
             services.AddScoped<IIngredientService, IngredientService>();
+            services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<Form1>();
             services.AddScoped<Form2>();
 

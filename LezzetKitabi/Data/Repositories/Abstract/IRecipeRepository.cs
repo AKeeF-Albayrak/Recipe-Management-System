@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LezzetKitabi.Services.Abstract
+namespace LezzetKitabi.Data.Repositories.Abstract
 {
-    public interface IIngredientService
+    public interface IRecipeRepository : IBaseRepository<Recipe>
     {
-
     }
 }

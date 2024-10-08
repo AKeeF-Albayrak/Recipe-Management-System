@@ -1,14 +1,13 @@
-﻿using LezzetKitabi.Domain.Entities;
+﻿using LezzetKitabi.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LezzetKitabi.Services.Abstract
+namespace LezzetKitabi.Services.Concrete
 {
-    public interface IIngredientService
+    public class RecipeService : IRecipeService
     {
-
     }
 }
