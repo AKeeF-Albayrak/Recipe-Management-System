@@ -1,9 +1,13 @@
 using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Data.Repositories.Concrete;
+using LezzetKitabi.Domain.Contracts;
 using LezzetKitabi.Forms;
 using LezzetKitabi.Services.Abstract;
 using LezzetKitabi.Services.Concrete;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace LezzetKitabi
 {
@@ -17,11 +21,20 @@ namespace LezzetKitabi
         static void Main()
         {
             var services = new ServiceCollection();
-            //services.AddScoped<>
+
+            // Servislerin kaydý
             services.AddScoped<IIngredientService, IngredientService>();
             services.AddScoped<IRecipeService, RecipeService>();
+
+            // Repository'yi kaydediyoruz
+            services.AddScoped<IIngredientRepository, IngredientRepository>();
+            services.AddScoped<IRecipeRepository, RecipeRepository>();
+
+            // Formlarý kaydediyoruz
             services.AddScoped<Form1>();
             services.AddScoped<Form2>();
+
+            services.AddScoped<IDbConnection>(sp => new SqlConnection(ConstVariables.ConnectionString));
 
             var serviceProvider = services.BuildServiceProvider();
 

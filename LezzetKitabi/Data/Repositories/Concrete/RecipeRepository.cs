@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Data.Repositories.Concrete
 {
-    public class RecipeRepository : IBaseRepository<Recipe>
+    public class RecipeRepository : IRecipeRepository
     {
         private readonly IDbConnection _dbConnection;
 

@@ -10,7 +10,7 @@ using Dapper;
 
 namespace LezzetKitabi.Data.Repositories.Concrete
 {
-    public class IngredientRepository : IBaseRepository<Ingredient>
+    public class IngredientRepository : IIngredientRepository
     {
         private readonly IDbConnection _dbConnection;
 
