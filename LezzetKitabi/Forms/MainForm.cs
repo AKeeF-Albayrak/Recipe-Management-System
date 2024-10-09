@@ -12,7 +12,8 @@ namespace LezzetKitabi.Forms
     {
         private readonly IServiceProvider _serviceProvider;
         private bool isAnimating = false;
-        public MainForm( IServiceProvider serviceProvider)
+        string page = "Home";
+        public MainForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             InitializeComponent();
@@ -81,17 +82,26 @@ namespace LezzetKitabi.Forms
 
         private void buttonRecipe_Click(object sender, EventArgs e)
         {
-            LoadForm(new RecipeControl(_serviceProvider));
+            if(page != "Recipe")    LoadForm(new RecipeControl(_serviceProvider));
+            page = "Recipe";
         }
 
         private void buttonIngredient_Click(object sender, EventArgs e)
         {
-            LoadForm(new IngredientControl(_serviceProvider));
+            if(page != "Ingredient")    LoadForm(new IngredientControl(_serviceProvider));
+            page = "Ingredient";
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            LoadForm(new SearchControl(_serviceProvider));
+            if(page != "Search")   LoadForm(new SearchControl(_serviceProvider));
+            page = "Search";
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(page != "Deneme1") LoadForm(new DenemeControl());
+            page = "Deneme1";
         }
     }
 }

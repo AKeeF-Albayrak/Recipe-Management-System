@@ -16,6 +16,7 @@
         private void InitializeComponent()
         {
             panelMenu = new Panel();
+            button2 = new Button();
             buttonIngredient = new Button();
             buttonRecipe = new Button();
             buttonSearch = new Button();
@@ -29,6 +30,7 @@
             // panelMenu
             // 
             panelMenu.BackColor = Color.FromArgb(51, 51, 56);
+            panelMenu.Controls.Add(button2);
             panelMenu.Controls.Add(buttonIngredient);
             panelMenu.Controls.Add(buttonRecipe);
             panelMenu.Controls.Add(buttonSearch);
@@ -36,8 +38,23 @@
             panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point(0, 0);
             panelMenu.Name = "panelMenu";
-            panelMenu.Size = new Size(214, 567);
+            panelMenu.Size = new Size(214, 734);
             panelMenu.TabIndex = 0;
+            // 
+            // button2
+            // 
+            button2.Dock = DockStyle.Top;
+            button2.FlatAppearance.BorderSize = 0;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(0, 305);
+            button2.Name = "button2";
+            button2.Size = new Size(214, 75);
+            button2.TabIndex = 3;
+            button2.Tag = "Ingredient";
+            button2.Text = "deneme sayfasi";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // buttonIngredient
             // 
@@ -109,14 +126,14 @@
             panelForms.Dock = DockStyle.Fill;
             panelForms.Location = new Point(214, 0);
             panelForms.Name = "panelForms";
-            panelForms.Size = new Size(932, 567);
+            panelForms.Size = new Size(1051, 734);
             panelForms.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1146, 567);
+            ClientSize = new Size(1265, 734);
             Controls.Add(panelForms);
             Controls.Add(panelMenu);
             Name = "MainForm";
@@ -133,5 +150,6 @@
         private Button buttonRecipe;
         private Button button1;
         private Panel panelForms;
+        private Button button2;
     }
 }
