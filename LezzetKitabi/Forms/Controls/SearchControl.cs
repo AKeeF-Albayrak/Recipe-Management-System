@@ -41,55 +41,91 @@ namespace LezzetKitabi.Forms.Controls
             int yPadding = 12;  // Vertical padding between panels
             int startX = 10; // Starting X position
             int startY = 10; // Starting Y position
+            int cornerRadius = 20;  // Yuvarlak köşe yarıçapı
 
             for (int row = 0; row < rows; row++)
             {
                 for (int col = 0; col < cols; col++)
                 {
-                    // Create main panel
+                    // Ana panel oluştur
                     Panel mainPanel = new Panel();
-                    mainPanel.BackColor = SystemColors.ActiveCaption;
+                    mainPanel.BackColor = Color.Transparent;  // Şeffaf arka plan
                     mainPanel.Size = new Size(panelWidth, panelHeight);
                     int x = startX + col * (panelWidth + xPadding);
                     int y = startY + row * (panelHeight + yPadding);
                     mainPanel.Location = new Point(x, y);
 
-                    // Set up mouse events
+                    // Panelin arkaplanını Paint ile yuvarlatılmış olarak çizin
+                    mainPanel.Paint += (s, e) =>
+                    {
+                        Graphics g = e.Graphics;
+                        Rectangle rect = mainPanel.ClientRectangle;
+                        g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                        // Yuvarlatılmış dikdörtgen oluştur
+                        using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
+                        {
+                            using (Brush brush = new SolidBrush(SystemColors.ActiveCaption))
+                            {
+                                g.FillPath(brush, path);  // Arka planı doldur
+                            }
+                        }
+                    };
+
+                    // Fare olaylarını ayarla
                     mainPanel.MouseEnter += (s, e) => BringToFront(mainPanel);
                     mainPanel.MouseLeave += (s, e) => CheckMouseLeave(mainPanel);
 
-                    // Create PictureBox
+                    // PictureBox ve diğer öğeleri ekle
                     PictureBox pictureBox = new PictureBox();
                     pictureBox.Image = Properties.Resources.Screenshot_2024_10_09_121511;
                     pictureBox.Size = new Size(115, 94);
                     pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                    pictureBox.Location = new Point((panelWidth - pictureBox.Width) / 2, 35);  // Center horizontally and move down
+                    pictureBox.Location = new Point((panelWidth - pictureBox.Width) / 2, 35);  // Ortalayın
 
-                    // Create label for "Malzeme Adı"
                     Label label = new Label();
                     label.AutoSize = true;
                     label.Text = "Malzeme Adı";
-                    label.Location = new Point((panelWidth - label.Width) / 2, 12);  // Center horizontally
+                    label.Location = new Point((panelWidth - label.Width) / 2, 12);  // Ortalayın
 
-                    // Create labels for "Miktar" and "Birim Fiyatı"
                     Label labelMiktar = new Label();
                     labelMiktar.AutoSize = true;
                     labelMiktar.Text = "Miktar";
-                    labelMiktar.Location = new Point((panelWidth - labelMiktar.Width) / 2, pictureBox.Bottom + 5);  // Below pictureBox
+                    labelMiktar.Location = new Point((panelWidth - labelMiktar.Width) / 2, pictureBox.Bottom + 5);
 
                     Label labelBirimFiyati = new Label();
                     labelBirimFiyati.AutoSize = true;
                     labelBirimFiyati.Text = "Birim Fiyatı";
-                    labelBirimFiyati.Location = new Point((panelWidth - labelBirimFiyati.Width) / 2, labelMiktar.Bottom + 5);  // Below "Miktar" label
+                    labelBirimFiyati.Location = new Point((panelWidth - labelBirimFiyati.Width) / 2, labelMiktar.Bottom + 5);
 
-                    // Create overlay panel
+                    // Overlay paneli oluşturun
                     Panel overlayPanel = new Panel();
-                    overlayPanel.BackColor = Color.Purple; // Overlay panel color
+                    overlayPanel.BackColor = Color.Purple;  // Overlay panel rengi
                     overlayPanel.Size = new Size(panelWidth, panelHeight);
                     overlayPanel.Location = new Point(0, 0);
-                    overlayPanel.Visible = false; // Hidden initially
+                    overlayPanel.Visible = false;
 
-                    // Create buttons in the overlay panel
+                    // Yuvarlatılmış köşe overlay panel için de Paint olayında çizim
+                    overlayPanel.Paint += (s, e) =>
+                    {
+                        Graphics g = e.Graphics;
+                        Rectangle rect = overlayPanel.ClientRectangle;
+                        g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                        // Yuvarlatılmış dikdörtgen oluştur
+                        using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
+                        {
+                            using (Brush brush = new SolidBrush(Color.Purple))
+                            {
+                                g.FillPath(brush, path);  // Paneli doldurun
+                            }
+
+                            // Panelin görünümünü yuvarlak yap
+                            overlayPanel.Region = new Region(path);
+                        }
+                    };
+
+                    // Butonlar ve diğer elemanlar overlay paneline eklenebilir
                     Button button1 = new Button();
                     button1.Text = "Button 1";
                     button1.Size = new Size(80, 30);
@@ -100,22 +136,35 @@ namespace LezzetKitabi.Forms.Controls
                     button2.Size = new Size(80, 30);
                     button2.Location = new Point(100, 10);
 
-                    // Add buttons to the overlay panel
                     overlayPanel.Controls.Add(button1);
                     overlayPanel.Controls.Add(button2);
 
-                    // Add controls to the main panel
+                    // Ana paneli içerikleriyle birlikte ekleyin
                     mainPanel.Controls.Add(label);
                     mainPanel.Controls.Add(pictureBox);
                     mainPanel.Controls.Add(labelMiktar);
                     mainPanel.Controls.Add(labelBirimFiyati);
                     mainPanel.Controls.Add(overlayPanel);
 
-                    // Add main panel to panelItems
+                    // Ana paneli panelItems'a ekleyin
                     panelItems.Controls.Add(mainPanel);
                 }
             }
         }
+        private GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int cornerRadius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            int arcDiameter = cornerRadius * 2;
+
+            path.AddArc(rect.X, rect.Y, arcDiameter, arcDiameter, 180, 90); // Sol üst köşe
+            path.AddArc(rect.Right - arcDiameter, rect.Y, arcDiameter, arcDiameter, 270, 90); // Sağ üst köşe
+            path.AddArc(rect.Right - arcDiameter, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 0, 90); // Sağ alt köşe
+            path.AddArc(rect.X, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 90, 90); // Sol alt köşe
+
+            path.CloseFigure();
+            return path;
+        }
+
 
 
         // Fare panelin içine girdiğinde üstteki paneli göster
