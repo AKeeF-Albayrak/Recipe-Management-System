@@ -112,10 +112,9 @@ namespace LezzetKitabi.Forms.Controls
         }
 
 
-
-
         private void btnAdd_Click(object sender, EventArgs e)
         {
+
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
