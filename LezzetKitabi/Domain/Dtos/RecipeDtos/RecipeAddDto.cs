@@ -8,6 +8,9 @@ namespace LezzetKitabi.Domain.Dtos.RecipeDtos
 {
     public class RecipeAddDto
     {
-
+        public string RecipeName { get; set; }
+        public string Category { get; set; }
+        public int PreparationTime { get; set; }
+        public string Instructions { get; set; }
     }
 }

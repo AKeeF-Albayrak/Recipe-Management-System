@@ -82,26 +82,32 @@ namespace LezzetKitabi.Forms
 
         private void buttonRecipe_Click(object sender, EventArgs e)
         {
-            if(page != "Recipe")    LoadForm(new RecipeControl(_serviceProvider));
+            if (page != "Recipe") LoadForm(new RecipeControl(_serviceProvider));
             page = "Recipe";
         }
 
         private void buttonIngredient_Click(object sender, EventArgs e)
         {
-            if(page != "Ingredient")    LoadForm(new IngredientControl(_serviceProvider));
+            if (page != "Ingredient") LoadForm(new IngredientControl(_serviceProvider));
             page = "Ingredient";
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            if(page != "Search")   LoadForm(new SearchControl(_serviceProvider));
+            if (page != "Search") LoadForm(new SearchControl(_serviceProvider));
             page = "Search";
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(page != "Deneme1") LoadForm(new DenemeControl());
+            if (page != "Deneme1") LoadForm(new DenemeControl());
             page = "Deneme1";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (page != "Mert") LoadForm(new MertDenemeTarifEkle(_serviceProvider));
+            page = "Mert";
         }
     }
 }

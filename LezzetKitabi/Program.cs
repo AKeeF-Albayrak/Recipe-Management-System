@@ -45,7 +45,7 @@ namespace LezzetKitabi
 
             var serviceProvider = services.BuildServiceProvider();
 
-            // MainForm'u IServiceProvider olarak geçiyoruz
+            // MainForm'u IServiceProvider olarak geï¿½iyoruz
             System.Windows.Forms.Application.Run(serviceProvider.GetService<MainForm>());
         }
     }

@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using LezzetKitabi.Data.Repositories.Abstract;
+using LezzetKitabi.Domain.Contracts;
 using LezzetKitabi.Domain.Entities;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,41 +14,26 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 {
     public class RecipeRepository : IRecipeRepository
     {
-        private readonly IDbConnection _dbConnection;
-
-        public RecipeRepository(IDbConnection dbConnection)
+        public bool AddEntity(Recipe entity)
         {
-            _dbConnection = dbConnection;
-        }
+            var connection = new SqlConnection(ConstVariables.ConnectionString);
 
-        public async Task<IEnumerable<Recipe>> GetAllAsync()
-        {
-            var sql = "SELECT * FROM Recipes";
-            return await _dbConnection.QueryAsync<Recipe>(sql);
-        }
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                connection.Open();
+            }
 
-        public async Task<Recipe> GetByIdAsync(Guid id)
-        {
-            var sql = "SELECT * FROM Recipes WHERE Id = @Id";
-            return await _dbConnection.QueryFirstOrDefaultAsync<Recipe>(sql, new { Id = id });
-        }
+            string sql = $"""
+                    INSERT INTO Recipes  (Id ,RecipeName , Category , PreparationTime , Instructions)
+                    VALUES ('{Guid.NewGuid()}', '{entity.RecipeName}', '{entity.Category}', '{entity.PreparationTime}',
+                    '{entity.Instructions}');
+                """;
 
-        public async Task AddAsync(Recipe recipe)
-        {
-            var sql = "INSERT INTO Recipes (RecipeName, Category, PreparationTime, Instructions) VALUES (@RecipeName, @Category, @PreparationTime, @Instructions)";
-            await _dbConnection.ExecuteAsync(sql, recipe);
-        }
+            connection.Query(sql);
 
-        public async Task UpdateAsync(Recipe recipe)
-        {
-            var sql = "UPDATE Recipes SET RecipeName = @RecipeName, Category = @Category, PreparationTime = @PreparationTime, Instructions = @Instructions WHERE Id = @Id";
-            await _dbConnection.ExecuteAsync(sql, recipe);
-        }
+            connection.Close();
 
-        public async Task DeleteAsync(Guid id)
-        {
-            var sql = "DELETE FROM Recipes WHERE Id = @Id";
-            await _dbConnection.ExecuteAsync(sql, new { Id = id });
+            return true;
         }
     }
 }

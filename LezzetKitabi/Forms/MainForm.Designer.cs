@@ -23,6 +23,7 @@
             panelLogo = new Panel();
             button1 = new Button();
             panelForms = new Panel();
+            button3 = new Button();
             panelMenu.SuspendLayout();
             panelLogo.SuspendLayout();
             SuspendLayout();
@@ -30,6 +31,7 @@
             // panelMenu
             // 
             panelMenu.BackColor = Color.FromArgb(51, 51, 56);
+            panelMenu.Controls.Add(button3);
             panelMenu.Controls.Add(button2);
             panelMenu.Controls.Add(buttonIngredient);
             panelMenu.Controls.Add(buttonRecipe);
@@ -129,6 +131,21 @@
             panelForms.Size = new Size(1051, 734);
             panelForms.TabIndex = 1;
             // 
+            // button3
+            // 
+            button3.Dock = DockStyle.Top;
+            button3.FlatAppearance.BorderSize = 0;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.ForeColor = Color.White;
+            button3.Location = new Point(0, 380);
+            button3.Name = "button3";
+            button3.Size = new Size(214, 75);
+            button3.TabIndex = 4;
+            button3.Tag = "Ingredient";
+            button3.Text = "tarif ekle ?";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -151,5 +168,6 @@
         private Button button1;
         private Panel panelForms;
         private Button button2;
+        private Button button3;
     }
 }

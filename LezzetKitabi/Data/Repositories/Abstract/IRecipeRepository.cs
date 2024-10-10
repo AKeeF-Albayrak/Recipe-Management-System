@@ -9,5 +9,6 @@ namespace LezzetKitabi.Data.Repositories.Abstract
 {
     public interface IRecipeRepository : IBaseRepository<Recipe>
     {
+
     }
 }
