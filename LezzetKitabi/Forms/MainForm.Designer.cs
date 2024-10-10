@@ -16,6 +16,7 @@
         private void InitializeComponent()
         {
             panelMenu = new Panel();
+            button3 = new Button();
             button2 = new Button();
             buttonIngredient = new Button();
             buttonRecipe = new Button();
@@ -23,7 +24,6 @@
             panelLogo = new Panel();
             button1 = new Button();
             panelForms = new Panel();
-            button3 = new Button();
             panelMenu.SuspendLayout();
             panelLogo.SuspendLayout();
             SuspendLayout();
@@ -40,8 +40,23 @@
             panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point(0, 0);
             panelMenu.Name = "panelMenu";
-            panelMenu.Size = new Size(214, 734);
+            panelMenu.Size = new Size(214, 756);
             panelMenu.TabIndex = 0;
+            // 
+            // button3
+            // 
+            button3.Dock = DockStyle.Top;
+            button3.FlatAppearance.BorderSize = 0;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.ForeColor = Color.White;
+            button3.Location = new Point(0, 380);
+            button3.Name = "button3";
+            button3.Size = new Size(214, 75);
+            button3.TabIndex = 4;
+            button3.Tag = "Ingredient";
+            button3.Text = "tarif ekle ?";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button2
             // 
@@ -128,32 +143,18 @@
             panelForms.Dock = DockStyle.Fill;
             panelForms.Location = new Point(214, 0);
             panelForms.Name = "panelForms";
-            panelForms.Size = new Size(1051, 734);
+            panelForms.Size = new Size(1051, 756);
             panelForms.TabIndex = 1;
-            // 
-            // button3
-            // 
-            button3.Dock = DockStyle.Top;
-            button3.FlatAppearance.BorderSize = 0;
-            button3.FlatStyle = FlatStyle.Flat;
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(0, 380);
-            button3.Name = "button3";
-            button3.Size = new Size(214, 75);
-            button3.TabIndex = 4;
-            button3.Tag = "Ingredient";
-            button3.Text = "tarif ekle ?";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1265, 734);
+            ClientSize = new Size(1265, 756);
             Controls.Add(panelForms);
             Controls.Add(panelMenu);
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Lezzet Kitabı";
             panelMenu.ResumeLayout(false);
             panelLogo.ResumeLayout(false);

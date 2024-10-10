@@ -10,15 +10,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroSet_UI.Controls;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 
 namespace LezzetKitabi.Forms.Controls
 {
     public partial class IngredientControl : UserControl
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IIngredientService _ingredientService;
         public IngredientControl(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
             InitializeDataGridView();
         }
@@ -55,15 +56,25 @@ namespace LezzetKitabi.Forms.Controls
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // Yeni veri ekle
-            string[] row = new string[]
+            IngredientAddDto ingredient = new IngredientAddDto()
             {
-                txtIngredientName.Text,
-                txtTotalQuantity.Text,
-                txtUnit.Text,
-                txtUnitPrice.Text
+                IngredientName = txtIngredientName.Text,
+                TotalQuantity = txtTotalQuantity.Text,
+                Unit = txtUnit.Text,
             };
-            dataGridView.Rows.Add(row);
+
+            // UnitPrice'ı decimal'e çevirme
+            if (decimal.TryParse(txtUnitPrice.Text, out decimal unitPrice))
+            {
+                ingredient.UnitPrice = unitPrice;
+            }
+            else
+            {
+                // Dönüşüm başarısız olursa, hata mesajı gösterilebilir
+                MessageBox.Show("Lütfen geçerli bir fiyat giriniz.");
+            }
+
+            _ingredientService.AddIngredient(ingredient);
 
             // TextBox'ları temizle
             txtIngredientName.Clear();

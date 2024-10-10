@@ -35,5 +35,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return true;
         }
+
+        public Task<List<Recipe>> GetAllEntitiesAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

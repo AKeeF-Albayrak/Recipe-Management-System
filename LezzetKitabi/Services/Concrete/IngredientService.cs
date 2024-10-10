@@ -16,5 +16,23 @@ namespace LezzetKitabi.Application.Services
         {
             _ingredientRepository = ingredientRepository;
         }
+
+        public void AddIngredient(IngredientAddDto ingredientAddDto)
+        {
+            Ingredient ingredient = new Ingredient()
+            {
+                IngredientName = ingredientAddDto.IngredientName,
+                TotalQuantity = ingredientAddDto.TotalQuantity,
+                Unit = ingredientAddDto.Unit,
+                UnitPrice = ingredientAddDto.UnitPrice,
+            };
+
+            _ingredientRepository.AddEntity(ingredient);
+        }
+
+        public async Task<List<Ingredient>> GetAllIngredientsAsync()
+        {
+            return await _ingredientRepository.GetAllEntitiesAsync();
+        }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            ComboBox comboBox1;
             panelSearch = new Panel();
             button2 = new Button();
             button1 = new Button();
@@ -35,6 +36,7 @@
             panelElements = new Panel();
             panelPage = new Panel();
             panelItems = new Panel();
+            panelDown = new Panel();
             panelPrevius = new Panel();
             button4 = new Button();
             panelNext = new Panel();
@@ -49,6 +51,16 @@
             panelSort.SuspendLayout();
             SuspendLayout();
             // 
+            // comboBox1
+            // 
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Farklı Seçenek 1", "Farklı Seçenek 2" });
+            comboBox1.Location = new Point(793, 6);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(168, 23);
+            comboBox1.TabIndex = 0;
+            // 
             // panelSearch
             // 
             panelSearch.BackColor = Color.Transparent;
@@ -58,7 +70,7 @@
             panelSearch.Dock = DockStyle.Top;
             panelSearch.Location = new Point(0, 0);
             panelSearch.Name = "panelSearch";
-            panelSearch.Size = new Size(1051, 71);
+            panelSearch.Size = new Size(1051, 65);
             panelSearch.TabIndex = 0;
             // 
             // button2
@@ -90,34 +102,42 @@
             // 
             // panelElements
             // 
-            panelElements.BackColor = Color.RosyBrown;
+            panelElements.BackColor = Color.Transparent;
             panelElements.Controls.Add(panelPage);
             panelElements.Controls.Add(panelSort);
             panelElements.Dock = DockStyle.Fill;
-            panelElements.Location = new Point(0, 71);
+            panelElements.Location = new Point(0, 65);
             panelElements.Name = "panelElements";
-            panelElements.Size = new Size(1051, 683);
+            panelElements.Size = new Size(1051, 730);
             panelElements.TabIndex = 2;
             // 
             // panelPage
             // 
             panelPage.Controls.Add(panelItems);
+            panelPage.Controls.Add(panelDown);
             panelPage.Controls.Add(panelPrevius);
             panelPage.Controls.Add(panelNext);
             panelPage.Dock = DockStyle.Fill;
-            panelPage.Location = new Point(0, 46);
+            panelPage.Location = new Point(0, 40);
             panelPage.Name = "panelPage";
-            panelPage.Size = new Size(1051, 637);
+            panelPage.Size = new Size(1051, 690);
             panelPage.TabIndex = 2;
             // 
             // panelItems
             // 
-            panelItems.BackColor = Color.Transparent;
             panelItems.Dock = DockStyle.Fill;
             panelItems.Location = new Point(91, 0);
             panelItems.Name = "panelItems";
-            panelItems.Size = new Size(870, 637);
-            panelItems.TabIndex = 2;
+            panelItems.Size = new Size(870, 662);
+            panelItems.TabIndex = 3;
+            // 
+            // panelDown
+            // 
+            panelDown.Dock = DockStyle.Bottom;
+            panelDown.Location = new Point(91, 662);
+            panelDown.Name = "panelDown";
+            panelDown.Size = new Size(870, 28);
+            panelDown.TabIndex = 2;
             // 
             // panelPrevius
             // 
@@ -126,7 +146,7 @@
             panelPrevius.Dock = DockStyle.Left;
             panelPrevius.Location = new Point(0, 0);
             panelPrevius.Name = "panelPrevius";
-            panelPrevius.Size = new Size(91, 637);
+            panelPrevius.Size = new Size(91, 690);
             panelPrevius.TabIndex = 1;
             // 
             // button4
@@ -145,7 +165,7 @@
             panelNext.Dock = DockStyle.Right;
             panelNext.Location = new Point(961, 0);
             panelNext.Name = "panelNext";
-            panelNext.Size = new Size(90, 637);
+            panelNext.Size = new Size(90, 690);
             panelNext.TabIndex = 0;
             // 
             // button3
@@ -164,17 +184,8 @@
             panelSort.Dock = DockStyle.Top;
             panelSort.Location = new Point(0, 0);
             panelSort.Name = "panelSort";
-            panelSort.Size = new Size(1051, 46);
+            panelSort.Size = new Size(1051, 40);
             panelSort.TabIndex = 1;
-            // 
-            // comboBox1
-            // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(793, 6);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(168, 23);
-            comboBox1.TabIndex = 0;
-            comboBox1.Text = "Sirala";
             // 
             // SearchControl
             // 
@@ -184,7 +195,7 @@
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
             Name = "SearchControl";
-            Size = new Size(1051, 754);
+            Size = new Size(1051, 795);
             panelSearch.ResumeLayout(false);
             panelSearch.PerformLayout();
             panelElements.ResumeLayout(false);
@@ -204,11 +215,12 @@
         private Panel panelElements;
         private ComboBox comboBox1;
         private Panel panelPage;
-        private Panel panelItems;
         private Panel panelPrevius;
         private Button button4;
         private Panel panelNext;
         private Button button3;
         private Panel panelSort;
+        private Panel panelItems;
+        private Panel panelDown;
     }
 }

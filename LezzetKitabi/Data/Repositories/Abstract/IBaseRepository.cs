@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Dapper.SqlMapper;
 
 namespace LezzetKitabi.Data.Repositories.Abstract
 {
@@ -12,7 +13,7 @@ namespace LezzetKitabi.Data.Repositories.Abstract
         bool AddEntity(T entity);
         //Task UpdateAsync(T entity);
         //Task DeleteAsync(Guid id);
-        //Task<IEnumerable<T>> GetAllAsync();
+        Task<List<T>> GetAllEntitiesAsync();
         //Task<T> GetByIdAsync(Guid id);
     }
 }
