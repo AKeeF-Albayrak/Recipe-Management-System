@@ -36,6 +36,11 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             return true;
         }
 
+        public Task<bool> DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<Recipe>> GetAllEntitiesAsync()
         {
             throw new NotImplementedException();

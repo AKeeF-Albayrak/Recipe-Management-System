@@ -49,6 +49,12 @@ namespace LezzetKitabi.Forms.Controls
 
             List<Ingredient> ingredients = await GetAllIngredientsAsync();
 
+            if (ingredients == null || ingredients.Count == 0)
+            {
+                MessageBox.Show("No ingredients found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             for (int i = 0; i < Math.Min(ingredients.Count, rows * cols); i++)
             {
                 int row = i / cols;
@@ -138,13 +144,28 @@ namespace LezzetKitabi.Forms.Controls
                 button1.Size = new Size(80, 30);
                 button1.Location = new Point(10, 10);
 
-                Button button2 = new Button();
-                button2.Text = "Button 2";
-                button2.Size = new Size(80, 30);
-                button2.Location = new Point(100, 10);
+                Button buttonDelete = new Button();
+                buttonDelete.Text = "Delete";
+                buttonDelete.Size = new Size(80, 30);
+                buttonDelete.Location = new Point(100, 10);
+                buttonDelete.Click += async (s, e) =>
+                {
+                    // Malzemeyi silme işlemini çağırıyoruz
+                    bool isDeleted = _ingredientService.DeleteIngredient(ingredients[i].Id);
+
+                    // Silinme başarılı ise, paneli kaldırın
+                    if (isDeleted)
+                    {
+                        panelItems.Controls.Remove(mainPanel);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ingredient could not be deleted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                };
 
                 overlayPanel.Controls.Add(button1);
-                overlayPanel.Controls.Add(button2);
+                overlayPanel.Controls.Add(buttonDelete);
 
                 // Ana paneli içerikleriyle birlikte ekleyin
                 mainPanel.Controls.Add(label);

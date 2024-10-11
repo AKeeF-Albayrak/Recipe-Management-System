@@ -11,6 +11,7 @@ using LezzetKitabi.Domain.Contracts;
 using Microsoft.Data.SqlClient;
 using static Dapper.SqlMapper;
 using LezzetKitabi.Application.Services;
+using System.ComponentModel;
 
 namespace LezzetKitabi.Data.Repositories.Concrete
 {
@@ -55,6 +56,25 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return ingredients;
         }
-    }
 
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+
+            // Bağlantı durumu kapalıysa, açın
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            // SQL sorgusu
+            string sql = "DELETE FROM Ingredient WHERE Id = @Id";
+
+            // Sorguyu çalıştır ve etkilenen satır sayısını al
+            int rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+
+            // Eğer etkilenen satır varsa, silme işlemi başarılı demektir
+            return rowsAffected > 0;
+        }
+    }
 }

@@ -13,5 +13,6 @@ namespace LezzetKitabi.Services.Abstract
     {
         public void AddIngredient(IngredientAddDto ingredientAddDto);
         public Task<List<Ingredient>> GetAllIngredientsAsync();
+        public bool DeleteIngredient(Guid id);
     }
 }

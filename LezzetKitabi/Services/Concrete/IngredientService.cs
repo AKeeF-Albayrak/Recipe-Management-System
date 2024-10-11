@@ -30,6 +30,13 @@ namespace LezzetKitabi.Application.Services
             _ingredientRepository.AddEntity(ingredient);
         }
 
+        public bool DeleteIngredient(Guid id)
+        {
+            bool isDeleted = _ingredientRepository.DeleteAsync(id).Result;
+
+            return isDeleted;
+        }
+
         public async Task<List<Ingredient>> GetAllIngredientsAsync()
         {
             return await _ingredientRepository.GetAllEntitiesAsync();

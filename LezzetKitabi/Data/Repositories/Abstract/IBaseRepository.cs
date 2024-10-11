@@ -12,7 +12,7 @@ namespace LezzetKitabi.Data.Repositories.Abstract
     {
         bool AddEntity(T entity);
         //Task UpdateAsync(T entity);
-        //Task DeleteAsync(Guid id);
+        Task<bool> DeleteAsync(Guid id);
         Task<List<T>> GetAllEntitiesAsync();
         //Task<T> GetByIdAsync(Guid id);
     }
