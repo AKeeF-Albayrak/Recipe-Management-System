@@ -68,7 +68,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             // SQL sorgusu
-            string sql = "DELETE FROM Ingredient WHERE Id = @Id";
+            string sql = "DELETE FROM Ingredients WHERE Id = @Id";
 
             // Sorguyu çalıştır ve etkilenen satır sayısını al
             int rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });

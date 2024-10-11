@@ -67,6 +67,10 @@ namespace LezzetKitabi.Forms.Controls
             if (decimal.TryParse(txtUnitPrice.Text, out decimal unitPrice))
             {
                 ingredient.UnitPrice = unitPrice;
+                _ingredientService.AddIngredient(ingredient);
+                txtIngredientName.Clear();
+                txtTotalQuantity.Clear();
+                txtUnit.Clear();
             }
             else
             {
@@ -74,12 +78,7 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Lütfen geçerli bir fiyat giriniz.");
             }
 
-            _ingredientService.AddIngredient(ingredient);
-
             // TextBox'ları temizle
-            txtIngredientName.Clear();
-            txtTotalQuantity.Clear();
-            txtUnit.Clear();
             txtUnitPrice.Clear();
         }
 

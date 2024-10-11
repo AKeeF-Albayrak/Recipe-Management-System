@@ -24,7 +24,7 @@ namespace LezzetKitabi.Forms.Controls
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
             InitializeGradientPanel(panelElements);
-            InitializeCustomPanels();
+            InitializeCustomPanelsAsync();
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             Color panelBackground = Color.FromArgb(50, Color.DarkRed);
             panelItems.BackColor = panelBackground;
@@ -35,7 +35,7 @@ namespace LezzetKitabi.Forms.Controls
             panelDown.BackColor = Color.Transparent;
         }
 
-        private async void InitializeCustomPanels()
+        private async Task InitializeCustomPanelsAsync()
         {
             int rows = 3;  // 3 rows
             int cols = 5;  // 5 columns
@@ -47,6 +47,7 @@ namespace LezzetKitabi.Forms.Controls
             int startY = 10; // Starting Y position
             int cornerRadius = 20;  // Yuvarlak köşe yarıçapı
 
+            // Tüm malzemeleri al
             List<Ingredient> ingredients = await GetAllIngredientsAsync();
 
             if (ingredients == null || ingredients.Count == 0)
@@ -62,6 +63,7 @@ namespace LezzetKitabi.Forms.Controls
 
                 // Ana panel oluştur
                 Panel mainPanel = new Panel();
+                mainPanel.Tag = ingredients[i];
                 mainPanel.BackColor = Color.Transparent;  // Şeffaf arka plan
                 mainPanel.Size = new Size(panelWidth, panelHeight);
                 int x = startX + col * (panelWidth + xPadding);
@@ -148,21 +150,8 @@ namespace LezzetKitabi.Forms.Controls
                 buttonDelete.Text = "Delete";
                 buttonDelete.Size = new Size(80, 30);
                 buttonDelete.Location = new Point(100, 10);
-                buttonDelete.Click += async (s, e) =>
-                {
-                    // Malzemeyi silme işlemini çağırıyoruz
-                    bool isDeleted = _ingredientService.DeleteIngredient(ingredients[i].Id);
-
-                    // Silinme başarılı ise, paneli kaldırın
-                    if (isDeleted)
-                    {
-                        panelItems.Controls.Remove(mainPanel);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Ingredient could not be deleted.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                };
+                buttonDelete.Tag = ingredients[i];
+                buttonDelete.Click += DeleteButton_Click;
 
                 overlayPanel.Controls.Add(button1);
                 overlayPanel.Controls.Add(buttonDelete);
@@ -178,6 +167,7 @@ namespace LezzetKitabi.Forms.Controls
                 panelItems.Controls.Add(mainPanel);
             }
         }
+
 
         public async Task<List<Ingredient>> GetAllIngredientsAsync()
         {
@@ -239,6 +229,39 @@ namespace LezzetKitabi.Forms.Controls
                     e.Graphics.FillRectangle(brush, panel.ClientRectangle);
                 }
             };
+        }
+
+        private async void DeleteButton_Click(object sender, EventArgs e)
+        {
+            Button deleteButton = sender as Button;
+
+            if (deleteButton != null)
+            {
+                // Delete butonunun Tag'inde hangi ingredient olduğunu al
+                Ingredient ingredientToDelete = deleteButton.Tag as Ingredient;
+
+                if (ingredientToDelete != null)
+                {
+                    bool isDeleted = await Task.Run(() => _ingredientService.DeleteIngredient(ingredientToDelete.Id)); // Silme işlemini async hale getir
+
+                    if (isDeleted)
+                    {
+                        MessageBox.Show("Ingredient deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        await RefreshPanelsAsync();  // Panel yenileme işlemini async yap
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete the ingredient.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private async Task RefreshPanelsAsync()
+        {
+            panelItems.Controls.Clear();
+
+            await InitializeCustomPanelsAsync();  // Bu işlemi de async yaparak UI'nin kilitlenmesini önleyin
         }
     }
 }
