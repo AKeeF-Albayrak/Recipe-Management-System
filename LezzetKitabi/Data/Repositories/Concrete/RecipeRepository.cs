@@ -45,5 +45,25 @@ namespace LezzetKitabi.Data.Repositories.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public async Task<Recipe> GetEntityById(Guid id)
+        {
+            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = "SELECT * FROM Recipes WHERE Id = @Id";
+            var recipe = await connection.QueryFirstOrDefaultAsync<Recipe>(sql, new { Id = id });
+
+            return recipe;
+        }
+
+        /*public async Task<bool> UpdateEntity(Recipe entity)
+        {
+            throw new NotImplementedException();
+        }*/
     }
 }

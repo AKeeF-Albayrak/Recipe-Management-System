@@ -11,9 +11,9 @@ namespace LezzetKitabi.Data.Repositories.Abstract
     public interface IBaseRepository<T> where T : class
     {
         bool AddEntity(T entity);
-        //Task UpdateAsync(T entity);
         Task<bool> DeleteAsync(Guid id);
         Task<List<T>> GetAllEntitiesAsync();
-        //Task<T> GetByIdAsync(Guid id);
+        //Task<bool> UpdateEntity(T entity);  // Güncelleme işlemi
+        Task<T> GetEntityById(Guid id);  // ID ile varlık getir
     }
 }

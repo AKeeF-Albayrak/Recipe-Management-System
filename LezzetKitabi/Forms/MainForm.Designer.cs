@@ -24,6 +24,8 @@
             panelLogo = new Panel();
             button1 = new Button();
             panelForms = new Panel();
+            button4 = new Button();
+            button5 = new Button();
             panelMenu.SuspendLayout();
             panelLogo.SuspendLayout();
             SuspendLayout();
@@ -31,6 +33,8 @@
             // panelMenu
             // 
             panelMenu.BackColor = Color.FromArgb(51, 51, 56);
+            panelMenu.Controls.Add(button5);
+            panelMenu.Controls.Add(button4);
             panelMenu.Controls.Add(button3);
             panelMenu.Controls.Add(button2);
             panelMenu.Controls.Add(buttonIngredient);
@@ -146,6 +150,34 @@
             panelForms.Size = new Size(1051, 756);
             panelForms.TabIndex = 1;
             // 
+            // button4
+            // 
+            button4.Dock = DockStyle.Top;
+            button4.FlatAppearance.BorderSize = 0;
+            button4.FlatStyle = FlatStyle.Flat;
+            button4.ForeColor = Color.White;
+            button4.Location = new Point(0, 455);
+            button4.Name = "button4";
+            button4.Size = new Size(214, 75);
+            button4.TabIndex = 5;
+            button4.Tag = "Ingredient";
+            button4.Text = "tarif sil";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            button5.Dock = DockStyle.Top;
+            button5.FlatAppearance.BorderSize = 0;
+            button5.FlatStyle = FlatStyle.Flat;
+            button5.ForeColor = Color.White;
+            button5.Location = new Point(0, 530);
+            button5.Name = "button5";
+            button5.Size = new Size(214, 75);
+            button5.TabIndex = 6;
+            button5.Tag = "Ingredient";
+            button5.Text = "tarif güncelle";
+            button5.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -170,5 +202,7 @@
         private Panel panelForms;
         private Button button2;
         private Button button3;
+        private Button button5;
+        private Button button4;
     }
 }

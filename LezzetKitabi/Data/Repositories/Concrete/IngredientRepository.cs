@@ -76,5 +76,50 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             // Eğer etkilenen satır varsa, silme işlemi başarılı demektir
             return rowsAffected > 0;
         }
+
+        public async Task<Ingredient> GetEntityById(Guid id)
+        {
+            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = "SELECT * FROM Ingredients WHERE Id = @Id";
+            var ingredient = await connection.QueryFirstOrDefaultAsync<Ingredient>(sql, new { Id = id });
+
+            return ingredient;
+        }
+
+        /*public async Task<bool> UpdateEntity(Ingredient entity)
+        {
+            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = $"""
+                    UPDATE Ingredients 
+                    SET IngredientName = @IngredientName, 
+                        TotalQuantity = @TotalQuantity, 
+                        Unit = @Unit, 
+                        UnitPrice = @UnitPrice
+                    WHERE Id = @Id;
+                """;
+
+            int rowsAffected = await connection.ExecuteAsync(sql, new
+            {
+                entity.IngredientName,
+                entity.TotalQuantity,
+                entity.Unit,
+                entity.UnitPrice,
+                entity.Id
+            });
+
+            return rowsAffected > 0;
+        }*/
     }
 }

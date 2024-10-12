@@ -11,8 +11,9 @@ namespace LezzetKitabi.Services.Abstract
 {
     public interface IIngredientService
     {
-        public void AddIngredient(IngredientAddDto ingredientAddDto);
-        public Task<List<Ingredient>> GetAllIngredientsAsync();
-        public bool DeleteIngredient(Guid id);
+        void AddIngredient(IngredientAddDto ingredientAddDto);
+        Task<List<Ingredient>> GetAllIngredientsAsync();
+        bool DeleteIngredient(Guid id);
+        Task<IngredientGetDto?> GetIngredientByIdAsync(Guid id);
     }
 }
