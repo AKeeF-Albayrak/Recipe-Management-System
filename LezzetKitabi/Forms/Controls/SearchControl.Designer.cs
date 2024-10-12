@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ComboBox comboBox1;
             panelSearch = new Panel();
             button2 = new Button();
-            button1 = new Button();
+            buttonFilter = new Button();
             textBox1 = new TextBox();
             panelElements = new Panel();
             panelPage = new Panel();
@@ -42,7 +41,7 @@
             panelNext = new Panel();
             button3 = new Button();
             panelSort = new Panel();
-            comboBox1 = new ComboBox();
+            comboBoxSort = new ComboBox();
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
@@ -51,21 +50,22 @@
             panelSort.SuspendLayout();
             SuspendLayout();
             // 
-            // comboBox1
+            // comboBoxSort
             // 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Farklı Seçenek 1", "Farklı Seçenek 2" });
-            comboBox1.Location = new Point(793, 6);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(168, 23);
-            comboBox1.TabIndex = 0;
+            comboBoxSort.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Items.AddRange(new object[] {"Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza"/*, "Stok Azalan", "Stok Artan"*/ });
+            comboBoxSort.Location = new Point(793, 6);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(168, 23);
+            comboBoxSort.SelectedIndex = 0;
+            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
             // 
             // panelSearch
             // 
             panelSearch.BackColor = Color.Transparent;
             panelSearch.Controls.Add(button2);
-            panelSearch.Controls.Add(button1);
+            panelSearch.Controls.Add(buttonFilter);
             panelSearch.Controls.Add(textBox1);
             panelSearch.Dock = DockStyle.Top;
             panelSearch.Location = new Point(0, 0);
@@ -82,14 +82,15 @@
             button2.Text = "Arama";
             button2.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // buttonFilter
             // 
-            button1.Location = new Point(948, 22);
-            button1.Name = "button1";
-            button1.Size = new Size(68, 23);
-            button1.TabIndex = 1;
-            button1.Text = "Filtreleme";
-            button1.UseVisualStyleBackColor = true;
+            buttonFilter.Location = new Point(948, 22);
+            buttonFilter.Name = "buttonFilter";
+            buttonFilter.Size = new Size(68, 23);
+            buttonFilter.TabIndex = 1;
+            buttonFilter.Text = "Filtreleme";
+            buttonFilter.UseVisualStyleBackColor = true;
+            buttonFilter.Click += buttonFilter_Click;
             // 
             // textBox1
             // 
@@ -180,7 +181,7 @@
             // panelSort
             // 
             panelSort.BackColor = Color.Transparent;
-            panelSort.Controls.Add(comboBox1);
+            panelSort.Controls.Add(comboBoxSort);
             panelSort.Dock = DockStyle.Top;
             panelSort.Location = new Point(0, 0);
             panelSort.Name = "panelSort";
@@ -210,10 +211,10 @@
 
         private Panel panelSearch;
         private Button button2;
-        private Button button1;
+        private Button buttonFilter;
         private TextBox textBox1;
         private Panel panelElements;
-        private ComboBox comboBox1;
+        private ComboBox comboBoxSort;
         private Panel panelPage;
         private Panel panelPrevius;
         private Button button4;

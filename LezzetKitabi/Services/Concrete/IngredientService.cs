@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Dtos.IngredientDtos;
 using LezzetKitabi.Domain.Entities;
+using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
 
 namespace LezzetKitabi.Application.Services
@@ -37,9 +38,9 @@ namespace LezzetKitabi.Application.Services
             return isDeleted;
         }
 
-        public async Task<List<Ingredient>> GetAllIngredientsAsync()
+        public async Task<List<Ingredient>> GetAllIngredientsAsync(IngredientSortingType _type)
         {
-            return await _ingredientRepository.GetAllEntitiesAsync();
+            return await _ingredientRepository.GetAllIngredientsByOrderAsync(_type);
         }
 
         public async Task<IngredientGetDto?> GetIngredientByIdAsync(Guid id)

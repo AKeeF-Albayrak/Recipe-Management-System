@@ -1,5 +1,6 @@
 ﻿using LezzetKitabi.Application.Services;
 using LezzetKitabi.Domain.Entities;
+using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,6 +19,7 @@ namespace LezzetKitabi.Forms.Controls
     public partial class SearchControl : UserControl
     {
         private readonly IIngredientService _ingredientService;
+        IngredientSortingType _sortingType = IngredientSortingType.A_from_Z;
 
         public SearchControl(IServiceProvider serviceProvider)
         {
@@ -48,7 +50,7 @@ namespace LezzetKitabi.Forms.Controls
             int cornerRadius = 20;  // Yuvarlak köşe yarıçapı
 
             // Tüm malzemeleri al
-            List<Ingredient> ingredients = await GetAllIngredientsAsync();
+            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsAsync(_sortingType);
 
             if (ingredients == null || ingredients.Count == 0)
             {
@@ -168,12 +170,35 @@ namespace LezzetKitabi.Forms.Controls
             }
         }
 
-
-        public async Task<List<Ingredient>> GetAllIngredientsAsync()
+        private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
-            return await _ingredientService.GetAllIngredientsAsync();
+            // Seçilen index'e göre sortingType'ı ayarlama
+            switch (comboBoxSort.SelectedIndex)
+            {
+                case 0:
+                    _sortingType = IngredientSortingType.A_from_Z;
+                    break;
+                case 1:
+                    _sortingType = IngredientSortingType.Z_from_A;
+                    break;
+                case 2:
+                    _sortingType = IngredientSortingType.Cheapest_to_Expensive;
+                    break;
+                case 3:
+                    _sortingType = IngredientSortingType.Expensive_to_Cheapest;
+                    break;
+                /*case 4:
+                    _sortingType = IngredientSortingType.DescendingStock;
+                    break;
+                case 5:
+                    _sortingType = IngredientSortingType.AscendingStock;
+                    break;*/
+                default:
+                    _sortingType = IngredientSortingType.A_from_Z;
+                    break;
+            }
+            RefreshPanelsAsync();
         }
-
         private GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int cornerRadius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -262,6 +287,14 @@ namespace LezzetKitabi.Forms.Controls
             panelItems.Controls.Clear();
 
             await InitializeCustomPanelsAsync();  // Bu işlemi de async yaparak UI'nin kilitlenmesini önleyin
+        }
+
+        private void buttonFilter_Click(object sender, EventArgs e)
+        {
+            /*using (var filterForm = new FilterForm())
+            {
+                filterForm.ShowDialog();
+            }*/
         }
     }
 }

@@ -2,6 +2,7 @@
 using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Contracts;
 using LezzetKitabi.Domain.Entities;
+using LezzetKitabi.Domain.Enums;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<List<Recipe>> GetAllEntitiesAsync()
+        public Task<List<Recipe>> GetAllEntitiesByOrderAsync(IngredientSortingType type)
         {
             throw new NotImplementedException();
         }

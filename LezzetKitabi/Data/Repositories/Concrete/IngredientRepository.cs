@@ -1,5 +1,6 @@
 ﻿using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Entities;
+using LezzetKitabi.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +13,6 @@ using Microsoft.Data.SqlClient;
 using static Dapper.SqlMapper;
 using LezzetKitabi.Application.Services;
 using System.ComponentModel;
-
 namespace LezzetKitabi.Data.Repositories.Concrete
 {
     public class IngredientRepository : IIngredientRepository
@@ -39,7 +39,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             return true;
         }
 
-        public async Task<List<Ingredient>> GetAllEntitiesAsync()
+        public async Task<List<Ingredient>> GetAllIngredientsByOrderAsync(IngredientSortingType _sortingtype)
         {
             using var connection = new SqlConnection(ConstVariables.ConnectionString);
 
@@ -47,9 +47,32 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             {
                 await connection.OpenAsync();  // Asenkron açma işlemi
             }
+            string sql = string.Empty;
 
-            // Malzeme adını alfabetik sıraya göre getir
-            string sql = "SELECT * FROM Ingredients ORDER BY IngredientName;";
+            switch (_sortingtype)
+            {
+                case IngredientSortingType.A_from_Z:
+                    sql = "SELECT * FROM Ingredients ORDER BY IngredientName ASC;";
+                    break;
+                case IngredientSortingType.Z_from_A:
+                    sql = "SELECT * FROM Ingredients ORDER BY IngredientName DESC;";
+                    break;
+                case IngredientSortingType.Expensive_to_Cheapest:
+                    sql = "SELECT * FROM Ingredients ORDER BY UnitPrice DESC;";
+                    break;
+                case IngredientSortingType.Cheapest_to_Expensive:
+                    sql = "SELECT * FROM Ingredients ORDER BY UnitPrice ASC;";
+                    break;
+                /*case IngredientSortingType.AscendingStock:
+                    sql = "SELECT * FROM Ingredients ORDER BY ASC;";
+                    break;
+                case IngredientSortingType.DescendingStock:
+                    sql = "SELECT * FROM Ingredients ORDER BY UnitPrice ASC;";
+                    break;*/
+                default:
+                    sql = "SELECT * FROM Ingredients;"; 
+                    break;
+            }
 
             // Asenkron sorgu ve listeye dönüştürme
             List<Ingredient> ingredients = (await connection.QueryAsync<Ingredient>(sql)).ToList();

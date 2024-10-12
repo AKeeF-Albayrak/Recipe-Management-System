@@ -1,4 +1,5 @@
 ﻿using LezzetKitabi.Domain.Entities;
+using LezzetKitabi.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,6 @@ namespace LezzetKitabi.Data.Repositories.Abstract
     {
         bool AddEntity(T entity);
         Task<bool> DeleteAsync(Guid id);
-        Task<List<T>> GetAllEntitiesAsync();
         //Task<bool> UpdateEntity(T entity);  // Güncelleme işlemi
         Task<T> GetEntityById(Guid id);  // ID ile varlık getir
     }

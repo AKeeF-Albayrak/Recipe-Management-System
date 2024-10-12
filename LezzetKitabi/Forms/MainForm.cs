@@ -12,12 +12,13 @@ namespace LezzetKitabi.Forms
     {
         private readonly IServiceProvider _serviceProvider;
         private bool isAnimating = false;
-        string page = "Home";
+        string page;
         public MainForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             InitializeComponent();
             LoadForm(new SearchControl(serviceProvider));
+            page = "Search";
         }
 
         private async void button1_Click(object sender, EventArgs e)
