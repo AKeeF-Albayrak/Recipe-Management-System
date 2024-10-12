@@ -1,6 +1,9 @@
 ﻿using LezzetKitabi.Data.Repositories.Abstract;
+using LezzetKitabi.Domain.Contracts;
 using LezzetKitabi.Forms.Controls;
+using LezzetKitabi.Domain.Contracts;
 using System;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks; // Task kullanımını ekleyin
@@ -11,13 +14,15 @@ namespace LezzetKitabi.Forms
     public partial class MainForm : Form
     {
         private readonly IServiceProvider _serviceProvider;
+        SearchControl searchControl;
         private bool isAnimating = false;
         string page;
         public MainForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+            searchControl = new SearchControl(serviceProvider);
             InitializeComponent();
-            LoadForm(new SearchControl(serviceProvider));
+            LoadForm(searchControl);
             page = "Search";
         }
 
@@ -49,10 +54,11 @@ namespace LezzetKitabi.Forms
 
                         currentStep++;
                     }
+                    GlobalVariables.IsExpanded = false;
                 }
                 else // Menüyü genişletme
                 {
-                    while (panelMenu.Width < 230 && currentStep < maxSteps) // Maksimum genişlik kontrolü
+                    while (panelMenu.Width < 210 && currentStep < maxSteps) // Maksimum genişlik kontrolü
                     {
                         panelMenu.Width += stepSize; // Menü genişliğini arttır
                         await Task.Delay(delayTime); // Bekle
@@ -65,6 +71,7 @@ namespace LezzetKitabi.Forms
 
                         currentStep++;
                     }
+                    GlobalVariables.IsExpanded = true;
                 }
             }
             finally
@@ -95,7 +102,7 @@ namespace LezzetKitabi.Forms
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            if (page != "Search") LoadForm(new SearchControl(_serviceProvider));
+            if (page != "Search") LoadForm(searchControl);
             page = "Search";
         }
 

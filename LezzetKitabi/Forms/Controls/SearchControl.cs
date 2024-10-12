@@ -1,4 +1,5 @@
 ﻿using LezzetKitabi.Application.Services;
+using LezzetKitabi.Domain.Contracts;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
@@ -25,11 +26,11 @@ namespace LezzetKitabi.Forms.Controls
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
-            InitializeGradientPanel(panelElements);
+            //InitializeGradientPanel(panelElements);
             InitializeCustomPanelsAsync();
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            Color panelBackground = Color.FromArgb(50, Color.DarkRed);
-            panelItems.BackColor = panelBackground;
+            //Color panelBackground = Color.FromArgb(50, Color.DarkRed);
+            //panelItems.BackColor = panelBackground;
             // Arka plan rengini transparent yapın
             panelElements.BackColor = Color.Transparent;
             panelPrevius.BackColor = Color.Transparent;
@@ -40,7 +41,7 @@ namespace LezzetKitabi.Forms.Controls
         private async Task InitializeCustomPanelsAsync()
         {
             int rows = 3;  // 3 rows
-            int cols = 5;  // 5 columns
+            int cols = GlobalVariables.IsExpanded ? 5 : 6;  // 5 columns
             int panelWidth = 160;  // Panel width
             int panelHeight = 190; // Panel height
             int xPadding = 12;  // Horizontal padding between panels

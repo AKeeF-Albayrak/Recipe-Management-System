@@ -12,7 +12,7 @@
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
-        {
+        { 
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -49,17 +49,6 @@
             panelNext.SuspendLayout();
             panelSort.SuspendLayout();
             SuspendLayout();
-            // 
-            // comboBoxSort
-            // 
-            comboBoxSort.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxSort.FormattingEnabled = true;
-            comboBoxSort.Items.AddRange(new object[] {"Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza"/*, "Stok Azalan", "Stok Artan"*/ });
-            comboBoxSort.Location = new Point(793, 6);
-            comboBoxSort.Name = "comboBoxSort";
-            comboBoxSort.Size = new Size(168, 23);
-            comboBoxSort.SelectedIndex = 0;
-            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
             // 
             // panelSearch
             // 
@@ -103,7 +92,7 @@
             // 
             // panelElements
             // 
-            panelElements.BackColor = Color.Transparent;
+            panelElements.BackColor = Color.Chocolate;
             panelElements.Controls.Add(panelPage);
             panelElements.Controls.Add(panelSort);
             panelElements.Dock = DockStyle.Fill;
@@ -187,6 +176,17 @@
             panelSort.Name = "panelSort";
             panelSort.Size = new Size(1051, 40);
             panelSort.TabIndex = 1;
+            // 
+            // comboBoxSort
+            // 
+            comboBoxSort.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza" });
+            comboBoxSort.Location = new Point(793, 6);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(168, 23);
+            comboBoxSort.TabIndex = 0;
+            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
             // 
             // SearchControl
             // 
