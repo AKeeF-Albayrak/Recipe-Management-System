@@ -283,7 +283,7 @@ namespace LezzetKitabi.Forms.Controls
             }
         }
 
-        private async Task RefreshPanelsAsync()
+        internal async Task RefreshPanelsAsync()
         {
             panelItems.Controls.Clear();
 
