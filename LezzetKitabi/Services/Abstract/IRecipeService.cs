@@ -11,7 +11,7 @@ namespace LezzetKitabi.Services.Abstract
 {
     public interface IRecipeService
     {
-        void AddRecipe(RecipeAddDto recipeAddDto);
+        Guid AddRecipe(RecipeAddDto recipeAddDto);
         Task<List<Recipe>> GetAllRecipesAsync(RecipeSortingType _type);
         bool DeleteRecipe(Guid id);
 

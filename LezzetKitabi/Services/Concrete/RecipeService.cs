@@ -19,7 +19,7 @@ namespace LezzetKitabi.Services.Concrete
         {
             _recipeRepository = recipeRepository;
         }
-        public void AddRecipe(RecipeAddDto recipeAddDto)
+        public Guid AddRecipe(RecipeAddDto recipeAddDto)
         {
             Recipe recipe = new Recipe()
             {
@@ -30,6 +30,7 @@ namespace LezzetKitabi.Services.Concrete
             };
 
             _recipeRepository.AddEntity(recipe);
+            return recipe.Id;
         }
         public async Task<List<Recipe>> GetAllRecipesAsync(RecipeSortingType _type)
         {

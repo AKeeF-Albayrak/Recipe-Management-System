@@ -28,10 +28,12 @@ namespace LezzetKitabi
             //Saving Services
             services.AddScoped<IIngredientService, IngredientService>();
             services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<IRecipeIngredientService, RecipeIngredientService>();
 
             //Saving Repos
             services.AddScoped<IIngredientRepository, IngredientRepository>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
+            services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
 
             //Saving Forms
             services.AddScoped<MainForm>();
@@ -40,6 +42,7 @@ namespace LezzetKitabi
             services.AddScoped<IngredientControl>();
             services.AddScoped<RecipeControl>();
             services.AddScoped<SearchControl>();
+            services.AddScoped<RecipeUpdateControl>();
 
             services.AddScoped<IDbConnection>(sp => new SqlConnection(ConstVariables.ConnectionString));
 

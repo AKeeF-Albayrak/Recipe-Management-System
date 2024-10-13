@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using LezzetKitabi.Domain.Dtos.CrossTableDtos;
 
 namespace LezzetKitabi.Data.Repositories.Concrete
 {
@@ -23,7 +24,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
         {
             throw new NotImplementedException();
         }
-        public async Task AddRangeAsync(IEnumerable<RecipeIngredient> recipeIngredients)
+        public async Task AddRangeAsync(List<AddRecipeIngredientDto> recipeIngredients)
         {
             const string query = "INSERT INTO RecipeIngredients (RecipeID, IngredientID, IngredientAmount) VALUES (@RecipeID, @IngredientID, @IngredientAmount)";
 

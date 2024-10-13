@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using LezzetKitabi.Domain.Dtos.RecipeDtos;
+using LezzetKitabi.Domain.Dtos.CrossTableDtos;
 
 
 namespace LezzetKitabi.Forms.Controls
@@ -22,10 +23,12 @@ namespace LezzetKitabi.Forms.Controls
     {
         private readonly IIngredientService _ingredientService;
         private readonly IRecipeService _recipeService;
+        private readonly IRecipeIngredientService _recipeIngredientService;
         public RecipeUpdateControl(IServiceProvider serviceProvider)
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
+            _recipeIngredientService = serviceProvider.GetRequiredService<IRecipeIngredientService>();
             SetUpCombobox();
             InitializeComponent();
             numericUpDownHours.Minimum = 0;
@@ -88,7 +91,7 @@ namespace LezzetKitabi.Forms.Controls
             public string Unit { get; set; }
         }
 
-        private void metroSetButton1_Click(object sender, EventArgs e)
+        private async void metroSetButton1_Click(object sender, EventArgs e)
         {
             var instructions = string.Join(Environment.NewLine, listBox1.Items.Cast<string>());
 
@@ -100,7 +103,29 @@ namespace LezzetKitabi.Forms.Controls
                 Instructions = instructions
             };
 
-            _recipeService.AddRecipe(recipeAddDto);
+            Guid id = _recipeService.AddRecipe(recipeAddDto);
+
+            List<AddRecipeIngredientDto> recipeIngredients = new List<AddRecipeIngredientDto>();
+
+            // ComboBox'taki her bir öğeyi dolaş
+            foreach (ComboBoxItem item in comboBoxIngredients.Items)
+            {
+                // Ingredient miktarını ve ID'sini topla
+                float ingredientAmount = float.Parse(textBoxAmount.Text); // Burada textbox'taki değeri alıyorsun
+                Guid ingredientId = item.Value; // ComboBox'taki ID'yi alıyorsun
+
+                // RecipeIngredient DTO'su oluştur
+                var recipeIngredient = new AddRecipeIngredientDto
+                {
+                    RecipeID = id,
+                    IngredientID = ingredientId,
+                    IngredientAmount = ingredientAmount
+                };
+
+                // Listeye ekle
+                recipeIngredients.Add(recipeIngredient);
+            }
+            await _recipeIngredientService.AddRangeAsync(recipeIngredients);
         }
 
         private void button1_Click(object sender, EventArgs e)
