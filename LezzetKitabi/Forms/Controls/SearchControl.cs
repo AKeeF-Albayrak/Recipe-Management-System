@@ -292,10 +292,10 @@ namespace LezzetKitabi.Forms.Controls
 
         private void buttonFilter_Click(object sender, EventArgs e)
         {
-            /*using (var filterForm = new FilterForm())
+            using (var filterForm = new FilterForm())
             {
                 filterForm.ShowDialog();
-            }*/
+            }
         }
     }
 }

@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            richTextBox1 = new RichTextBox();
             textBox1 = new TextBox();
             label2 = new Label();
             label1 = new Label();
             label3 = new Label();
-            richTextBox2 = new RichTextBox();
             textBox2 = new TextBox();
             label4 = new Label();
             numericUpDownHours = new NumericUpDown();
@@ -44,17 +42,16 @@
             metroSetButton1 = new MetroSet_UI.Controls.MetroSetButton();
             label8 = new Label();
             label9 = new Label();
+            comboBoxIngredients = new ComboBox();
+            buttonAddIngredient = new Button();
+            textBoxAmount = new TextBox();
+            listBoxIngredients = new ListBox();
+            textBox3 = new TextBox();
+            button1 = new Button();
+            listBox1 = new ListBox();
             ((System.ComponentModel.ISupportInitialize)numericUpDownHours).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMinutes).BeginInit();
             SuspendLayout();
-            // 
-            // richTextBox1
-            // 
-            richTextBox1.Location = new Point(344, 150);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(317, 629);
-            richTextBox1.TabIndex = 1;
-            richTextBox1.Text = "";
             // 
             // textBox1
             // 
@@ -92,14 +89,6 @@
             label3.Name = "label3";
             label3.Size = new Size(0, 25);
             label3.TabIndex = 8;
-            // 
-            // richTextBox2
-            // 
-            richTextBox2.Location = new Point(682, 150);
-            richTextBox2.Name = "richTextBox2";
-            richTextBox2.Size = new Size(330, 629);
-            richTextBox2.TabIndex = 9;
-            richTextBox2.Text = "";
             // 
             // textBox2
             // 
@@ -191,6 +180,7 @@
             metroSetButton1.Text = "Save";
             metroSetButton1.ThemeAuthor = "Narwin";
             metroSetButton1.ThemeName = "MetroLite";
+            metroSetButton1.Click += metroSetButton1_Click;
             // 
             // label8
             // 
@@ -212,10 +202,77 @@
             label9.TabIndex = 20;
             label9.Text = "Ingredient";
             // 
+            // comboBoxIngredients
+            // 
+            comboBoxIngredients.FormattingEnabled = true;
+            comboBoxIngredients.Location = new Point(43, 468);
+            comboBoxIngredients.Name = "comboBoxIngredients";
+            comboBoxIngredients.Size = new Size(264, 23);
+            comboBoxIngredients.TabIndex = 21;
+            // 
+            // buttonAddIngredient
+            // 
+            buttonAddIngredient.Location = new Point(43, 549);
+            buttonAddIngredient.Name = "buttonAddIngredient";
+            buttonAddIngredient.Size = new Size(264, 23);
+            buttonAddIngredient.TabIndex = 22;
+            buttonAddIngredient.Text = "Malzeme Ekle";
+            buttonAddIngredient.UseVisualStyleBackColor = true;
+            buttonAddIngredient.Click += buttonAddIngredient_Click;
+            // 
+            // textBoxAmount
+            // 
+            textBoxAmount.Location = new Point(43, 510);
+            textBoxAmount.Name = "textBoxAmount";
+            textBoxAmount.Size = new Size(264, 23);
+            textBoxAmount.TabIndex = 24;
+            // 
+            // listBoxIngredients
+            // 
+            listBoxIngredients.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            listBoxIngredients.FormattingEnabled = true;
+            listBoxIngredients.ItemHeight = 32;
+            listBoxIngredients.Location = new Point(353, 150);
+            listBoxIngredients.Name = "listBoxIngredients";
+            listBoxIngredients.Size = new Size(303, 612);
+            listBoxIngredients.TabIndex = 25;
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(43, 598);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(264, 23);
+            textBox3.TabIndex = 26;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(43, 641);
+            button1.Name = "button1";
+            button1.Size = new Size(264, 23);
+            button1.TabIndex = 27;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // listBox1
+            // 
+            listBox1.FormattingEnabled = true;
+            listBox1.ItemHeight = 15;
+            listBox1.Location = new Point(682, 150);
+            listBox1.Name = "listBox1";
+            listBox1.Size = new Size(330, 619);
+            listBox1.TabIndex = 28;
+            // 
             // RecipeUpdateControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(listBox1);
+            Controls.Add(button1);
+            Controls.Add(textBox3);
+            Controls.Add(listBoxIngredients);
+            Controls.Add(textBoxAmount);
+            Controls.Add(buttonAddIngredient);
+            Controls.Add(comboBoxIngredients);
             Controls.Add(label9);
             Controls.Add(label8);
             Controls.Add(metroSetButton1);
@@ -226,12 +283,10 @@
             Controls.Add(numericUpDownHours);
             Controls.Add(label4);
             Controls.Add(textBox2);
-            Controls.Add(richTextBox2);
             Controls.Add(label3);
             Controls.Add(label1);
             Controls.Add(label2);
             Controls.Add(textBox1);
-            Controls.Add(richTextBox1);
             Name = "RecipeUpdateControl";
             Size = new Size(1071, 836);
             ((System.ComponentModel.ISupportInitialize)numericUpDownHours).EndInit();
@@ -241,12 +296,10 @@
         }
 
         #endregion
-        private RichTextBox richTextBox1;
         private TextBox textBox1;
         private Label label2;
         private Label label1;
         private Label label3;
-        private RichTextBox richTextBox2;
         private TextBox textBox2;
         private Label label4;
         private NumericUpDown numericUpDownHours;
@@ -257,5 +310,12 @@
         private MetroSet_UI.Controls.MetroSetButton metroSetButton1;
         private Label label8;
         private Label label9;
+        private ComboBox comboBoxIngredients;
+        private Button buttonAddIngredient;
+        private TextBox textBoxAmount;
+        private ListBox listBoxIngredients;
+        private TextBox textBox3;
+        private Button button1;
+        private ListBox listBox1;
     }
 }

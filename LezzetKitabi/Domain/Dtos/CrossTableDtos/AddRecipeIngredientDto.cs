@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Domain.Dtos.CrossTableDtos
 {
-    public class AddRecipeIngredientDto //değişebilir
+    public class AddRecipeIngredientDto
     {
-        public string IngredientName { get; set; }  // Yeni malzeme eklenirse burada olacak
+        public Guid IngredientId { get; set; }
         public float IngredientAmount { get; set; }
-        public string Unit { get; set; }
-        public decimal UnitPrice { get; set; }
-        public bool IsExistingIngredient { get; set; }  // True: Kayıtlı malzeme seçilmişse
     }
 }

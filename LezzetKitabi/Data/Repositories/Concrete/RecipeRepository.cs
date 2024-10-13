@@ -111,21 +111,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return recipe;
         }
-        public async Task<Recipe> GetEntityByName(string name)
-        {
-            using var connection = new SqlConnection(_connectionString);
-
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                await connection.OpenAsync();
-            }
-
-            string sql = "SELECT * FROM Recipes WHERE RecipeName = @RecipeName";
-
-            var recipe = await connection.QueryFirstOrDefaultAsync<Recipe>(sql, new { RecipeName = name });
-
-            return recipe;
-        }
 
         public Task<int> UpdateEntity(Recipe recipe)
         {

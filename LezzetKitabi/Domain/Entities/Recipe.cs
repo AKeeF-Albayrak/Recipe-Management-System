@@ -12,7 +12,5 @@ namespace LezzetKitabi.Domain.Entities
         public string Category { get; set; }
         public int PreparationTime { get; set; }
         public string Instructions { get; set; }
-
-        public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }
 }

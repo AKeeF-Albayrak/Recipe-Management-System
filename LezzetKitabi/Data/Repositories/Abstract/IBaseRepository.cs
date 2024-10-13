@@ -14,7 +14,6 @@ namespace LezzetKitabi.Data.Repositories.Abstract
         bool AddEntity(T entity);
         Task<bool> DeleteAsync(Guid id);
         Task<T> GetEntityById(Guid id);
-        Task<T> GetEntityByName(string name);
         Task<int> UpdateEntity(T entity);
     }
 }
