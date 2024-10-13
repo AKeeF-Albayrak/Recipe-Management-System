@@ -47,13 +47,28 @@ namespace LezzetKitabi.Forms.Controls
                 // Seçilen öğenin adı ve birimi
                 string ingredientName = selectedItem.Text;
                 string unit = selectedItem.Unit;
-                string amount = textBoxAmount.Text;
+                string amountText = textBoxAmount.Text;
 
-                // Malzeme adı ve birimi birleştir
-                string displayText = $"*{ingredientName} {amount} {unit}"; // "Malzeme Adı (Birim)" şeklinde
+                // Miktarı float'a çevir
+                if (float.TryParse(amountText, out float ingredientAmount))
+                {
+                    // Malzeme adı ve birimi birleştir
+                    string displayText = $"* {ingredientName} {ingredientAmount} {unit}"; // "Malzeme Adı (Miktar Birimi)" şeklinde
 
-                // ListBox'a ekle
-                listBoxIngredients.Items.Add(displayText); // Sadece metin olarak ekliyoruz
+                    // ListBox'a ekle
+                    var listBoxItem = new ListBoxIngredient
+                    {
+                        DisplayText = displayText,
+                        IngredientId = selectedItem.Value, // Burada ID'yi atıyoruz
+                        Amount = ingredientAmount // Miktarı atıyoruz
+                    };
+
+                    listBoxIngredients.Items.Add(listBoxItem); // ListBox'a öğeyi ekle
+                }
+                else
+                {
+                    MessageBox.Show("Lütfen geçerli bir miktar girin.");
+                }
             }
             else
             {
@@ -91,6 +106,18 @@ namespace LezzetKitabi.Forms.Controls
             public string Unit { get; set; }
         }
 
+        public class ListBoxIngredient
+        {
+            public string DisplayText { get; set; } // ListBox'ta gösterilecek metin
+            public Guid IngredientId { get; set; } // Malzeme ID'si
+            public float Amount { get; set; } // Malzeme miktarı
+
+            public override string ToString() // ListBox'ta gösterilecek metni döndür
+            {
+                return DisplayText;
+            }
+        }
+
         private async void metroSetButton1_Click(object sender, EventArgs e)
         {
             var instructions = string.Join(Environment.NewLine, listBox1.Items.Cast<string>());
@@ -108,18 +135,20 @@ namespace LezzetKitabi.Forms.Controls
             List<AddRecipeIngredientDto> recipeIngredients = new List<AddRecipeIngredientDto>();
 
             // ComboBox'taki her bir öğeyi dolaş
-            foreach (ComboBoxItem item in comboBoxIngredients.Items)
+            foreach (ListBoxIngredient listBoxItem in listBoxIngredients.Items)
             {
-                // Ingredient miktarını ve ID'sini topla
-                float ingredientAmount = float.Parse(textBoxAmount.Text); // Burada textbox'taki değeri alıyorsun
-                Guid ingredientId = item.Value; // ComboBox'taki ID'yi alıyorsun
+                // ID'yi al
+                Guid ingredientId = listBoxItem.IngredientId;
+
+                // Miktarı al
+                float ingredientAmount = listBoxItem.Amount;
 
                 // RecipeIngredient DTO'su oluştur
                 var recipeIngredient = new AddRecipeIngredientDto
                 {
                     RecipeID = id,
                     IngredientID = ingredientId,
-                    IngredientAmount = ingredientAmount
+                    IngredientAmount = ingredientAmount // Burada miktarı al
                 };
 
                 // Listeye ekle

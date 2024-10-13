@@ -31,7 +31,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             string sql = $"""
                     INSERT INTO Recipes  (Id ,RecipeName , Category , PreparationTime , Instructions)
-                    VALUES ('{Guid.NewGuid()}', '{entity.RecipeName}', '{entity.Category}', '{entity.PreparationTime}',
+                    VALUES ('{entity.Id}', '{entity.RecipeName}', '{entity.Category}', '{entity.PreparationTime}',
                     '{entity.Instructions}');
                 """;
 
