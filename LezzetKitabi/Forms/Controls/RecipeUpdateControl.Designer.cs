@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
+            textBoxTitle = new TextBox();
             label2 = new Label();
             label1 = new Label();
             label3 = new Label();
-            textBox2 = new TextBox();
+            textBoxCategory = new TextBox();
             label4 = new Label();
             numericUpDownHours = new NumericUpDown();
             label5 = new Label();
@@ -53,19 +53,19 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDownMinutes).BeginInit();
             SuspendLayout();
             // 
-            // textBox1
+            // textBoxTitle
             // 
-            textBox1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(43, 150);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(264, 33);
-            textBox1.TabIndex = 4;
+            textBoxTitle.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxTitle.Location = new Point(43, 150);
+            textBoxTitle.Name = "textBoxTitle";
+            textBoxTitle.Size = new Size(264, 33);
+            textBoxTitle.TabIndex = 4;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(43, 198);
+            label2.Location = new Point(43, 202);
             label2.Name = "label2";
             label2.Size = new Size(133, 40);
             label2.TabIndex = 5;
@@ -75,7 +75,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 21.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(43, 111);
+            label1.Location = new Point(43, 107);
             label1.Name = "label1";
             label1.Size = new Size(71, 40);
             label1.TabIndex = 7;
@@ -90,13 +90,13 @@
             label3.Size = new Size(0, 25);
             label3.TabIndex = 8;
             // 
-            // textBox2
+            // textBoxCategory
             // 
-            textBox2.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox2.Location = new Point(43, 245);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(264, 33);
-            textBox2.TabIndex = 10;
+            textBoxCategory.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxCategory.Location = new Point(43, 245);
+            textBoxCategory.Name = "textBoxCategory";
+            textBoxCategory.Size = new Size(264, 33);
+            textBoxCategory.TabIndex = 10;
             // 
             // label4
             // 
@@ -250,16 +250,18 @@
             button1.Name = "button1";
             button1.Size = new Size(264, 23);
             button1.TabIndex = 27;
-            button1.Text = "button1";
+            button1.Text = "Yönerge Ekle";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // listBox1
             // 
+            listBox1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
             listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 15;
+            listBox1.ItemHeight = 32;
             listBox1.Location = new Point(682, 150);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(330, 619);
+            listBox1.Size = new Size(330, 612);
             listBox1.TabIndex = 28;
             // 
             // RecipeUpdateControl
@@ -282,11 +284,11 @@
             Controls.Add(label5);
             Controls.Add(numericUpDownHours);
             Controls.Add(label4);
-            Controls.Add(textBox2);
+            Controls.Add(textBoxCategory);
             Controls.Add(label3);
             Controls.Add(label1);
             Controls.Add(label2);
-            Controls.Add(textBox1);
+            Controls.Add(textBoxTitle);
             Name = "RecipeUpdateControl";
             Size = new Size(1071, 836);
             ((System.ComponentModel.ISupportInitialize)numericUpDownHours).EndInit();
@@ -296,11 +298,11 @@
         }
 
         #endregion
-        private TextBox textBox1;
+        private TextBox textBoxTitle;
         private Label label2;
         private Label label1;
         private Label label3;
-        private TextBox textBox2;
+        private TextBox textBoxCategory;
         private Label label4;
         private NumericUpDown numericUpDownHours;
         private Label label5;

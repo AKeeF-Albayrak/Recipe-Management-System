@@ -1,4 +1,5 @@
-﻿using LezzetKitabi.Domain.Entities;
+﻿using LezzetKitabi.Domain.Dtos.RecipeDtos;
+using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using LezzetKitabi.Domain.Dtos.RecipeDtos;
+
 
 namespace LezzetKitabi.Forms.Controls
 {
@@ -30,11 +33,6 @@ namespace LezzetKitabi.Forms.Controls
 
             numericUpDownMinutes.Minimum = 0;
             numericUpDownMinutes.Maximum = 59;
-        }
-
-        private void metroSetDefaultButton1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void buttonAddIngredient_Click(object sender, EventArgs e)
@@ -92,7 +90,24 @@ namespace LezzetKitabi.Forms.Controls
 
         private void metroSetButton1_Click(object sender, EventArgs e)
         {
+            var instructions = string.Join(Environment.NewLine, listBox1.Items.Cast<string>());
 
+            var recipeAddDto = new RecipeAddDto
+            {
+                RecipeName = textBoxTitle.Text,
+                Category = textBoxCategory.Text,
+                PreparationTime = (int)(numericUpDownHours.Value * 60) + (int)numericUpDownMinutes.Value,
+                Instructions = instructions
+            };
+
+            _recipeService.AddRecipe(recipeAddDto);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Add((listBox1.Items.Count + 1) + " - " + textBox3.Text); // Sadece metin olarak ekliyoruz
+            textBox3.Clear();
+            MessageBox.Show("Yönerge Eklendi");
         }
     }
 }

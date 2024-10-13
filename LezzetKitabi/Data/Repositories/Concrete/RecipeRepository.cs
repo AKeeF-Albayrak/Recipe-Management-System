@@ -111,7 +111,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return recipe;
         }
-
         public Task<int> UpdateEntity(Recipe recipe)
         {
             throw new NotImplementedException();//burada ingredient list olarak olmalı mı??

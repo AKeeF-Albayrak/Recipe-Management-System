@@ -41,6 +41,5 @@ namespace LezzetKitabi.Services.Concrete
 
             return isDeleted;
         }
-
     }
 }
