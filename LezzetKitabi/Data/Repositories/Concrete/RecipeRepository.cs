@@ -120,7 +120,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.OpenAsync();
             }
 
-            string sql = "SELECT * FROM Ingredients WHERE RecipeName = @RecipeName";
+            string sql = "SELECT * FROM Recipes WHERE RecipeName = @RecipeName";
 
             var recipe = await connection.QueryFirstOrDefaultAsync<Recipe>(sql, new { RecipeName = name });
 

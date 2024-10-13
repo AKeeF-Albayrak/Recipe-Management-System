@@ -63,5 +63,26 @@ namespace LezzetKitabi.Application.Services
 
             return ingredientGetDto;
         }
+
+        public async Task<IngredientGetDto?> GetIngredientByNameAsync(string name)
+        {
+            var ingredient = await _ingredientRepository.GetEntityByName(name);
+
+            if (ingredient == null)
+            {
+                return null;
+            }
+
+            IngredientGetDto ingredientGetDto = new IngredientGetDto()
+            {
+                Id = ingredient.Id,
+                IngredientName = ingredient.IngredientName,
+                TotalQuantity = ingredient.TotalQuantity,
+                Unit = ingredient.Unit,
+                UnitPrice = ingredient.UnitPrice
+            };
+
+            return ingredientGetDto;
+        }
     }
 }

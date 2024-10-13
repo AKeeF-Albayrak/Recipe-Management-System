@@ -19,7 +19,6 @@ namespace LezzetKitabi.Services.Concrete
         {
             _recipeRepository = recipeRepository;
         }
-
         public void AddRecipe(RecipeAddDto recipeAddDto)
         {
             Recipe recipe = new Recipe()
@@ -32,7 +31,10 @@ namespace LezzetKitabi.Services.Concrete
 
             _recipeRepository.AddEntity(recipe);
         }
-
+        public async Task<List<Recipe>> GetAllRecipesAsync(RecipeSortingType _type)
+        {
+            return await _recipeRepository.GetAllRecipesByOrderAsync(_type);
+        }
         public bool DeleteRecipe(Guid id)
         {
             bool isDeleted = _recipeRepository.DeleteAsync(id).Result;
@@ -40,9 +42,5 @@ namespace LezzetKitabi.Services.Concrete
             return isDeleted;
         }
 
-        public async Task<List<Recipe>> GetAllRecipesAsync(RecipeSortingType _type)
-        {
-            return await _recipeRepository.GetAllRecipesByOrderAsync(_type);
-        }
     }
 }
