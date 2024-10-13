@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Domain.Dtos.RecipeDtos
 {
-    public class RecipeAddDto
+    public class RecipeAddDto // değişecek ->  public List<AddRecipeIngredientDto> Ingredients { get; set; } // Mevcut ve yeni malzemeleri alacak ??
+
     {
         public string RecipeName { get; set; }
         public string Category { get; set; }

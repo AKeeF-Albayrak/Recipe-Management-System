@@ -13,7 +13,8 @@ namespace LezzetKitabi.Data.Repositories.Abstract
     {
         bool AddEntity(T entity);
         Task<bool> DeleteAsync(Guid id);
-        //Task<bool> UpdateEntity(T entity);  // Güncelleme işlemi
-        Task<T> GetEntityById(Guid id);  // ID ile varlık getir
+        Task<T> GetEntityById(Guid id);
+        Task<T> GetEntityByName(string name);
+        Task<int> UpdateEntity(T entity);
     }
 }

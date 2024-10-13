@@ -13,13 +13,19 @@ using Microsoft.Data.SqlClient;
 using static Dapper.SqlMapper;
 using LezzetKitabi.Application.Services;
 using System.ComponentModel;
+using System.Data.Common;
 namespace LezzetKitabi.Data.Repositories.Concrete
 {
     public class IngredientRepository : IIngredientRepository
     {
+        private readonly string _connectionString;
+        public IngredientRepository()
+        {
+            _connectionString = ConstVariables.ConnectionString;
+        }
         public bool AddEntity(Ingredient entity)
         {
-            var connection = new SqlConnection(ConstVariables.ConnectionString);
+            using var connection = new SqlConnection(_connectionString);
 
             if (connection.State == System.Data.ConnectionState.Closed)
             {
@@ -30,18 +36,15 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     INSERT INTO Ingredients  (Id, IngredientName, TotalQuantity, Unit, UnitPrice)
                     VALUES ('{Guid.NewGuid()}', '{entity.IngredientName}', '{entity.TotalQuantity}', '{entity.Unit}',
                     '{entity.UnitPrice}');
-                """;
+                    """;
 
             connection.Query(sql);
 
-            connection.Close();
-
             return true;
         }
-
         public async Task<List<Ingredient>> GetAllIngredientsByOrderAsync(IngredientSortingType _sortingtype)
         {
-            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+            using var connection = new SqlConnection(_connectionString);
 
             if (connection.State == System.Data.ConnectionState.Closed)
             {
@@ -79,30 +82,24 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return ingredients;
         }
-
         public async Task<bool> DeleteAsync(Guid id)
         {
-            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+            using var connection = new SqlConnection(_connectionString);
 
-            // Bağlantı durumu kapalıysa, açın
             if (connection.State == System.Data.ConnectionState.Closed)
             {
                 await connection.OpenAsync();
             }
 
-            // SQL sorgusu
             string sql = "DELETE FROM Ingredients WHERE Id = @Id";
 
-            // Sorguyu çalıştır ve etkilenen satır sayısını al
             int rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
 
-            // Eğer etkilenen satır varsa, silme işlemi başarılı demektir
             return rowsAffected > 0;
         }
-
         public async Task<Ingredient> GetEntityById(Guid id)
         {
-            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+            using var connection = new SqlConnection(_connectionString);
 
             if (connection.State == System.Data.ConnectionState.Closed)
             {
@@ -114,35 +111,48 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return ingredient;
         }
-
-        /*public async Task<bool> UpdateEntity(Ingredient entity)
+        public async Task<Ingredient> GetEntityByName(string name)
         {
-            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+            using var connection = new SqlConnection(_connectionString);
 
             if (connection.State == System.Data.ConnectionState.Closed)
             {
                 await connection.OpenAsync();
             }
 
-            string sql = $"""
-                    UPDATE Ingredients 
-                    SET IngredientName = @IngredientName, 
-                        TotalQuantity = @TotalQuantity, 
-                        Unit = @Unit, 
-                        UnitPrice = @UnitPrice
-                    WHERE Id = @Id;
-                """;
+            string sql = "SELECT * FROM Ingredients WHERE IngredientName = @IngredientName";
 
-            int rowsAffected = await connection.ExecuteAsync(sql, new
+            var ingredient = await connection.QueryFirstOrDefaultAsync<Ingredient>(sql, new { IngredientName = name });
+
+            return ingredient;
+        }
+        public async Task<int> UpdateEntity(Ingredient ingredient)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
             {
-                entity.IngredientName,
-                entity.TotalQuantity,
-                entity.Unit,
-                entity.UnitPrice,
-                entity.Id
+                await connection.OpenAsync();
+            }
+
+            string sql = @"
+                   UPDATE Ingredients 
+                   SET IngredientName = @IngredientName, 
+                   TotalStock = @TotalStock, 
+                   Unit = @Unit, 
+                   UnitPrice = @UnitPrice
+                   WHERE Id = @Id";
+
+            var affectedRows = await connection.ExecuteAsync(sql, new
+            {
+                IngredientName = ingredient.IngredientName,
+                TotalQuantity = ingredient.TotalQuantity,
+                Unit = ingredient.Unit,
+                UnitPrice = ingredient.UnitPrice,
+                Id = ingredient.Id
             });
 
-            return rowsAffected > 0;
-        }*/
+            return affectedRows;
+        }
     }
 }

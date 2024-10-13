@@ -1,6 +1,8 @@
 ﻿using LezzetKitabi.Data.Repositories.Abstract;
+using LezzetKitabi.Data.Repositories.Concrete;
 using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
+using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -29,6 +31,18 @@ namespace LezzetKitabi.Services.Concrete
             };
 
             _recipeRepository.AddEntity(recipe);
+        }
+
+        public bool DeleteRecipe(Guid id)
+        {
+            bool isDeleted = _recipeRepository.DeleteAsync(id).Result;
+
+            return isDeleted;
+        }
+
+        public async Task<List<Recipe>> GetAllRecipesAsync(RecipeSortingType _type)
+        {
+            return await _recipeRepository.GetAllRecipesByOrderAsync(_type);
         }
     }
 }

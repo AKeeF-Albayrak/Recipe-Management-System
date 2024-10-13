@@ -50,3 +50,4 @@ namespace LezzetKitabi
         }
     }
 }
+//eksikler var tam istediklerimi yapamadım, dışarıdan malzeme eklerken cross  table'da veri kaybı oluyor eklenen her malzemenin en az bir tarifle ilişkisi olması lazım, addEntity kaldırılmalı yerine sadece ingredient ve recipe ile ilgili özel add methodları eklenmeli, DTO'lar büyük sıkıntı eksik dtolar var -mert

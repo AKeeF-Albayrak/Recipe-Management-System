@@ -15,9 +15,14 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 {
     public class RecipeRepository : IRecipeRepository
     {
+        private readonly string _connectionString;
+        public RecipeRepository()
+        {
+            _connectionString = ConstVariables.ConnectionString;
+        }
         public bool AddEntity(Recipe entity)
         {
-            var connection = new SqlConnection(ConstVariables.ConnectionString);
+            var connection = new SqlConnection(_connectionString);
 
             if (connection.State == System.Data.ConnectionState.Closed)
             {
@@ -36,17 +41,62 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return true;
         }
-
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
+            using var connection = new SqlConnection(_connectionString);
 
-        public Task<List<Recipe>> GetAllEntitiesByOrderAsync(IngredientSortingType type)
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = "DELETE FROM Recipes WHERE Id = @Id";
+
+            int rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+
+            return rowsAffected > 0;
+        }
+        public async Task<List<Recipe>> GetAllRecipesByOrderAsync(RecipeSortingType sortingType)
         {
-            throw new NotImplementedException();
-        }
+            using var connection = new SqlConnection(_connectionString);
 
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = string.Empty;
+
+            switch (sortingType)
+            {
+                case RecipeSortingType.A_from_Z:
+                    sql = "SELECT * FROM Recipes ORDER BY RecipeName ASC;";
+                    break;
+                case RecipeSortingType.Z_from_A:
+                    sql = "SELECT * FROM Recipes ORDER BY RecipeName DESC;";
+                    break;
+                case RecipeSortingType.Fastest_to_Slowst:
+                    sql = "SELECT * FROM Recipes ORDER BY PreparationTime ASC;";
+                    break;
+                case RecipeSortingType.Slowest_to_Fastest:
+                    sql = "SELECT * FROM Recipes ORDER BY PreparationTime DESC;";
+                    break;
+                /*case RecipeSortingType.Cheapest_to_Expensive:
+                    sql = "SELECT * FROM Recipes ORDER BY TotalCost ASC;";
+                    break;
+                case RecipeSortingType.Expensive_to_Cheapest:
+                    sql = "SELECT * FROM Recipes ORDER BY TotalCost DESC;";
+                    break;*/
+                default:
+                    sql = "SELECT * FROM Recipes;";
+                    break;
+            }
+
+            // Asenkron sorgu ve listeye dönüştürme
+            List<Recipe> recipes = (await connection.QueryAsync<Recipe>(sql)).ToList();
+
+            return recipes;
+        }
         public async Task<Recipe> GetEntityById(Guid id)
         {
             using var connection = new SqlConnection(ConstVariables.ConnectionString);
@@ -61,10 +111,25 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return recipe;
         }
-
-        /*public async Task<bool> UpdateEntity(Recipe entity)
+        public async Task<Recipe> GetEntityByName(string name)
         {
-            throw new NotImplementedException();
-        }*/
+            using var connection = new SqlConnection(_connectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = "SELECT * FROM Ingredients WHERE RecipeName = @RecipeName";
+
+            var recipe = await connection.QueryFirstOrDefaultAsync<Recipe>(sql, new { RecipeName = name });
+
+            return recipe;
+        }
+
+        public Task<int> UpdateEntity(Recipe recipe)
+        {
+            throw new NotImplementedException();//burada ingredient list olarak olmalı mı??
+        }
     }
 }
