@@ -92,7 +92,6 @@ namespace LezzetKitabi.Forms.Controls
                 mainPanel.MouseEnter += (s, e) => BringToFront(mainPanel);
                 mainPanel.MouseLeave += (s, e) => CheckMouseLeave(mainPanel);
 
-
                 // Overlay paneli oluşturun
                 Panel overlayPanel = new Panel();
                 overlayPanel.BackColor = Color.Purple;  // Overlay panel rengi
@@ -120,28 +119,23 @@ namespace LezzetKitabi.Forms.Controls
                     }
                 };
 
-                // Butonlar ve diğer elemanlar overlay paneline eklenebilir
-                Button buttonEdit = new Button();
-                buttonEdit.Text = "Duzenle";
-                buttonEdit.Size = new Size(80, 30);
-                buttonEdit.Location = new Point(10, 10);
+                // Düzenleme butonu
+                PictureBox editIcon = new PictureBox();
+                editIcon.Size = new Size(30, 30);
+                editIcon.Location = new Point(10, 10);
+                editIcon.Image = Properties.Resources.edit_24;  // Düzenleme ikonunu ayarlayın
+                editIcon.SizeMode = PictureBoxSizeMode.Zoom;
 
+                // Overlay paneline butonları ekleyin
+                overlayPanel.Controls.Add(editIcon);
+
+
+                // Ana paneli içerikleriyle birlikte ekleyin
                 Label label = new Label();
                 label.AutoSize = true;
                 label.Text = recipes[i].RecipeName; // Dinamik malzeme adı
                 label.Location = new Point((panelWidth - label.Width) / 2, 12);  // Ortalayın
 
-                Button buttonDelete = new Button();
-                buttonDelete.Text = "Delete";
-                buttonDelete.Size = new Size(80, 30);
-                buttonDelete.Location = new Point(100, 10);
-                buttonDelete.Tag = recipes[i];
-                buttonDelete.Click += DeleteButton_Click;
-
-                overlayPanel.Controls.Add(button1);
-                overlayPanel.Controls.Add(buttonDelete);
-
-                // Ana paneli içerikleriyle birlikte ekleyin
                 mainPanel.Controls.Add(label);
                 mainPanel.Controls.Add(overlayPanel);
 
@@ -149,6 +143,7 @@ namespace LezzetKitabi.Forms.Controls
                 panelItems.Controls.Add(mainPanel);
             }
         }
+
         private GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int cornerRadius)
         {
             GraphicsPath path = new GraphicsPath();

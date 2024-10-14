@@ -332,12 +332,10 @@
             // 
             // button1
             // 
-            button1.Location = new Point(12, 85);
+            button1.Location = new Point(0, 0);
             button1.Name = "button1";
-            button1.Size = new Size(166, 23);
-            button1.TabIndex = 12;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 0;
             // 
             // comboBox1
             // 
@@ -373,7 +371,7 @@
             panel1.Size = new Size(198, 221);
             panel1.TabIndex = 11;
             // 
-            // SearchControl
+            // RecipeControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -381,7 +379,7 @@
             Controls.Add(panelFilter);
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
-            Name = "SearchControl";
+            Name = "RecipeControl";
             Size = new Size(1323, 796);
             panelSearch.ResumeLayout(false);
             panelSearch.PerformLayout();
