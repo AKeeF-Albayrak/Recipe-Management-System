@@ -73,10 +73,6 @@ namespace LezzetKitabi.Forms
                     }
                     GlobalVariables.IsExpanded = true;
                 }
-                if (searchControl != null)
-                {
-                    await searchControl.RefreshPanelsAsync(); // search control içindeki fonksiyonu çağır
-                }
             }
             finally
             {

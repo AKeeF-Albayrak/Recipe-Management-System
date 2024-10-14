@@ -44,7 +44,7 @@
             panelMenu.Dock = DockStyle.Left;
             panelMenu.Location = new Point(0, 0);
             panelMenu.Name = "panelMenu";
-            panelMenu.Size = new Size(214, 756);
+            panelMenu.Size = new Size(214, 795);
             panelMenu.TabIndex = 0;
             // 
             // button5
@@ -176,14 +176,14 @@
             panelForms.Dock = DockStyle.Fill;
             panelForms.Location = new Point(214, 0);
             panelForms.Name = "panelForms";
-            panelForms.Size = new Size(1051, 756);
+            panelForms.Size = new Size(1334, 795);
             panelForms.TabIndex = 1;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1265, 756);
+            ClientSize = new Size(1548, 795);
             Controls.Add(panelForms);
             Controls.Add(panelMenu);
             Name = "MainForm";
