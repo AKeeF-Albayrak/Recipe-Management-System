@@ -119,16 +119,38 @@ namespace LezzetKitabi.Forms.Controls
                     }
                 };
 
-                // Düzenleme butonu
-                PictureBox editIcon = new PictureBox();
-                editIcon.Size = new Size(30, 30);
-                editIcon.Location = new Point(10, 10);
-                editIcon.Image = Properties.Resources.edit_24;  // Düzenleme ikonunu ayarlayın
-                editIcon.SizeMode = PictureBoxSizeMode.Zoom;
+                // Details butonu
+                PictureBox pictureBoxDetail = new PictureBox();
+                pictureBoxDetail.Size = new Size(50, 50);  // PictureBox boyutu
+                pictureBoxDetail.Location = new Point((panelWidth - pictureBoxDetail.Width) / 2, 20);  // İlk PictureBox için pozisyon
+                pictureBoxDetail.Image = Properties.Resources.icons8_search_more_64;  // Detail ikonu
+                pictureBoxDetail.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
+                pictureBoxDetail.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
+                //pictureBoxEdit.Click += (s, e) => DeRecipe(recipes[i]);  // Tıklama olayını tanımla
+
+                // Güncelleme butonu
+                PictureBox pictureBoxUpdate = new PictureBox();
+                pictureBoxUpdate.Size = new Size(50, 50);  // PictureBox boyutu
+                pictureBoxUpdate.Location = new Point((panelWidth - pictureBoxUpdate.Width) / 2, 70);  // İkinci PictureBox için pozisyon
+                pictureBoxUpdate.Image = Properties.Resources.icons8_edit_64__1_;  // Güncelleme ikonu
+                pictureBoxUpdate.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
+                pictureBoxUpdate.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
+                //pictureBoxUpdate.Click += (s, e) => UpdateRecipe(recipes[i]);  // Tıklama olayını tanımla
+
+                // Silme butonu
+                PictureBox pictureBoxDelete = new PictureBox();
+                pictureBoxDelete.Size = new Size(50, 50);  // PictureBox boyutu
+                pictureBoxDelete.Location = new Point((panelWidth - pictureBoxDelete.Width) / 2, 130);  // Üçüncü PictureBox için pozisyon
+                pictureBoxDelete.Image = Properties.Resources.icons8_delete_64__1_;  // Silme ikonu
+                pictureBoxDelete.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
+                pictureBoxDelete.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
+                //pictureBoxDelete.Click += DeleteButton_Click;  // Tıklama olayını tanımla
+                //pictureBoxDelete.Tag = recipes[i];  // Tag olarak tarifi ekleyin
 
                 // Overlay paneline butonları ekleyin
-                overlayPanel.Controls.Add(editIcon);
-
+                overlayPanel.Controls.Add(pictureBoxDetail);
+                overlayPanel.Controls.Add(pictureBoxUpdate);
+                overlayPanel.Controls.Add(pictureBoxDelete);
 
                 // Ana paneli içerikleriyle birlikte ekleyin
                 Label label = new Label();
@@ -141,6 +163,55 @@ namespace LezzetKitabi.Forms.Controls
 
                 // Ana paneli panelItems'a ekleyin
                 panelItems.Controls.Add(mainPanel);
+            }
+        }
+
+
+        // Düzenleme ikonu tıklama olayı
+        /*private void EditIcon_Click(object sender, EventArgs e)
+        {
+            PictureBox picBox = sender as PictureBox;
+            Recipe recipe = picBox?.Tag as Recipe;
+            if (recipe != null)
+            {
+                // Düzenleme işlemini gerçekleştirin
+            }
+        }
+
+        // Güncelleme ikonu tıklama olayı
+        private void UpdateIcon_Click(object sender, EventArgs e)
+        {
+            PictureBox picBox = sender as PictureBox;
+            Recipe recipe = picBox?.Tag as Recipe;
+            if (recipe != null)
+            {
+                // Güncelleme işlemini gerçekleştirin
+            }
+        }*/
+        private async void DeleteIcon_Click(object sender, EventArgs e)
+        {
+            PictureBox deleteIcon = sender as PictureBox;
+
+            if (deleteIcon != null)
+            {
+                // PictureBox'ın Tag'inde hangi Recipe olduğunu al
+                Recipe recipeToDelete = deleteIcon.Tag as Recipe;
+
+                if (recipeToDelete != null)
+                {
+                    // Tarifi silme işlemi
+                    bool isDeleted = await Task.Run(() => _recipeService.DeleteRecipe(recipeToDelete.Id));
+
+                    if (isDeleted)
+                    {
+                        MessageBox.Show("Recipe deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        await RefreshPanelsAsync();  // Panel yenileme işlemini async yap
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete the Recipe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 
@@ -201,31 +272,6 @@ namespace LezzetKitabi.Forms.Controls
             }
         }
 
-        private async void DeleteButton_Click(object sender, EventArgs e)
-        {
-            Button deleteButton = sender as Button;
-
-            if (deleteButton != null)
-            {
-                // Delete butonunun Tag'inde hangi ingredient olduğunu al
-                Recipe recipeToDelete = deleteButton.Tag as Recipe;
-
-                if (recipeToDelete != null)
-                {
-                    bool isDeleted = await Task.Run(() => _recipeService.DeleteRecipe(recipeToDelete.Id));
-
-                    if (isDeleted)
-                    {
-                        MessageBox.Show("Recipe deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        await RefreshPanelsAsync();  // Panel yenileme işlemini async yap
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to delete the Recipe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-        }
 
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
