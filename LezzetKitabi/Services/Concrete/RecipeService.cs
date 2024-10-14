@@ -1,5 +1,6 @@
 ﻿using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Data.Repositories.Concrete;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
@@ -41,6 +42,27 @@ namespace LezzetKitabi.Services.Concrete
             bool isDeleted = _recipeRepository.DeleteAsync(id).Result;
 
             return isDeleted;
+        }
+
+        public async Task<RecipeGetDto?> GetRecipeByNameAsync(string name)
+        {
+            var recipe = await _recipeRepository.GetRecipeByNameAsync(name);
+
+            if (recipe == null)
+            {
+                return null;
+            }
+
+            RecipeGetDto recipeGetDto = new RecipeGetDto()
+            {
+                Id = recipe.Id,
+                RecipeName = recipe.RecipeName,
+                Category = recipe.Category,
+                Instructions = recipe.Instructions,
+                PreparationTime = recipe.PreparationTime,
+            };
+
+            return recipeGetDto;
         }
     }
 }

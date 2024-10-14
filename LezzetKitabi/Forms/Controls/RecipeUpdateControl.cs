@@ -13,7 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Dtos.CrossTableDtos;
 
 
@@ -53,7 +52,7 @@ namespace LezzetKitabi.Forms.Controls
                 if (float.TryParse(amountText, out float ingredientAmount))
                 {
                     // Malzeme adı ve birimi birleştir
-                    string displayText = $"* {ingredientName} {ingredientAmount} {unit}"; // "Malzeme Adı (Miktar Birimi)" şeklinde
+                    string displayText = $"- {ingredientName} {ingredientAmount} {unit}"; // "Malzeme Adı (Miktar Birimi)" şeklinde
 
                     // ListBox'a ekle
                     var listBoxItem = new ListBoxIngredient
@@ -64,6 +63,10 @@ namespace LezzetKitabi.Forms.Controls
                     };
 
                     listBoxIngredients.Items.Add(listBoxItem); // ListBox'a öğeyi ekle
+
+                    // Başarılı ekleme sonrası kutuları temizle
+                    textBoxAmount.Clear(); // Miktar kutusunu temizle
+                    comboBoxIngredients.SelectedItem = null; // ComboBox'taki seçimi sıfırla
                 }
                 else
                 {
@@ -75,6 +78,7 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Lütfen bir malzeme seçin.");
             }
         }
+
 
         private async void SetUpCombobox()
         {
@@ -122,6 +126,16 @@ namespace LezzetKitabi.Forms.Controls
         {
             var instructions = string.Join(Environment.NewLine, listBox1.Items.Cast<string>());
 
+            var recipeName = textBoxTitle.Text;
+
+            var existingRecipe = await _recipeService.GetRecipeByNameAsync(recipeName);
+
+            if (existingRecipe != null)
+            {
+                MessageBox.Show("Bu isimde bir tarif zaten mevcut. Lütfen farklı bir isim deneyin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var recipeAddDto = new RecipeAddDto
             {
                 RecipeName = textBoxTitle.Text,
@@ -155,13 +169,50 @@ namespace LezzetKitabi.Forms.Controls
                 recipeIngredients.Add(recipeIngredient);
             }
             await _recipeIngredientService.AddRangeAsync(recipeIngredients);
+
+            MessageBox.Show("Tarif başarıyla eklendi!", "Bilgilendirme", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Formdaki kutuları temizle
+            comboBoxIngredients.SelectedItem = null;
+            textBoxAmount.Clear();
+            textBoxTitle.Clear();
+            textBoxCategory.Clear();
+            textBox3.Clear();
+            listBox1.Items.Clear();
+            listBoxIngredients.Items.Clear();
+            numericUpDownHours.Value = 0;
+            numericUpDownMinutes.Value = 0;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             listBox1.Items.Add((listBox1.Items.Count + 1) + " - " + textBox3.Text); // Sadece metin olarak ekliyoruz
             textBox3.Clear();
-            MessageBox.Show("Yönerge Eklendi");
+            //MessageBox.Show("Yönerge Eklendi");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            /*if (listBoxIngredients.SelectedItem != null)
+            {
+                listBoxIngredients.Items.Remove(listBoxIngredients.SelectedItem);
+            }
+            else
+            {
+                MessageBox.Show("Lütfen silmek istediğiniz malzemeyi seçin.");
+            }*/
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            /*if (listBox1.SelectedItem != null)
+            {
+                listBox1.Items.Remove(listBox1.SelectedItem);
+            }
+            else
+            {
+                MessageBox.Show("Lütfen silmek istediğiniz yönergeyi seçin.");
+            }*/
         }
     }
 }

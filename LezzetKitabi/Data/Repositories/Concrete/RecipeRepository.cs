@@ -115,5 +115,20 @@ namespace LezzetKitabi.Data.Repositories.Concrete
         {
             throw new NotImplementedException();//burada ingredient list olarak olmalı mı??
         }
+
+        public async Task<Recipe> GetRecipeByNameAsync(string name)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = "SELECT * FROM Recipes WHERE RecipeName = @RecipeName";
+            var recipe = await connection.QueryFirstOrDefaultAsync<Recipe>(sql, new { RecipeName = name });
+
+            return recipe;
+        }
     }
 }

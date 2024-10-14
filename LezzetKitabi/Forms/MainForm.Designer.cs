@@ -16,6 +16,8 @@
         private void InitializeComponent()
         {
             panelMenu = new Panel();
+            button5 = new Button();
+            button4 = new Button();
             button3 = new Button();
             button2 = new Button();
             buttonIngredient = new Button();
@@ -24,8 +26,6 @@
             panelLogo = new Panel();
             button1 = new Button();
             panelForms = new Panel();
-            button4 = new Button();
-            button5 = new Button();
             panelMenu.SuspendLayout();
             panelLogo.SuspendLayout();
             SuspendLayout();
@@ -46,6 +46,35 @@
             panelMenu.Name = "panelMenu";
             panelMenu.Size = new Size(214, 756);
             panelMenu.TabIndex = 0;
+            // 
+            // button5
+            // 
+            button5.Dock = DockStyle.Top;
+            button5.FlatAppearance.BorderSize = 0;
+            button5.FlatStyle = FlatStyle.Flat;
+            button5.ForeColor = Color.White;
+            button5.Location = new Point(0, 530);
+            button5.Name = "button5";
+            button5.Size = new Size(214, 75);
+            button5.TabIndex = 6;
+            button5.Tag = "Ingredient";
+            button5.Text = "tarif güncelle";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
+            // button4
+            // 
+            button4.Dock = DockStyle.Top;
+            button4.FlatAppearance.BorderSize = 0;
+            button4.FlatStyle = FlatStyle.Flat;
+            button4.ForeColor = Color.White;
+            button4.Location = new Point(0, 455);
+            button4.Name = "button4";
+            button4.Size = new Size(214, 75);
+            button4.TabIndex = 5;
+            button4.Tag = "Ingredient";
+            button4.Text = "tarif sil";
+            button4.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
@@ -149,34 +178,6 @@
             panelForms.Name = "panelForms";
             panelForms.Size = new Size(1051, 756);
             panelForms.TabIndex = 1;
-            // 
-            // button4
-            // 
-            button4.Dock = DockStyle.Top;
-            button4.FlatAppearance.BorderSize = 0;
-            button4.FlatStyle = FlatStyle.Flat;
-            button4.ForeColor = Color.White;
-            button4.Location = new Point(0, 455);
-            button4.Name = "button4";
-            button4.Size = new Size(214, 75);
-            button4.TabIndex = 5;
-            button4.Tag = "Ingredient";
-            button4.Text = "tarif sil";
-            button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            button5.Dock = DockStyle.Top;
-            button5.FlatAppearance.BorderSize = 0;
-            button5.FlatStyle = FlatStyle.Flat;
-            button5.ForeColor = Color.White;
-            button5.Location = new Point(0, 530);
-            button5.Name = "button5";
-            button5.Size = new Size(214, 75);
-            button5.TabIndex = 6;
-            button5.Tag = "Ingredient";
-            button5.Text = "tarif güncelle";
-            button5.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using System.Data.SqlClient;
 using LezzetKitabi.Forms.Controls;
+using Dapper;
+using LezzetKitabi.Domain.Entities;
 
 namespace LezzetKitabi
 {
@@ -53,4 +55,7 @@ namespace LezzetKitabi
         }
     }
 }
-//eksikler var tam istediklerimi yapamadım, dışarıdan malzeme eklerken cross  table'da veri kaybı oluyor eklenen her malzemenin en az bir tarifle ilişkisi olması lazım, addEntity kaldırılmalı yerine sadece ingredient ve recipe ile ilgili özel add methodları eklenmeli, DTO'lar büyük sıkıntı eksik dtolar var -mert 
+// tarif eklenirken aynı isimli tarif eklenemiyor ( evet GetRecipeByName yeniden bizlerlee :D ), tarif eklendikten sonra textbox vs içleri temizleniyor, adam yanlışlıkla bir malzeme eklerse silemiyor -> silmek için bir buton ekledim, silme işlemini yapıyordu ancak 2 listbox olduğu için ikisini de select ediyor orada görüntü hoşuma gitmedi o yüzden şimdilik yorum satırına aldım, tasarımda da butonlar hala leş onlar değişecek bir de malzeme ekleme kısmında yeni malzeme ekle butonu olacak o buton senin daha önce yaptığın malzeme ekleme form'una yönlendirecek gibi dusundum ama oyle yapınca da hali hazırda yarım eklenmis olan tarif içeriği siliniyo (en iyisi böyle kalsın) 
+
+
+//BOŞ TARİF EKLENEBİLİYOR HİÇBİR AŞAMA ATLANMAMALI !

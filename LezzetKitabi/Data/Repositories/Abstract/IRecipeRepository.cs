@@ -11,5 +11,6 @@ namespace LezzetKitabi.Data.Repositories.Abstract
     public interface IRecipeRepository : IBaseRepository<Recipe>
     {
         Task<List<Recipe>> GetAllRecipesByOrderAsync(RecipeSortingType type);
+        Task<Recipe> GetRecipeByNameAsync(string name);
     }
 }

@@ -121,5 +121,11 @@ namespace LezzetKitabi.Forms
             if (page != "Mert") LoadForm(new RecipeUpdateControl(_serviceProvider));
             page = "Mert";
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (page != "asd") LoadForm(new TestAmacli());
+            page = "asd";
+        }
     }
 }

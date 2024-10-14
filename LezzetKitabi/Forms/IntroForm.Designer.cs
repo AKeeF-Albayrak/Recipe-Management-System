@@ -35,11 +35,10 @@
             // pictureBox1
             // 
             pictureBox1.Dock = DockStyle.Fill;
-            //pictureBox1.Image = Properties.Resources.output_onlinegiftools;
             pictureBox1.InitialImage = null;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(400, 400);
+            pictureBox1.Size = new Size(1099, 753);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -48,7 +47,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(400, 400);
+            ClientSize = new Size(1099, 753);
             Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "IntroForm";

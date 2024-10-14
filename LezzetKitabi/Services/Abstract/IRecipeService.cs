@@ -1,4 +1,5 @@
-﻿using LezzetKitabi.Domain.Dtos.RecipeDtos;
+﻿using LezzetKitabi.Domain.Dtos.IngredientDtos;
+using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
 using System;
@@ -14,6 +15,7 @@ namespace LezzetKitabi.Services.Abstract
         Guid AddRecipe(RecipeAddDto recipeAddDto);
         Task<List<Recipe>> GetAllRecipesAsync(RecipeSortingType _type);
         bool DeleteRecipe(Guid id);
+        Task<RecipeGetDto?> GetRecipeByNameAsync(string name);
 
         //Task<IEnumerable<RecipeDto>> GetAllRecipesAsync();
         //Task<RecipeDto> GetRecipeByIdAsync(int id);
