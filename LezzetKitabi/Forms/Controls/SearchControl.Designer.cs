@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ComboBox comboBoxSort;
             panelSearch = new Panel();
             button2 = new Button();
-            buttonFilter = new Button();
             textBox1 = new TextBox();
             panelElements = new Panel();
             panelPage = new Panel();
@@ -39,55 +37,43 @@
             panelDown = new Panel();
             panelPrevius = new Panel();
             panelSort = new Panel();
+            comboBoxSort = new ComboBox();
             panelFilter = new Panel();
-            button4 = new Button();
-            button3 = new Button();
-            button1 = new Button();
-            panel1 = new Panel();
+            panel6 = new Panel();
             label1 = new Label();
-            comboBox1 = new ComboBox();
+            panel5 = new Panel();
+            button4 = new Button();
+            textBox2 = new TextBox();
+            label5 = new Label();
+            textBox4 = new TextBox();
+            label2 = new Label();
+            panel4 = new Panel();
+            label3 = new Label();
+            button3 = new Button();
+            textBox3 = new TextBox();
             label6 = new Label();
             textBox5 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            label5 = new Label();
-            textBox2 = new TextBox();
-            label4 = new Label();
-            label3 = new Label();
-            label2 = new Label();
             panel2 = new Panel();
+            button1 = new Button();
+            comboBox1 = new ComboBox();
+            label4 = new Label();
             panel3 = new Panel();
-            panel4 = new Panel();
-            panel5 = new Panel();
-            panel6 = new Panel();
-            comboBoxSort = new ComboBox();
+            panel1 = new Panel();
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
             panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
-            panel2.SuspendLayout();
-            panel4.SuspendLayout();
-            panel5.SuspendLayout();
             panel6.SuspendLayout();
+            panel5.SuspendLayout();
+            panel4.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
-            // 
-            // comboBoxSort
-            // 
-            comboBoxSort.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxSort.FormattingEnabled = true;
-            comboBoxSort.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza" });
-            comboBoxSort.Location = new Point(353, 3);
-            comboBoxSort.Name = "comboBoxSort";
-            comboBoxSort.Size = new Size(168, 23);
-            comboBoxSort.TabIndex = 0;
-            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
             // 
             // panelSearch
             // 
             panelSearch.BackColor = Color.Transparent;
             panelSearch.Controls.Add(button2);
-            panelSearch.Controls.Add(buttonFilter);
             panelSearch.Controls.Add(textBox1);
             panelSearch.Dock = DockStyle.Top;
             panelSearch.Location = new Point(0, 0);
@@ -103,16 +89,6 @@
             button2.TabIndex = 2;
             button2.Text = "Arama";
             button2.UseVisualStyleBackColor = true;
-            // 
-            // buttonFilter
-            // 
-            buttonFilter.Location = new Point(980, 22);
-            buttonFilter.Name = "buttonFilter";
-            buttonFilter.Size = new Size(68, 23);
-            buttonFilter.TabIndex = 1;
-            buttonFilter.Text = "Filtreleme";
-            buttonFilter.UseVisualStyleBackColor = true;
-            buttonFilter.Click += buttonFilter_Click;
             // 
             // textBox1
             // 
@@ -178,6 +154,16 @@
             panelSort.Size = new Size(1126, 40);
             panelSort.TabIndex = 1;
             // 
+            // comboBoxSort
+            // 
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza" });
+            comboBoxSort.Location = new Point(397, 11);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(192, 23);
+            comboBoxSort.TabIndex = 0;
+            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
+            // 
             // panelFilter
             // 
             panelFilter.BackgroundImageLayout = ImageLayout.None;
@@ -193,40 +179,14 @@
             panelFilter.Size = new Size(198, 731);
             panelFilter.TabIndex = 4;
             // 
-            // button4
+            // panel6
             // 
-            button4.Location = new Point(12, 86);
-            button4.Name = "button4";
-            button4.Size = new Size(166, 23);
-            button4.TabIndex = 14;
-            button4.Text = "button4";
-            button4.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(9, 89);
-            button3.Name = "button3";
-            button3.Size = new Size(166, 23);
-            button3.TabIndex = 13;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(12, 85);
-            button1.Name = "button1";
-            button1.Size = new Size(166, 23);
-            button1.TabIndex = 12;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 510);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(198, 221);
-            panel1.TabIndex = 11;
+            panel6.Controls.Add(label1);
+            panel6.Dock = DockStyle.Fill;
+            panel6.Location = new Point(0, 0);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(198, 71);
+            panel6.TabIndex = 18;
             // 
             // label1
             // 
@@ -238,13 +198,99 @@
             label1.TabIndex = 0;
             label1.Text = "Filtreler";
             // 
-            // comboBox1
+            // panel5
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(12, 47);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(121, 23);
-            comboBox1.TabIndex = 10;
+            panel5.Controls.Add(button4);
+            panel5.Controls.Add(textBox2);
+            panel5.Controls.Add(label5);
+            panel5.Controls.Add(textBox4);
+            panel5.Controls.Add(label2);
+            panel5.Dock = DockStyle.Bottom;
+            panel5.Location = new Point(0, 71);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(198, 121);
+            panel5.TabIndex = 0;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(12, 86);
+            button4.Name = "button4";
+            button4.Size = new Size(166, 23);
+            button4.TabIndex = 14;
+            button4.Text = "button4";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(12, 47);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(66, 23);
+            textBox2.TabIndex = 3;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(84, 50);
+            label5.Name = "label5";
+            label5.Size = new Size(22, 15);
+            label5.TabIndex = 5;
+            label5.Text = "---";
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(112, 47);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(66, 23);
+            textBox4.TabIndex = 6;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            label2.Location = new Point(12, 19);
+            label2.Name = "label2";
+            label2.Size = new Size(109, 25);
+            label2.TabIndex = 0;
+            label2.Text = "Birim Fiyati:";
+            // 
+            // panel4
+            // 
+            panel4.Controls.Add(label3);
+            panel4.Controls.Add(button3);
+            panel4.Controls.Add(textBox3);
+            panel4.Controls.Add(label6);
+            panel4.Controls.Add(textBox5);
+            panel4.Dock = DockStyle.Bottom;
+            panel4.Location = new Point(0, 192);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(198, 133);
+            panel4.TabIndex = 17;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            label3.Location = new Point(9, 11);
+            label3.Name = "label3";
+            label3.Size = new Size(51, 25);
+            label3.TabIndex = 1;
+            label3.Text = "Stok:";
+            // 
+            // button3
+            // 
+            button3.Location = new Point(9, 89);
+            button3.Name = "button3";
+            button3.Size = new Size(166, 23);
+            button3.TabIndex = 13;
+            button3.Text = "button3";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(9, 49);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(66, 23);
+            textBox3.TabIndex = 7;
             // 
             // label6
             // 
@@ -262,66 +308,6 @@
             textBox5.Size = new Size(66, 23);
             textBox5.TabIndex = 8;
             // 
-            // textBox3
-            // 
-            textBox3.Location = new Point(9, 49);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(66, 23);
-            textBox3.TabIndex = 7;
-            // 
-            // textBox4
-            // 
-            textBox4.Location = new Point(112, 47);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(66, 23);
-            textBox4.TabIndex = 6;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(84, 50);
-            label5.Name = "label5";
-            label5.Size = new Size(22, 15);
-            label5.TabIndex = 5;
-            label5.Text = "---";
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(12, 47);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(66, 23);
-            textBox2.TabIndex = 3;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label4.Location = new Point(12, 10);
-            label4.Name = "label4";
-            label4.Size = new Size(60, 25);
-            label4.TabIndex = 2;
-            label4.Text = "Birim:";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label3.Location = new Point(9, 11);
-            label3.Name = "label3";
-            label3.Size = new Size(51, 25);
-            label3.TabIndex = 1;
-            label3.Text = "Stok:";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label2.Location = new Point(12, 19);
-            label2.Name = "label2";
-            label2.Size = new Size(109, 25);
-            label2.TabIndex = 0;
-            label2.Text = "Birim Fiyati:";
-            // 
             // panel2
             // 
             panel2.Controls.Add(button1);
@@ -333,6 +319,33 @@
             panel2.Size = new Size(198, 125);
             panel2.TabIndex = 15;
             // 
+            // button1
+            // 
+            button1.Location = new Point(12, 85);
+            button1.Name = "button1";
+            button1.Size = new Size(166, 23);
+            button1.TabIndex = 12;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(12, 47);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(121, 23);
+            comboBox1.TabIndex = 10;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            label4.Location = new Point(12, 10);
+            label4.Name = "label4";
+            label4.Size = new Size(60, 25);
+            label4.TabIndex = 2;
+            label4.Text = "Birim:";
+            // 
             // panel3
             // 
             panel3.Dock = DockStyle.Bottom;
@@ -341,40 +354,13 @@
             panel3.Size = new Size(198, 60);
             panel3.TabIndex = 16;
             // 
-            // panel4
+            // panel1
             // 
-            panel4.Controls.Add(label3);
-            panel4.Controls.Add(button3);
-            panel4.Controls.Add(textBox3);
-            panel4.Controls.Add(label6);
-            panel4.Controls.Add(textBox5);
-            panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(0, 192);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(198, 133);
-            panel4.TabIndex = 17;
-            // 
-            // panel5
-            // 
-            panel5.Controls.Add(button4);
-            panel5.Controls.Add(textBox2);
-            panel5.Controls.Add(label5);
-            panel5.Controls.Add(textBox4);
-            panel5.Controls.Add(label2);
-            panel5.Dock = DockStyle.Bottom;
-            panel5.Location = new Point(0, 71);
-            panel5.Name = "panel5";
-            panel5.Size = new Size(198, 121);
-            panel5.TabIndex = 0;
-            // 
-            // panel6
-            // 
-            panel6.Controls.Add(label1);
-            panel6.Dock = DockStyle.Fill;
-            panel6.Location = new Point(0, 0);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(198, 71);
-            panel6.TabIndex = 18;
+            panel1.Dock = DockStyle.Bottom;
+            panel1.Location = new Point(0, 510);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(198, 221);
+            panel1.TabIndex = 11;
             // 
             // SearchControl
             // 
@@ -392,14 +378,14 @@
             panelPage.ResumeLayout(false);
             panelSort.ResumeLayout(false);
             panelFilter.ResumeLayout(false);
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
-            panel4.ResumeLayout(false);
-            panel4.PerformLayout();
-            panel5.ResumeLayout(false);
-            panel5.PerformLayout();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
+            panel5.ResumeLayout(false);
+            panel5.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -407,10 +393,8 @@
 
         private Panel panelSearch;
         private Button button2;
-        private Button buttonFilter;
         private TextBox textBox1;
         private Panel panelElements;
-        private ComboBox comboBoxSort;
         private Panel panelPage;
         private Panel panelPrevius;
         private Panel panelSort;
@@ -437,5 +421,6 @@
         private Panel panel3;
         private Panel panel6;
         private Panel panel5;
+        private ComboBox comboBoxSort;
     }
 }
