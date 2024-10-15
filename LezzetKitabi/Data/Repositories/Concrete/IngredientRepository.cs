@@ -42,7 +42,14 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return true;
         }
-        public async Task<List<Ingredient>> GetAllIngredientsByOrderAsync(IngredientSortingType _sortingtype)
+        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(
+            IngredientSortingType _sortingtype,
+            string name = null,  // Name parametresi geri eklendi, boş olabilmesi için null
+            decimal? minPrice = null,
+            decimal? maxPrice = null,
+            int? minStock = null,
+            int? maxStock = null,
+            string unit = null)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -50,35 +57,69 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             {
                 await connection.OpenAsync();  // Asenkron açma işlemi
             }
-            string sql = string.Empty;
 
+            // SQL başlangıç noktası
+            string sql = "SELECT * FROM Ingredients WHERE 1=1";  // Dinamik koşul eklemek için başlangıç.
+
+            // Filtreleme işlemleri
+            if (!string.IsNullOrEmpty(name))  // Name filtresi
+            {
+                sql += " AND IngredientName LIKE @Name"; // LIKE ile filtreleme
+            }
+            if (minPrice.HasValue)  // Minimum fiyat filtresi
+            {
+                sql += " AND UnitPrice >= @MinPrice";
+            }
+            if (maxPrice.HasValue)  // Maksimum fiyat filtresi
+            {
+                sql += " AND UnitPrice <= @MaxPrice";
+            }
+            if (minStock.HasValue)  // Minimum stok filtresi
+            {
+                sql += " AND Stock >= @MinStock";
+            }
+            if (maxStock.HasValue)  // Maksimum stok filtresi
+            {
+                sql += " AND Stock <= @MaxStock";
+            }
+            if (!string.IsNullOrEmpty(unit))  // Birim filtresi
+            {
+                sql += " AND Unit = @Unit";
+            }
+
+            // Sıralama işlemleri
             switch (_sortingtype)
             {
                 case IngredientSortingType.A_from_Z:
-                    sql = "SELECT * FROM Ingredients ORDER BY IngredientName ASC;";
+                    sql += " ORDER BY IngredientName ASC";
                     break;
                 case IngredientSortingType.Z_from_A:
-                    sql = "SELECT * FROM Ingredients ORDER BY IngredientName DESC;";
+                    sql += " ORDER BY IngredientName DESC";
                     break;
                 case IngredientSortingType.Expensive_to_Cheapest:
-                    sql = "SELECT * FROM Ingredients ORDER BY UnitPrice DESC;";
+                    sql += " ORDER BY UnitPrice DESC";
                     break;
                 case IngredientSortingType.Cheapest_to_Expensive:
-                    sql = "SELECT * FROM Ingredients ORDER BY UnitPrice ASC;";
+                    sql += " ORDER BY UnitPrice ASC";
                     break;
-                /*case IngredientSortingType.AscendingStock:
-                    sql = "SELECT * FROM Ingredients ORDER BY ASC;";
-                    break;
-                case IngredientSortingType.DescendingStock:
-                    sql = "SELECT * FROM Ingredients ORDER BY UnitPrice ASC;";
-                    break;*/
                 default:
-                    sql = "SELECT * FROM Ingredients;"; 
+                    sql += " ORDER BY IngredientName ASC";
                     break;
             }
 
+            // Parametrelerin atanması
+            var parameters = new
+            {
+                Name = $"%{name}%",  // LIKE ile arama için "%" eklenir
+                MinPrice = minPrice,
+                MaxPrice = maxPrice,
+                MinStock = minStock,
+                MaxStock = maxStock,
+                Unit = unit
+            };
+
             // Asenkron sorgu ve listeye dönüştürme
-            List<Ingredient> ingredients = (await connection.QueryAsync<Ingredient>(sql)).ToList();
+            List<Ingredient> ingredients = (await connection.QueryAsync<Ingredient>(sql, parameters)).ToList();
 
             return ingredients;
         }

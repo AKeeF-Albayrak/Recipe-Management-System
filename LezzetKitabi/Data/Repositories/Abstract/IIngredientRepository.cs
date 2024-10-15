@@ -10,6 +10,13 @@ namespace LezzetKitabi.Data.Repositories.Abstract
 {
     public interface IIngredientRepository : IBaseRepository<Ingredient>
     {
-        Task<List<Ingredient>> GetAllIngredientsByOrderAsync(IngredientSortingType type);
+        Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(
+        IngredientSortingType sortingType,
+        string name = null,
+        decimal? minPrice = null,
+        decimal? maxPrice = null,
+        int? minStock = null,
+        int? maxStock = null,
+        string unit = null);
     }
 }

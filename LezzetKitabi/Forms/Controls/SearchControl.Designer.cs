@@ -30,7 +30,7 @@
         {
             panelSearch = new Panel();
             button2 = new Button();
-            textBox1 = new TextBox();
+            textBoxSearch = new TextBox();
             panelElements = new Panel();
             panelPage = new Panel();
             panelItems = new Panel();
@@ -42,23 +42,24 @@
             panel6 = new Panel();
             label1 = new Label();
             panel5 = new Panel();
-            button4 = new Button();
-            textBox2 = new TextBox();
+            buttonPriceRangeAdd = new Button();
+            textBoxMinPrice = new TextBox();
             label5 = new Label();
-            textBox4 = new TextBox();
+            textBoxMaxPrice = new TextBox();
             label2 = new Label();
             panel4 = new Panel();
             label3 = new Label();
-            button3 = new Button();
-            textBox3 = new TextBox();
+            buttonStockRangeAdd = new Button();
+            textBoxMinStock = new TextBox();
             label6 = new Label();
-            textBox5 = new TextBox();
+            textBoxMaxStock = new TextBox();
             panel2 = new Panel();
-            button1 = new Button();
-            comboBox1 = new ComboBox();
+            buttonUnitAdd = new Button();
+            comboBoxUnit = new ComboBox();
             label4 = new Label();
-            panel3 = new Panel();
-            panel1 = new Panel();
+            panelCurrentFilters = new Panel();
+            panel9 = new Panel();
+            button1 = new Button();
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
@@ -68,13 +69,14 @@
             panel5.SuspendLayout();
             panel4.SuspendLayout();
             panel2.SuspendLayout();
+            panel9.SuspendLayout();
             SuspendLayout();
             // 
             // panelSearch
             // 
             panelSearch.BackColor = Color.Transparent;
             panelSearch.Controls.Add(button2);
-            panelSearch.Controls.Add(textBox1);
+            panelSearch.Controls.Add(textBoxSearch);
             panelSearch.Dock = DockStyle.Top;
             panelSearch.Location = new Point(0, 0);
             panelSearch.Name = "panelSearch";
@@ -89,15 +91,16 @@
             button2.TabIndex = 2;
             button2.Text = "Arama";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += buttonSearch_Click;
             // 
-            // textBox1
+            // textBoxSearch
             // 
-            textBox1.BackColor = SystemColors.ControlDarkDark;
-            textBox1.Location = new Point(251, 22);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(445, 23);
-            textBox1.TabIndex = 0;
-            textBox1.Text = "Arama Yeri";
+            textBoxSearch.BackColor = SystemColors.ControlDarkDark;
+            textBoxSearch.Location = new Point(251, 22);
+            textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.Size = new Size(445, 23);
+            textBoxSearch.TabIndex = 0;
+            textBoxSearch.Text = "Arama Yeri";
             // 
             // panelElements
             // 
@@ -171,8 +174,8 @@
             panelFilter.Controls.Add(panel5);
             panelFilter.Controls.Add(panel4);
             panelFilter.Controls.Add(panel2);
-            panelFilter.Controls.Add(panel3);
-            panelFilter.Controls.Add(panel1);
+            panelFilter.Controls.Add(panelCurrentFilters);
+            panelFilter.Controls.Add(panel9);
             panelFilter.Dock = DockStyle.Left;
             panelFilter.Location = new Point(1127, 65);
             panelFilter.Name = "panelFilter";
@@ -185,7 +188,7 @@
             panel6.Dock = DockStyle.Fill;
             panel6.Location = new Point(0, 0);
             panel6.Name = "panel6";
-            panel6.Size = new Size(198, 71);
+            panel6.Size = new Size(198, 65);
             panel6.TabIndex = 18;
             // 
             // label1
@@ -200,48 +203,53 @@
             // 
             // panel5
             // 
-            panel5.Controls.Add(button4);
-            panel5.Controls.Add(textBox2);
+            panel5.Controls.Add(buttonPriceRangeAdd);
+            panel5.Controls.Add(textBoxMinPrice);
             panel5.Controls.Add(label5);
-            panel5.Controls.Add(textBox4);
+            panel5.Controls.Add(textBoxMaxPrice);
             panel5.Controls.Add(label2);
             panel5.Dock = DockStyle.Bottom;
-            panel5.Location = new Point(0, 71);
+            panel5.Location = new Point(0, 65);
             panel5.Name = "panel5";
             panel5.Size = new Size(198, 121);
             panel5.TabIndex = 0;
             // 
-            // button4
+            // buttonPriceRangeAdd
             // 
-            button4.Location = new Point(12, 86);
-            button4.Name = "button4";
-            button4.Size = new Size(166, 23);
-            button4.TabIndex = 14;
-            button4.Text = "button4";
-            button4.UseVisualStyleBackColor = true;
+            buttonPriceRangeAdd.Location = new Point(12, 86);
+            buttonPriceRangeAdd.Name = "buttonPriceRangeAdd";
+            buttonPriceRangeAdd.Size = new Size(166, 23);
+            buttonPriceRangeAdd.TabIndex = 14;
+            buttonPriceRangeAdd.Text = "Ekle";
+            buttonPriceRangeAdd.UseVisualStyleBackColor = true;
+            buttonPriceRangeAdd.Click += buttonPriceRangeAdd_Click;
             // 
-            // textBox2
+            // textBoxMinPrice
             // 
-            textBox2.Location = new Point(12, 47);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(66, 23);
-            textBox2.TabIndex = 3;
+            textBoxMinPrice.BorderStyle = BorderStyle.None;
+            textBoxMinPrice.Location = new Point(12, 54);
+            textBoxMinPrice.Name = "textBoxMinPrice";
+            textBoxMinPrice.PlaceholderText = "Min Price";
+            textBoxMinPrice.Size = new Size(66, 16);
+            textBoxMinPrice.TabIndex = 3;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(84, 50);
+            label5.Location = new Point(81, 55);
             label5.Name = "label5";
             label5.Size = new Size(22, 15);
             label5.TabIndex = 5;
             label5.Text = "---";
             // 
-            // textBox4
+            // textBoxMaxPrice
             // 
-            textBox4.Location = new Point(112, 47);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(66, 23);
-            textBox4.TabIndex = 6;
+            textBoxMaxPrice.BorderStyle = BorderStyle.None;
+            textBoxMaxPrice.Location = new Point(112, 54);
+            textBoxMaxPrice.Name = "textBoxMaxPrice";
+            textBoxMaxPrice.PlaceholderText = "Max Price";
+            textBoxMaxPrice.Size = new Size(66, 16);
+            textBoxMaxPrice.TabIndex = 6;
             // 
             // label2
             // 
@@ -256,12 +264,12 @@
             // panel4
             // 
             panel4.Controls.Add(label3);
-            panel4.Controls.Add(button3);
-            panel4.Controls.Add(textBox3);
+            panel4.Controls.Add(buttonStockRangeAdd);
+            panel4.Controls.Add(textBoxMinStock);
             panel4.Controls.Add(label6);
-            panel4.Controls.Add(textBox5);
+            panel4.Controls.Add(textBoxMaxStock);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(0, 192);
+            panel4.Location = new Point(0, 186);
             panel4.Name = "panel4";
             panel4.Size = new Size(198, 133);
             panel4.TabIndex = 17;
@@ -276,21 +284,24 @@
             label3.TabIndex = 1;
             label3.Text = "Stok:";
             // 
-            // button3
+            // buttonStockRangeAdd
             // 
-            button3.Location = new Point(9, 89);
-            button3.Name = "button3";
-            button3.Size = new Size(166, 23);
-            button3.TabIndex = 13;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            buttonStockRangeAdd.Location = new Point(9, 89);
+            buttonStockRangeAdd.Name = "buttonStockRangeAdd";
+            buttonStockRangeAdd.Size = new Size(166, 23);
+            buttonStockRangeAdd.TabIndex = 13;
+            buttonStockRangeAdd.Text = "Ekle";
+            buttonStockRangeAdd.UseVisualStyleBackColor = true;
+            buttonStockRangeAdd.Click += buttonStockRangeAdd_Click;
             // 
-            // textBox3
+            // textBoxMinStock
             // 
-            textBox3.Location = new Point(9, 49);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(66, 23);
-            textBox3.TabIndex = 7;
+            textBoxMinStock.BorderStyle = BorderStyle.None;
+            textBoxMinStock.Location = new Point(9, 49);
+            textBoxMinStock.Name = "textBoxMinStock";
+            textBoxMinStock.PlaceholderText = "Min Stock";
+            textBoxMinStock.Size = new Size(66, 16);
+            textBoxMinStock.TabIndex = 7;
             // 
             // label6
             // 
@@ -301,40 +312,43 @@
             label6.TabIndex = 9;
             label6.Text = "---";
             // 
-            // textBox5
+            // textBoxMaxStock
             // 
-            textBox5.Location = new Point(109, 49);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(66, 23);
-            textBox5.TabIndex = 8;
+            textBoxMaxStock.BorderStyle = BorderStyle.None;
+            textBoxMaxStock.Location = new Point(109, 49);
+            textBoxMaxStock.Name = "textBoxMaxStock";
+            textBoxMaxStock.PlaceholderText = "Max Stock";
+            textBoxMaxStock.Size = new Size(66, 16);
+            textBoxMaxStock.TabIndex = 8;
             // 
             // panel2
             // 
-            panel2.Controls.Add(button1);
-            panel2.Controls.Add(comboBox1);
+            panel2.Controls.Add(buttonUnitAdd);
+            panel2.Controls.Add(comboBoxUnit);
             panel2.Controls.Add(label4);
             panel2.Dock = DockStyle.Bottom;
-            panel2.Location = new Point(0, 325);
+            panel2.Location = new Point(0, 319);
             panel2.Name = "panel2";
             panel2.Size = new Size(198, 125);
             panel2.TabIndex = 15;
             // 
-            // button1
+            // buttonUnitAdd
             // 
-            button1.Location = new Point(12, 85);
-            button1.Name = "button1";
-            button1.Size = new Size(166, 23);
-            button1.TabIndex = 12;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            buttonUnitAdd.Location = new Point(12, 85);
+            buttonUnitAdd.Name = "buttonUnitAdd";
+            buttonUnitAdd.Size = new Size(166, 23);
+            buttonUnitAdd.TabIndex = 12;
+            buttonUnitAdd.Text = "Ekle";
+            buttonUnitAdd.UseVisualStyleBackColor = true;
+            buttonUnitAdd.Click += buttonUnitAdd_Click;
             // 
-            // comboBox1
+            // comboBoxUnit
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(12, 47);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(121, 23);
-            comboBox1.TabIndex = 10;
+            comboBoxUnit.FormattingEnabled = true;
+            comboBoxUnit.Location = new Point(12, 47);
+            comboBoxUnit.Name = "comboBoxUnit";
+            comboBoxUnit.Size = new Size(121, 23);
+            comboBoxUnit.TabIndex = 10;
             // 
             // label4
             // 
@@ -346,21 +360,32 @@
             label4.TabIndex = 2;
             label4.Text = "Birim:";
             // 
-            // panel3
+            // panelCurrentFilters
             // 
-            panel3.Dock = DockStyle.Bottom;
-            panel3.Location = new Point(0, 450);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(198, 60);
-            panel3.TabIndex = 16;
+            panelCurrentFilters.Dock = DockStyle.Bottom;
+            panelCurrentFilters.Location = new Point(0, 444);
+            panelCurrentFilters.Name = "panelCurrentFilters";
+            panelCurrentFilters.Size = new Size(198, 209);
+            panelCurrentFilters.TabIndex = 16;
             // 
-            // panel1
+            // panel9
             // 
-            panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 510);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(198, 221);
-            panel1.TabIndex = 11;
+            panel9.Controls.Add(button1);
+            panel9.Dock = DockStyle.Bottom;
+            panel9.Location = new Point(0, 653);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(198, 78);
+            panel9.TabIndex = 11;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(50, 26);
+            button1.Name = "button1";
+            button1.Size = new Size(104, 23);
+            button1.TabIndex = 0;
+            button1.Text = "Filtrele";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += buttonFilters_Click;
             // 
             // SearchControl
             // 
@@ -386,6 +411,7 @@
             panel4.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            panel9.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -393,7 +419,7 @@
 
         private Panel panelSearch;
         private Button button2;
-        private TextBox textBox1;
+        private TextBox textBoxSearch;
         private Panel panelElements;
         private Panel panelPage;
         private Panel panelPrevius;
@@ -403,24 +429,25 @@
         private Panel panelFilter;
         private Label label2;
         private Label label1;
-        private TextBox textBox4;
+        private TextBox textBoxMaxPrice;
         private Label label5;
-        private TextBox textBox2;
+        private TextBox textBoxMinPrice;
         private Label label4;
         private Label label3;
-        private Button button4;
-        private Button button3;
-        private Button button1;
-        private Panel panel1;
-        private ComboBox comboBox1;
+        private Button buttonPriceRangeAdd;
+        private Button buttonStockRangeAdd;
+        private Button buttonUnitAdd;
+        private Panel panel9;
+        private ComboBox comboBoxUnit;
         private Label label6;
-        private TextBox textBox5;
-        private TextBox textBox3;
+        private TextBox textBoxMaxStock;
+        private TextBox textBoxMinStock;
         private Panel panel4;
         private Panel panel2;
-        private Panel panel3;
+        private Panel panelCurrentFilters;
         private Panel panel6;
         private Panel panel5;
         private ComboBox comboBoxSort;
+        private Button button1;
     }
 }

@@ -82,7 +82,7 @@ namespace LezzetKitabi.Forms.Controls
 
         private async void SetUpCombobox()
         {
-            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsAsync(IngredientSortingType.A_from_Z);
+            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
 
             comboBoxIngredients.Items.Clear();
 
