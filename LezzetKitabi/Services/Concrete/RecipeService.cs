@@ -33,9 +33,21 @@ namespace LezzetKitabi.Services.Concrete
             _recipeRepository.AddEntity(recipe);
             return recipe.Id;
         }
-        public async Task<List<Recipe>> GetAllRecipesAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList)
+        public async Task<List<RecipeViewGetDto>> GetAllRecipesAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList)
         {
-            return await _recipeRepository.GetAllRecipesByOrderAsync(_type, filterCriteriaList);
+            // Tüm tarifleri al
+            var recipes = await _recipeRepository.GetAllRecipesByOrderAsync(_type, filterCriteriaList);
+
+            // Yüzde değeri %100'den fazla olan tarifleri kontrol et ve eşitle
+            foreach (var recipe in recipes)
+            {
+                if (recipe.AvailabilityPercentage > 100)
+                {
+                    recipe.AvailabilityPercentage = 100;  // %100'den fazla olanları %100'e eşitle
+                }
+            }
+
+            return recipes;
         }
         public bool DeleteRecipe(Guid id)
         {

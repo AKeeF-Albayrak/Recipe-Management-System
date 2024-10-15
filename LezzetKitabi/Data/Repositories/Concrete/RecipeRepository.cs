@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Contracts;
+using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
 using Microsoft.Data.SqlClient;
@@ -56,7 +57,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return rowsAffected > 0;
         }
-        public async Task<List<Recipe>> GetAllRecipesByOrderAsync(RecipeSortingType sortingType, List<FilterCriteria> filterCriteriaList)
+        public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType sortingType, List<FilterCriteria> filterCriteriaList)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -65,10 +66,14 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.OpenAsync();
             }
 
-            string sql = "SELECT r.Id, r.RecipeName, SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost " +
-                         "FROM Recipes r " +
-                         "LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID " +
-                         "LEFT JOIN Ingredients i ON ri.IngredientID = i.Id ";
+            string sql = @"SELECT r.Id, r.RecipeName, 
+                          SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
+                          (CASE WHEN SUM(ri.IngredientAmount) > 0 THEN 
+                              SUM(CASE WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity != '0' THEN ri.IngredientAmount / CAST(i.TotalQuantity AS FLOAT) * 100 ELSE 0 END) / COUNT(ri.IngredientID)
+                           ELSE 0 END) AS AvailabilityPercentage
+                   FROM Recipes r 
+                   LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
+                   LEFT JOIN Ingredients i ON ri.IngredientID = i.Id ";
 
             // Filtreleme işlemleri
             List<string> filters = new List<string>();
@@ -163,9 +168,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     break;
             }
 
-            List<Recipe> recipes = (await connection.QueryAsync<Recipe>(sql)).ToList();
+            // DTO'ya veri çekme
+            var recipes = await connection.QueryAsync<RecipeViewGetDto>(sql);
 
-            return recipes;
+            return recipes.ToList();
         }
         public async Task<Recipe> GetEntityById(Guid id)
         {

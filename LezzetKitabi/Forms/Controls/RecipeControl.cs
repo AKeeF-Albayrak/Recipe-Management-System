@@ -1,4 +1,5 @@
 ﻿using LezzetKitabi.Application.Services;
+using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
@@ -62,7 +63,7 @@ namespace LezzetKitabi.Forms.Controls
             int cornerRadius = 20;  // Yuvarlak köşe yarıçapı
 
             // Tüm malzemeleri al
-            List<Recipe> recipes = await _recipeService.GetAllRecipesAsync(_sortingType, filterCriteriaList);
+            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesAsync(_sortingType, filterCriteriaList);
 
             if (recipes == null || recipes.Count == 0)
             {
@@ -138,8 +139,7 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxDetail.Location = new Point((panelWidth - pictureBoxDetail.Width) / 2, 20);  // İlk PictureBox için pozisyon
                 pictureBoxDetail.Image = Properties.Resources.icons8_search_more_64;  // Detail ikonu
                 pictureBoxDetail.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
-                pictureBoxDetail.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
-                //pictureBoxEdit.Click += (s, e) => DeRecipe(recipes[i]);  // Tıklama olayını tanımla
+                                                                              //pictureBoxEdit.Click += (s, e) => DeRecipe(recipes[i]);  // Tıklama olayını tanımla
 
                 // Güncelleme butonu
                 PictureBox pictureBoxUpdate = new PictureBox();
@@ -148,7 +148,7 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxUpdate.Image = Properties.Resources.icons8_edit_64__1_;  // Güncelleme ikonu
                 pictureBoxUpdate.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
                 pictureBoxUpdate.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
-                //pictureBoxUpdate.Click += (s, e) => UpdateRecipe(recipes[i]);  // Tıklama olayını tanımla
+                                                         //pictureBoxUpdate.Click += (s, e) => UpdateRecipe(recipes[i]);  // Tıklama olayını tanımla
 
                 // Silme butonu
                 PictureBox pictureBoxDelete = new PictureBox();
@@ -157,8 +157,8 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxDelete.Image = Properties.Resources.icons8_delete_64__1_;  // Silme ikonu
                 pictureBoxDelete.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
                 pictureBoxDelete.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
-                //pictureBoxDelete.Click += DeleteButton_Click;  // Tıklama olayını tanımla
-                //pictureBoxDelete.Tag = recipes[i];  // Tag olarak tarifi ekleyin
+                                                         //pictureBoxDelete.Click += DeleteButton_Click;  // Tıklama olayını tanımla
+                                                         //pictureBoxDelete.Tag = recipes[i];  // Tag olarak tarifi ekleyin
 
                 // Overlay paneline butonları ekleyin
                 overlayPanel.Controls.Add(pictureBoxDetail);
@@ -171,7 +171,20 @@ namespace LezzetKitabi.Forms.Controls
                 label.Text = recipes[i].RecipeName; // Dinamik malzeme adı
                 label.Location = new Point((panelWidth - label.Width) / 2, 12);  // Ortalayın
 
+                // Yeni Label'lar için oluşturma
+                Label percentageLabel = new Label();
+                percentageLabel.AutoSize = true;
+                percentageLabel.Text = "Yüzde: "+ (recipes[i].AvailabilityPercentage).ToString("0.##") + "%"; // Yüzde değeri
+                percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2, 40); // Ortalayın
+
+                Label costLabel = new Label();
+                costLabel.AutoSize = true;
+                costLabel.Text = "Maliyet: " + recipes[i].TotalCost.ToString("C"); // Maliyet bilgisi
+                costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 60); // Ortalayın
+
                 mainPanel.Controls.Add(label);
+                mainPanel.Controls.Add(percentageLabel); // Yüzde label'ını ekleyin
+                mainPanel.Controls.Add(costLabel); // Maliyet label'ını ekleyin
                 mainPanel.Controls.Add(overlayPanel);
 
                 // Ana paneli panelItems'a ekleyin
