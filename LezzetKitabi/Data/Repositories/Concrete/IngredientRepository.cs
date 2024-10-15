@@ -42,53 +42,82 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return true;
         }
-        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(
-            IngredientSortingType _sortingtype,
-            string name = null,  // Name parametresi geri eklendi, boş olabilmesi için null
-            decimal? minPrice = null,
-            decimal? maxPrice = null,
-            int? minStock = null,
-            int? maxStock = null,
-            string unit = null)
+        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType,List<FilterCriteria> filterCriteriaList = null)  // Default value set to null
         {
             using var connection = new SqlConnection(_connectionString);
 
             if (connection.State == System.Data.ConnectionState.Closed)
             {
-                await connection.OpenAsync();  // Asenkron açma işlemi
+                await connection.OpenAsync();
             }
 
             // SQL başlangıç noktası
             string sql = "SELECT * FROM Ingredients WHERE 1=1";  // Dinamik koşul eklemek için başlangıç.
 
             // Filtreleme işlemleri
-            if (!string.IsNullOrEmpty(name))  // Name filtresi
+            var parameters = new DynamicParameters(); // Dapper için dinamik parametreler
+
+            // Eğer filterCriteriaList null ise, boş bir liste oluştur
+            filterCriteriaList ??= new List<FilterCriteria>();
+
+            // Name filtresi
+            var nameFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Adi");
+            if (nameFilter != null)
             {
-                sql += " AND IngredientName LIKE @Name"; // LIKE ile filtreleme
+                sql += " AND IngredientName LIKE @Name";
+                parameters.Add("Name", $"%{nameFilter.Value}%"); // LIKE ile arama için "%" eklenir
             }
-            if (minPrice.HasValue)  // Minimum fiyat filtresi
+
+            // Fiyat aralığı filtresi
+            var priceFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Fiyat");
+            if (priceFilter != null)
             {
-                sql += " AND UnitPrice >= @MinPrice";
+                var prices = priceFilter.Value.Split('-');
+                if (prices.Length == 2)
+                {
+                    if (decimal.TryParse(prices[0].Trim(), out decimal minPrice))
+                    {
+                        sql += " AND UnitPrice >= @MinPrice";
+                        parameters.Add("MinPrice", minPrice);
+                    }
+                    if (decimal.TryParse(prices[1].Trim(), out decimal maxPrice))
+                    {
+                        sql += " AND UnitPrice <= @MaxPrice";
+                        parameters.Add("MaxPrice", maxPrice);
+                    }
+                }
             }
-            if (maxPrice.HasValue)  // Maksimum fiyat filtresi
+
+            // Stok aralığı filtresi
+            var stockFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Stok");
+            if (stockFilter != null)
             {
-                sql += " AND UnitPrice <= @MaxPrice";
+                var stocks = stockFilter.Value.Split('-');
+                if (stocks.Length == 2)
+                {
+                    if (int.TryParse(stocks[0].Trim(), out int minStock))
+                    {
+                        sql += " AND Stock >= @MinStock";
+                        parameters.Add("MinStock", minStock);
+                    }
+                    if (int.TryParse(stocks[1].Trim(), out int maxStock))
+                    {
+                        sql += " AND Stock <= @MaxStock";
+                        parameters.Add("MaxStock", maxStock);
+                    }
+                }
             }
-            if (minStock.HasValue)  // Minimum stok filtresi
-            {
-                sql += " AND Stock >= @MinStock";
-            }
-            if (maxStock.HasValue)  // Maksimum stok filtresi
-            {
-                sql += " AND Stock <= @MaxStock";
-            }
-            if (!string.IsNullOrEmpty(unit))  // Birim filtresi
+
+            // Birim filtresi
+            var unitFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Birim");
+            if (unitFilter != null)
             {
                 sql += " AND Unit = @Unit";
+                parameters.Add("Unit", unitFilter.Value);
             }
 
             // Sıralama işlemleri
-            switch (_sortingtype)
+            switch (sortingType)
             {
                 case IngredientSortingType.A_from_Z:
                     sql += " ORDER BY IngredientName ASC";
@@ -106,17 +135,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     sql += " ORDER BY IngredientName ASC";
                     break;
             }
-
-            // Parametrelerin atanması
-            var parameters = new
-            {
-                Name = $"%{name}%",  // LIKE ile arama için "%" eklenir
-                MinPrice = minPrice,
-                MaxPrice = maxPrice,
-                MinStock = minStock,
-                MaxStock = maxStock,
-                Unit = unit
-            };
 
             // Asenkron sorgu ve listeye dönüştürme
             List<Ingredient> ingredients = (await connection.QueryAsync<Ingredient>(sql, parameters)).ToList();

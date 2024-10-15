@@ -56,7 +56,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return rowsAffected > 0;
         }
-        public async Task<List<Recipe>> GetAllRecipesByOrderAsync(RecipeSortingType sortingType)
+        public async Task<List<Recipe>> GetAllRecipesByOrderAsync(RecipeSortingType sortingType, List<FilterCriteria> filterCriteriaList)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -65,34 +65,104 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.OpenAsync();
             }
 
-            string sql = string.Empty;
+            string sql = "SELECT r.Id, r.RecipeName, SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost " +
+                         "FROM Recipes r " +
+                         "LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID " +
+                         "LEFT JOIN Ingredients i ON ri.IngredientID = i.Id ";
 
+            // Filtreleme işlemleri
+            List<string> filters = new List<string>();
+
+            // Fiyat aralığı filtresi
+            var priceFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Fiyat");
+            if (priceFilter != null)
+            {
+                var prices = priceFilter.Value.Split('-');
+                if (prices.Length == 2)
+                {
+                    string minPrice = prices[0].Trim();
+                    string maxPrice = prices[1].Trim();
+                    if (!string.IsNullOrEmpty(minPrice))
+                        filters.Add($"(i.UnitPrice >= {minPrice})");
+                    if (!string.IsNullOrEmpty(maxPrice))
+                        filters.Add($"(i.UnitPrice <= {maxPrice})");
+                }
+            }
+
+            // Hazırlama süresi filtresi
+            var timeFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Hazırlama Süresi");
+            if (timeFilter != null)
+            {
+                var times = timeFilter.Value.Split('-');
+                if (times.Length == 2)
+                {
+                    string minTime = times[0].Trim();
+                    string maxTime = times[1].Trim();
+                    if (!string.IsNullOrEmpty(minTime))
+                        filters.Add($"(r.PreparationTime >= {minTime})");
+                    if (!string.IsNullOrEmpty(maxTime))
+                        filters.Add($"(r.PreparationTime <= {maxTime})");
+                }
+            }
+
+            // Kategori filtresi
+            var categoryFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Kategori");
+            if (categoryFilter != null)
+            {
+                string category = categoryFilter.Value;
+                filters.Add($"(r.Category = '{category}')");
+            }
+
+            // Malzeme filtresi
+            var ingredientFilters = filterCriteriaList
+                .Where(f => f.FilterType == "Malzeme")
+                .Select(f => $"(ri.IngredientID IN (SELECT Id FROM Ingredients WHERE IngredientName = '{f.Value}'))");
+
+            filters.AddRange(ingredientFilters);
+
+            // Name filtresi
+            var nameFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Tarif Adi");
+            if (nameFilter != null)
+            {
+                string name = nameFilter.Value;
+                filters.Add($"(r.RecipeName LIKE '%{name}%')");
+            }
+
+            // Filtreleri sorguya ekleme
+            if (filters.Count > 0)
+            {
+                sql += " WHERE " + string.Join(" AND ", filters);
+            }
+
+            // Gruplama ve sıralama
+            sql += " GROUP BY r.Id, r.RecipeName ";
+
+            // Sıralama
             switch (sortingType)
             {
                 case RecipeSortingType.A_from_Z:
-                    sql = "SELECT * FROM Recipes ORDER BY RecipeName ASC;";
+                    sql += "ORDER BY r.RecipeName ASC;";
                     break;
                 case RecipeSortingType.Z_from_A:
-                    sql = "SELECT * FROM Recipes ORDER BY RecipeName DESC;";
+                    sql += "ORDER BY r.RecipeName DESC;";
                     break;
-                case RecipeSortingType.Fastest_to_Slowst:
-                    sql = "SELECT * FROM Recipes ORDER BY PreparationTime ASC;";
+                case RecipeSortingType.Fastest_to_Slowest:
+                    sql += "ORDER BY r.PreparationTime ASC;";
                     break;
                 case RecipeSortingType.Slowest_to_Fastest:
-                    sql = "SELECT * FROM Recipes ORDER BY PreparationTime DESC;";
+                    sql += "ORDER BY r.PreparationTime DESC;";
                     break;
-                /*case RecipeSortingType.Cheapest_to_Expensive:
-                    sql = "SELECT * FROM Recipes ORDER BY TotalCost ASC;";
+                case RecipeSortingType.Cheapest_to_Expensive:
+                    sql += "ORDER BY TotalCost ASC;";
                     break;
                 case RecipeSortingType.Expensive_to_Cheapest:
-                    sql = "SELECT * FROM Recipes ORDER BY TotalCost DESC;";
-                    break;*/
+                    sql += "ORDER BY TotalCost DESC;";
+                    break;
                 default:
-                    sql = "SELECT * FROM Recipes;";
+                    sql += ";";
                     break;
             }
 
-            // Asenkron sorgu ve listeye dönüştürme
             List<Recipe> recipes = (await connection.QueryAsync<Recipe>(sql)).ToList();
 
             return recipes;

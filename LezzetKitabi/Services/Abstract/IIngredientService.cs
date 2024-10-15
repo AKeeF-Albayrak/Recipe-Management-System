@@ -13,14 +13,7 @@ namespace LezzetKitabi.Services.Abstract
     public interface IIngredientService
     {
         void AddIngredient(IngredientAddDto ingredientAddDto);
-        Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(
-        IngredientSortingType sortingType,
-        string name = null,
-        decimal? minPrice = null,
-        decimal? maxPrice = null,
-        int? minStock = null,
-        int? maxStock = null,
-        string unit = null);
+        Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType, List<FilterCriteria> filterCriteriaList = null);
         bool DeleteIngredient(Guid id);
         Task<IngredientGetDto?> GetIngredientByIdAsync(Guid id);
     }

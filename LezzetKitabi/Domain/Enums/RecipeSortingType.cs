@@ -10,10 +10,10 @@ namespace LezzetKitabi.Domain.Enums
     {
         A_from_Z,
         Z_from_A,
-        Fastest_to_Slowst,
-        Slowest_to_Fastest,
         Cheapest_to_Expensive,
         Expensive_to_Cheapest,
+        Fastest_to_Slowest,
+        Slowest_to_Fastest,
         //yuzde
     }
 }

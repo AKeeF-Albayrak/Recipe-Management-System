@@ -13,16 +13,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static LezzetKitabi.Forms.Controls.RecipeUpdateControl;
 
 namespace LezzetKitabi.Forms.Controls
 {
     public partial class RecipeControl : UserControl
     {
         private readonly IRecipeService _recipeService;
+        private readonly IIngredientService _ingredientService;
         RecipeSortingType _sortingType = RecipeSortingType.A_from_Z;
+        private List<FilterCriteria> filterCriteriaList;
         public RecipeControl(IServiceProvider serviceProvider)
         {
+            filterCriteriaList = new List<FilterCriteria>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
+            _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
             InitializeGradientPanel(panelElements);
             InitializeCustomPanelsAsync();
@@ -34,8 +39,16 @@ namespace LezzetKitabi.Forms.Controls
             // Arka plan rengini transparent yapın
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
+            comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Catagory)));
+            SetUpCombobox();
         }
-
+        public async void SetUpCombobox()
+        {
+            var ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
+            comboBoxIngredients.DataSource = ingredients;
+            comboBoxIngredients.DisplayMember = "IngredientName"; // Görüntülenecek isim
+            comboBoxIngredients.ValueMember = "Id";
+        }
         private async Task InitializeCustomPanelsAsync()
         {
             int rows = 3;  // 3 rows
@@ -49,7 +62,7 @@ namespace LezzetKitabi.Forms.Controls
             int cornerRadius = 20;  // Yuvarlak köşe yarıçapı
 
             // Tüm malzemeleri al
-            List<Recipe> recipes = await _recipeService.GetAllRecipesAsync(_sortingType);
+            List<Recipe> recipes = await _recipeService.GetAllRecipesAsync(_sortingType, filterCriteriaList);
 
             if (recipes == null || recipes.Count == 0)
             {
@@ -290,12 +303,12 @@ namespace LezzetKitabi.Forms.Controls
                 case 3:
                     _sortingType = RecipeSortingType.Expensive_to_Cheapest;
                     break;
-                /*case 4:
-                    _sortingType = RecipeSortingType.DescendingStock;
+                case 4:
+                    _sortingType = RecipeSortingType.Fastest_to_Slowest;
                     break;
                 case 5:
-                    _sortingType = RecipeSortingType.AscendingStock;
-                    break;*/
+                    _sortingType = RecipeSortingType.Slowest_to_Fastest;
+                    break;
                 default:
                     _sortingType = RecipeSortingType.A_from_Z;
                     break;
@@ -308,6 +321,233 @@ namespace LezzetKitabi.Forms.Controls
             panelItems.Controls.Clear();
 
             await InitializeCustomPanelsAsync();  // Bu işlemi de async yaparak UI'nin kilitlenmesini önleyin
+        }
+
+        private void buttonPriceTagAdd_Click(object sender, EventArgs e)
+        {
+            // Fiyat aralığı değerlerini al
+            decimal? minPrice = null;
+            decimal? maxPrice = null;
+
+            // Minimum fiyatı kontrol et
+            if (decimal.TryParse(textBoxMinPrice.Text, out decimal minPriceValue))
+            {
+                minPrice = minPriceValue;
+            }
+
+            // Maksimum fiyatı kontrol et
+            if (decimal.TryParse(textBoxMaxPrice.Text, out decimal maxPriceValue))
+            {
+                maxPrice = maxPriceValue;
+            }
+
+            // Fiyat filtresi ekle
+            if (minPrice.HasValue || maxPrice.HasValue)
+            {
+                // Mevcut filtreleri kontrol et ve sil
+                RemoveExistingFilter("Fiyat"); // Önceki fiyat filtresini sil
+
+                // Yeni filtreyi ekle ve panele yansıt
+                AddFilterToPanel($"Fiyat: {minPrice} - {maxPrice}", RemoveFilter);
+                filterCriteriaList.Add(new FilterCriteria { FilterType = "Fiyat", Value = $"{minPrice} - {maxPrice}" });
+            }
+            else
+            {
+                MessageBox.Show("Geçerli bir fiyat aralığı girin.");
+            }
+        }
+
+        private void buttonTimeAdd_Click(object sender, EventArgs e)
+        {
+            // Minimum ve maksimum hazırlama süresi değerlerini al
+            int? minTime = null;
+            int? maxTime = null;
+
+            // Minimum hazırlama süresini kontrol et
+            if (int.TryParse(textBoxMinPrepTime.Text, out int minTimeValue))
+            {
+                minTime = minTimeValue;
+            }
+
+            // Maksimum hazırlama süresini kontrol et
+            if (int.TryParse(textBoxMaxPrepTime.Text, out int maxTimeValue))
+            {
+                maxTime = maxTimeValue;
+            }
+
+            // Hazırlama süresi aralığı varsa filtreyi ekle
+            if (minTime.HasValue || maxTime.HasValue)
+            {
+                RemoveExistingFilter("Hazırlama Süresi"); // Önceki hazırlama süresi filtresini sil
+
+                // Filtreyi ekle ve panele yansıt
+                AddFilterToPanel($"Hazırlama Süresi: {minTime} - {maxTime} dakika", RemoveFilter);
+                filterCriteriaList.Add(new FilterCriteria { FilterType = "Hazırlama Süresi", Value = $"{minTime} - {maxTime}" });
+            }
+            else
+            {
+                MessageBox.Show("Geçerli bir hazırlama süresi aralığı girin.");
+            }
+        }
+
+        private void buttonCatagory_Click(object sender, EventArgs e)
+        {
+            // Kategori ComboBox'tan seçilen değeri al
+            string selectedCategory = comboBoxCategory.SelectedItem?.ToString();
+
+            if (!string.IsNullOrEmpty(selectedCategory))
+            {
+                RemoveExistingFilter("Kategori"); // Önceki kategori filtresini sil
+
+                // Filtreyi ekle ve panele yansıt
+                AddFilterToPanel($"Kategori: {selectedCategory}", RemoveFilter);
+                filterCriteriaList.Add(new FilterCriteria { FilterType = "Kategori", Value = selectedCategory });
+            }
+            else
+            {
+                MessageBox.Show("Bir kategori seçin.");
+            }
+        }
+
+        private void buttonAddIngredient_Click(object sender, EventArgs e)
+        {
+            // ComboBox'dan seçili malzemeyi al
+            var selectedIngredient = comboBoxIngredients.SelectedItem as Ingredient;
+
+            if (selectedIngredient != null)
+            {
+                // Mevcut filtreleri kontrol et
+                var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme" && f.Value == selectedIngredient.IngredientName);
+
+                if (existingFilter == null)
+                {
+                    // Filtreyi ekle ve panele yansıt
+                    AddFilterToPanel($"Malzeme: {selectedIngredient.IngredientName}", RemoveFilter);
+                    filterCriteriaList.Add(new FilterCriteria { FilterType = "Malzeme", Value = selectedIngredient.IngredientName });
+                }
+                else
+                {
+                    MessageBox.Show("Bu malzeme zaten eklenmiş.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Lütfen bir malzeme seçin.");
+            }
+        }
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
+            // Malzeme adını al
+            string name = textBoxSearch.Text.Trim();
+
+            // "Malzeme Adı" filtresini kontrol et ve güncelle
+            var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Tarif Adi");
+            if (existingFilter != null)
+            {
+                // Eğer mevcut filtre varsa, değeri güncelle
+                existingFilter.Value = name;
+            }
+            else
+            {
+                // Eğer mevcut filtre yoksa, yeni filtre ekle
+                filterCriteriaList.Add(new FilterCriteria { FilterType = "Tarif Adi", Value = name });
+            }
+
+            // Paneli yenile
+            RefreshPanelsAsync();
+            InitializeCustomPanelsAsync();
+        }
+
+        private void buttonFilter_Click(object sender, EventArgs e)
+        {
+            RefreshPanelsAsync();
+        }
+
+        private void AddFilterToPanel(string filterText, Action<Control> removeAction)
+        {
+            // Yeni bir filtre için panel oluştur
+            Panel filterPanel = new Panel
+            {
+                AutoSize = false, // Otomatik boyutlamayı kapat
+                Width = 70, // Panelin genişliğini ayarla
+                Height = 30, // Panelin yüksekliğini ayarla
+                Margin = new Padding(10),
+                Dock = DockStyle.Top, // Panelin üstte yer almasını sağla
+                BackColor = Color.Gray
+            };
+
+            // Yeni label oluştur
+            Label label = new Label
+            {
+                Text = filterText,
+                AutoSize = true,
+                Margin = new Padding(5)
+            };
+
+            // Silme butonu oluştur
+            Button removeButton = new Button
+            {
+                Text = "X",
+                Width = 25, // Butonun genişliğini ayarla
+                Height = 25, // Butonun yüksekliğini ayarla
+                Margin = new Padding(5),
+                Dock = DockStyle.Right
+            };
+
+            // Silme butonuna tıklandığında filtreyi kaldır
+            removeButton.Click += (sender, e) =>
+            {
+                // Silme işlemi
+                removeAction(filterPanel);
+                RemoveFilter(filterPanel); // Panelden ve listeden sil
+            };
+
+            // Panel'e label ve butonu ekle
+            filterPanel.Controls.Add(label);
+            filterPanel.Controls.Add(removeButton);
+
+            // PanelCurrentFilter'a ekle
+            panelCurrentFilters.Controls.Add(filterPanel);
+        }
+
+        private void RemoveFilter(Control filterPanel)
+        {
+            panelCurrentFilters.Controls.Remove(filterPanel);
+
+            // Silinen filtreyi filterCriteriaList'ten kaldırma işlemini burada gerçekleştirin
+            var filterType = filterPanel.Controls[0].Text.Split(':')[0].Trim(); // Label'dan filtre türünü al
+            var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == filterType);
+            if (existingFilter != null)
+            {
+                filterCriteriaList.Remove(existingFilter);
+            }
+            if(filterCriteriaList.Count == 0)
+            {
+                RefreshPanelsAsync();
+            }
+        }
+
+        // Mevcut filtreyi silme işlemi
+        private void RemoveExistingFilter(string filterType)
+        {
+            // Mevcut filtreyi bul
+            var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == filterType);
+            if (existingFilter != null)
+            {
+                // Filtreyi listeden çıkar
+                filterCriteriaList.Remove(existingFilter);
+
+                // Panel'den sil
+                foreach (Control control in panelCurrentFilters.Controls)
+                {
+                    if (control is Panel filterPanel && filterPanel.Controls[0].Text.StartsWith(filterType))
+                    {
+                        panelCurrentFilters.Controls.Remove(filterPanel);
+                        break; // Silindikten sonra döngüyü sonlandır
+                    }
+                }
+            }
         }
     }
 }

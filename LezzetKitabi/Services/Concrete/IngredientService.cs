@@ -38,23 +38,9 @@ namespace LezzetKitabi.Application.Services
             return isDeleted;
         }
 
-        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(
-            IngredientSortingType sortingType,
-            string name = null,
-            decimal? minPrice = null,
-            decimal? maxPrice = null,
-            int? minStock = null,
-            int? maxStock = null,
-            string unit = null)
+        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType,List<FilterCriteria> filterCriteriaList = null)
         {
-            return await _ingredientRepository.GetAllIngredientsByOrderAndFilterAsync(
-                sortingType,
-                name,
-                minPrice,
-                maxPrice,
-                minStock,
-                maxStock,
-                unit);
+            return await _ingredientRepository.GetAllIngredientsByOrderAndFilterAsync(sortingType,filterCriteriaList);
         }
 
         public async Task<IngredientGetDto?> GetIngredientByIdAsync(Guid id)

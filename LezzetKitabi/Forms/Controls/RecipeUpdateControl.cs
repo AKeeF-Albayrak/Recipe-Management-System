@@ -80,7 +80,7 @@ namespace LezzetKitabi.Forms.Controls
         }
 
 
-        private async void SetUpCombobox()
+        public async void SetUpCombobox()
         {
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
 
@@ -102,12 +102,6 @@ namespace LezzetKitabi.Forms.Controls
             // ComboBox ayarları
             comboBoxIngredients.DisplayMember = "Text"; // Gösterilecek alan
             comboBoxIngredients.ValueMember = "Value"; // Seçilen öğenin değeri
-        }
-        public class ComboBoxItem
-        {
-            public string Text { get; set; }
-            public Guid Value { get; set; }
-            public string Unit { get; set; }
         }
 
         public class ListBoxIngredient

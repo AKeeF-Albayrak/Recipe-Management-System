@@ -21,10 +21,11 @@ namespace LezzetKitabi.Forms.Controls
     {
         private readonly IIngredientService _ingredientService;
         IngredientSortingType _sortingType = IngredientSortingType.A_from_Z;
-        private List<FilterCriteria> filterCriteriaList = new List<FilterCriteria>();
+        private List<FilterCriteria> filterCriteriaList;
 
         public SearchControl(IServiceProvider serviceProvider)
         {
+            filterCriteriaList = new List<FilterCriteria>();
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
             InitializeGradientPanel(panelElements);
@@ -36,6 +37,7 @@ namespace LezzetKitabi.Forms.Controls
             // Arka plan rengini transparent yapın
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
+            comboBoxUnit.Items.AddRange(Enum.GetNames(typeof(UnitType)));
         }
 
         private async Task InitializeCustomPanelsAsync()
@@ -50,76 +52,8 @@ namespace LezzetKitabi.Forms.Controls
             int startY = 10; // Starting Y position
             int cornerRadius = 20;  // Yuvarlak köşe yarıçapı
 
-            string name = null; // Eğer bir ad filtresi eklemek istiyorsanız, bu kısmı doldurabilirsiniz
-            decimal? minPrice = null;
-            decimal? maxPrice = null;
-            int? minStock = null;
-            int? maxStock = null;
-            string unit = null;
-
-            // Fiyat aralığını kontrol et
-            var priceFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Fiyat");
-            if (priceFilter != null)
-            {
-                var prices = priceFilter.Value.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (prices.Length > 0)
-                {
-                    if (decimal.TryParse(prices[0], out decimal minPriceValue))
-                    {
-                        minPrice = minPriceValue;
-                    }
-
-                    if (prices.Length > 1 && decimal.TryParse(prices[1], out decimal maxPriceValue))
-                    {
-                        maxPrice = maxPriceValue;
-                    }
-                }
-            }
-
-            // Stok aralığını kontrol et
-            var stockFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Stok");
-            if (stockFilter != null)
-            {
-                var stocks = stockFilter.Value.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (stocks.Length > 0)
-                {
-                    if (int.TryParse(stocks[0], out int minStockValue))
-                    {
-                        minStock = minStockValue;
-                    }
-
-                    if (stocks.Length > 1 && int.TryParse(stocks[1], out int maxStockValue))
-                    {
-                        maxStock = maxStockValue;
-                    }
-                }
-            }
-
-            // Birimi kontrol et
-            var unitFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Birim");
-            if (unitFilter != null)
-            {
-                unit = unitFilter.Value;
-            }
-
-            var nameSearch = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Adi");
-            if (nameSearch != null)
-            {
-                name = nameSearch.Value;
-            }
-
             // Filtreleme işlemi için servisi çağır
-            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(
-                IngredientSortingType.A_from_Z,
-                name,
-                minPrice,
-                maxPrice,
-                minStock,
-                maxStock,
-                unit
-            );
+            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList);
 
             if (ingredients == null || ingredients.Count == 0)
             {
@@ -358,11 +292,7 @@ namespace LezzetKitabi.Forms.Controls
             await InitializeCustomPanelsAsync();  // Bu işlemi de async yaparak UI'nin kilitlenmesini önleyin
         }
 
-        public class FilterCriteria
-        {
-            public string FilterType { get; set; }
-            public string Value { get; set; }
-        }
+        
 
         // Formda filtre kriterlerini tutan liste
 
@@ -523,6 +453,10 @@ namespace LezzetKitabi.Forms.Controls
             {
                 filterCriteriaList.Remove(existingFilter);
             }
+            if (filterCriteriaList.Count == 0)
+            {
+                RefreshPanelsAsync();
+            }
         }
 
         // Mevcut filtreyi silme işlemi
@@ -554,26 +488,26 @@ namespace LezzetKitabi.Forms.Controls
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
-{
-    // Malzeme adını al
-    string name = textBoxSearch.Text.Trim();
+        {
+            // Malzeme adını al
+            string name = textBoxSearch.Text.Trim();
 
-    // "Malzeme Adı" filtresini kontrol et ve güncelle
-    var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Adi");
-    if (existingFilter != null)
-    {
-        // Eğer mevcut filtre varsa, değeri güncelle
-        existingFilter.Value = name;
-    }
-    else
-    {
-        // Eğer mevcut filtre yoksa, yeni filtre ekle
-        filterCriteriaList.Add(new FilterCriteria { FilterType = "Malzeme Adi", Value = name });
-    }
+            // "Malzeme Adı" filtresini kontrol et ve güncelle
+            var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Adi");
+            if (existingFilter != null)
+            {
+                // Eğer mevcut filtre varsa, değeri güncelle
+                existingFilter.Value = name;
+            }
+            else
+            {
+                // Eğer mevcut filtre yoksa, yeni filtre ekle
+                filterCriteriaList.Add(new FilterCriteria { FilterType = "Malzeme Adi", Value = name });
+            }
 
-    // Paneli yenile
-    RefreshPanelsAsync();
-    InitializeCustomPanelsAsync();
-}
+            // Paneli yenile
+            RefreshPanelsAsync();
+            InitializeCustomPanelsAsync();
+        }
     }
 }
