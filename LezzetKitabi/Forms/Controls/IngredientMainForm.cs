@@ -98,7 +98,14 @@ namespace LezzetKitabi.Forms.Controls
 
                 // PictureBox ve diğer öğeleri ekle
                 PictureBox pictureBox = new PictureBox();
-                pictureBox.Image = Properties.Resources.Screenshot_2024_10_09_121511; // Resmi dinamik hale getirin
+                if(i == 1)
+                {
+                    pictureBox.Image = Properties.Resources.domates;
+                }
+                else
+                {
+                    pictureBox.Image = Properties.Resources.Screenshot_2024_10_09_121511; // Resmi dinamik hale getirin
+                }
                 pictureBox.Size = new Size(115, 94);
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Location = new Point((panelWidth - pictureBox.Width) / 2, 35);  // Ortalayın

@@ -109,16 +109,6 @@ namespace LezzetKitabi.Forms
             page = "AddRecipe";
         }
 
-        private void btnEditRecipe_Click(object sender, EventArgs e)
-        {
-            if (page != "EditRecipe") LoadForm(new RecipeEditForm(/*simdilik eksik*/));
-            page = "EditRecipe";
-        }
-
-        private void btnDeleteRecipe_Click(object sender, EventArgs e)
-        {
-            if (page != "DeleteRecipe") LoadForm(new RecipeDeleteForm(/*simdilik eksik*/));
-            page = "DeleteRecipe";
-        }
+        
     }
 }

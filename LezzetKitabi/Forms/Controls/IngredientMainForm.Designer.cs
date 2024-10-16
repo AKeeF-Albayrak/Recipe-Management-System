@@ -100,7 +100,11 @@
             textBoxSearch.Name = "textBoxSearch";
             textBoxSearch.Size = new Size(445, 23);
             textBoxSearch.TabIndex = 0;
-            textBoxSearch.Text = "Arama Yeri";
+            textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
+            suggestions.AddRange(new string[] { "Apple", "Banana", "Cherry" });
+            textBoxSearch.AutoCompleteCustomSource = suggestions;
             // 
             // panelElements
             // 

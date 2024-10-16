@@ -17,8 +17,6 @@ namespace LezzetKitabi.Forms
         private void InitializeComponent()
         {
             panelMenu = new Panel();
-            btnDeleteRecipe = new Button();
-            btnEditRecipe = new Button();
             btnAddRecipe = new Button();
             btnAddIngredient = new Button();
             btnIngredients = new Button();
@@ -33,8 +31,6 @@ namespace LezzetKitabi.Forms
             // panelMenu
             // 
             panelMenu.BackColor = Color.FromArgb(51, 51, 56);
-            panelMenu.Controls.Add(btnDeleteRecipe);
-            panelMenu.Controls.Add(btnEditRecipe);
             panelMenu.Controls.Add(btnAddRecipe);
             panelMenu.Controls.Add(btnAddIngredient);
             panelMenu.Controls.Add(btnIngredients);
@@ -45,36 +41,6 @@ namespace LezzetKitabi.Forms
             panelMenu.Name = "panelMenu";
             panelMenu.Size = new Size(214, 795);
             panelMenu.TabIndex = 0;
-            // 
-            // btnDeleteRecipe
-            // 
-            btnDeleteRecipe.Dock = DockStyle.Top;
-            btnDeleteRecipe.FlatAppearance.BorderSize = 0;
-            btnDeleteRecipe.FlatStyle = FlatStyle.Flat;
-            btnDeleteRecipe.ForeColor = Color.White;
-            btnDeleteRecipe.Location = new Point(0, 455);
-            btnDeleteRecipe.Name = "btnDeleteRecipe";
-            btnDeleteRecipe.Size = new Size(214, 75);
-            btnDeleteRecipe.TabIndex = 6;
-            btnDeleteRecipe.Tag = "DeleteRecipe";
-            btnDeleteRecipe.Text = "Tarif Silme";
-            btnDeleteRecipe.UseVisualStyleBackColor = true;
-            btnDeleteRecipe.Click += btnDeleteRecipe_Click;
-            // 
-            // btnEditRecipe
-            // 
-            btnEditRecipe.Dock = DockStyle.Top;
-            btnEditRecipe.FlatAppearance.BorderSize = 0;
-            btnEditRecipe.FlatStyle = FlatStyle.Flat;
-            btnEditRecipe.ForeColor = Color.White;
-            btnEditRecipe.Location = new Point(0, 380);
-            btnEditRecipe.Name = "btnEditRecipe";
-            btnEditRecipe.Size = new Size(214, 75);
-            btnEditRecipe.TabIndex = 5;
-            btnEditRecipe.Tag = "EditRecipe";
-            btnEditRecipe.Text = "Tarif Güncelleme";
-            btnEditRecipe.UseVisualStyleBackColor = true;
-            btnEditRecipe.Click += btnEditRecipe_Click;
             // 
             // btnAddRecipe
             // 
@@ -187,7 +153,5 @@ namespace LezzetKitabi.Forms
         private Button button1;
         private Panel panelForms;
         private Button btnAddRecipe;
-        private Button btnDeleteRecipe;
-        private Button btnEditRecipe;
     }
 }

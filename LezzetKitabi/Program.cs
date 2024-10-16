@@ -43,8 +43,6 @@ namespace LezzetKitabi
             //Adding Controls
             services.AddScoped<IngredientAddForm>();
             services.AddScoped<RecipeAddForm>();
-            services.AddScoped<RecipeDeleteForm>();
-            services.AddScoped<RecipeEditForm>();
             services.AddScoped<RecipeMainForm>();
             services.AddScoped<IngredientMainForm>();
 
