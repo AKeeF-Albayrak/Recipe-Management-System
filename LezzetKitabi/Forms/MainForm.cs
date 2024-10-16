@@ -1,12 +1,11 @@
 ﻿using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Contracts;
 using LezzetKitabi.Forms.Controls;
-using LezzetKitabi.Domain.Contracts;
 using System;
 using System.Configuration;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks; // Task kullanımını ekleyin
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LezzetKitabi.Forms
@@ -14,59 +13,56 @@ namespace LezzetKitabi.Forms
     public partial class MainForm : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        SearchControl searchControl;
+        RecipeMainForm recipeMainForm;
         private bool isAnimating = false;
         string page;
         public MainForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            searchControl = new SearchControl(serviceProvider);
+            recipeMainForm = new RecipeMainForm(serviceProvider);
             InitializeComponent();
-            LoadForm(searchControl);
+            LoadForm(recipeMainForm);
             page = "Search";
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            if (isAnimating) return; // Eğer animasyon devam ediyorsa çık
+            if (isAnimating) return;
 
-            isAnimating = true; // Animasyon başladı
+            isAnimating = true;
             try
             {
-                // Menüyü genişlet/daralt
-                int delayTime = 10; // Her adım için bekleme süresi (ms) azaltıldı
-                int maxSteps = 30; // Toplam adım sayısını azaltıldı
-                int currentStep = 0; // Mevcut adım sayısı
-                int stepSize = 4; // Başlangıç adım boyutu (artırıldı)
+                int delayTime = 10;
+                int maxSteps = 30;
+                int currentStep = 0;
+                int stepSize = 4;
 
-                if (panelMenu.Width > 200) // Menüyü daraltma
+                if (panelMenu.Width > 200)
                 {
-                    while (panelMenu.Width > 100 && currentStep < maxSteps) // Minimum genişlik kontrolü
+                    while (panelMenu.Width > 100 && currentStep < maxSteps)
                     {
-                        panelMenu.Width -= stepSize; // Menü genişliğini azalt
-                        await Task.Delay(delayTime); // Bekle
+                        panelMenu.Width -= stepSize;
+                        await Task.Delay(delayTime);
 
-                        // Adım boyutunu artır (daha kontrollü bir hızlandırma)
                         if (currentStep < maxSteps / 2)
                         {
-                            stepSize = 4 + (currentStep / 4); // İlk yarıda adım boyutunu hafifçe artır
+                            stepSize = 4 + (currentStep / 4);
                         }
 
                         currentStep++;
                     }
                     GlobalVariables.IsExpanded = false;
                 }
-                else // Menüyü genişletme
+                else
                 {
-                    while (panelMenu.Width < 210 && currentStep < maxSteps) // Maksimum genişlik kontrolü
+                    while (panelMenu.Width < 210 && currentStep < maxSteps)
                     {
-                        panelMenu.Width += stepSize; // Menü genişliğini arttır
-                        await Task.Delay(delayTime); // Bekle
+                        panelMenu.Width += stepSize;
+                        await Task.Delay(delayTime);
 
-                        // Adım boyutunu artır (daha kontrollü bir hızlandırma)
                         if (currentStep < maxSteps / 2)
                         {
-                            stepSize = 4 + (currentStep / 4); // İlk yarıda adım boyutunu hafifçe artır
+                            stepSize = 4 + (currentStep / 4);
                         }
 
                         currentStep++;
@@ -76,52 +72,53 @@ namespace LezzetKitabi.Forms
             }
             finally
             {
-                isAnimating = false; // Animasyon tamamlandı
+                isAnimating = false;
             }
         }
 
         private void LoadForm(UserControl userControl)
         {
-            panelForms.Controls.Clear(); // Mevcut içeriği temizle
-            userControl.Dock = DockStyle.Fill; // UserControl tüm paneli kaplasın
-            panelForms.Controls.Add(userControl); // Yeni UserControl'ü panele ekle
-            userControl.BringToFront(); // Üste getir
+            panelForms.Controls.Clear();
+            userControl.Dock = DockStyle.Fill;
+            panelForms.Controls.Add(userControl);
+            userControl.BringToFront();
         }
 
-        private void buttonRecipe_Click(object sender, EventArgs e)
+
+        private void btnRecipes_Click(object sender, EventArgs e)
         {
-            if (page != "Recipe") LoadForm(new RecipeControl(_serviceProvider));
-            page = "Recipe";
+            if (page != "Recipes") LoadForm(recipeMainForm);
+            page = "Recipes";
         }
 
-        private void buttonIngredient_Click(object sender, EventArgs e)
+        private void btnIngredients_Click(object sender, EventArgs e)
         {
-            if (page != "Ingredient") LoadForm(new IngredientControl(_serviceProvider));
-            page = "Ingredient";
+            if (page != "Ingredients") LoadForm(new IngredientMainForm(_serviceProvider));
+            page = "Ingredients";
         }
 
-        private void buttonSearch_Click(object sender, EventArgs e)
+        private void btnAddIngredient_Click(object sender, EventArgs e)
         {
-            if (page != "Search") LoadForm(searchControl);
-            page = "Search";
+            if (page != "AddIngredient") LoadForm(new IngredientAddForm(_serviceProvider));
+            page = "AddIngredient";
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnAddRecipe_Click(object sender, EventArgs e)
         {
-            if (page != "Deneme1") LoadForm(new DenemeControl());
-            page = "Deneme1";
+            if (page != "AddRecipe") LoadForm(new RecipeAddForm(_serviceProvider));
+            page = "AddRecipe";
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnEditRecipe_Click(object sender, EventArgs e)
         {
-            if (page != "Mert") LoadForm(new RecipeUpdateControl(_serviceProvider));
-            page = "Mert";
+            if (page != "EditRecipe") LoadForm(new RecipeEditForm(/*simdilik eksik*/));
+            page = "EditRecipe";
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnDeleteRecipe_Click(object sender, EventArgs e)
         {
-            if (page != "asd") LoadForm(new TestAmacli());
-            page = "asd";
+            if (page != "DeleteRecipe") LoadForm(new RecipeDeleteForm(/*simdilik eksik*/));
+            page = "DeleteRecipe";
         }
     }
 }

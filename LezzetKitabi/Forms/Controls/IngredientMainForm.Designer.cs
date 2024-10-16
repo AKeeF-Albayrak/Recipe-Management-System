@@ -1,6 +1,6 @@
 ﻿namespace LezzetKitabi.Forms.Controls
 {
-    partial class SearchControl
+    partial class IngredientMainForm
     {
         /// <summary> 
         /// Required designer variable.

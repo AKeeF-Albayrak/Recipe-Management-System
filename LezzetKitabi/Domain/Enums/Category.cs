@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Domain.Enums
 {
-    public enum Catagory
+    public enum Category
     {
         Starter,
         Desert

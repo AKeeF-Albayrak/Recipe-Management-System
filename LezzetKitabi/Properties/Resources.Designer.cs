@@ -63,9 +63,9 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_delete_64 {
+        internal static System.Drawing.Bitmap DeleteIcon {
             get {
-                object obj = ResourceManager.GetObject("icons8-delete-64", resourceCulture);
+                object obj = ResourceManager.GetObject("DeleteIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_delete_64__1_ {
+        internal static System.Drawing.Bitmap DetailsIcon {
             get {
-                object obj = ResourceManager.GetObject("icons8-delete-64 (1)", resourceCulture);
+                object obj = ResourceManager.GetObject("DetailsIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,39 +83,9 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_edit_64 {
+        internal static System.Drawing.Bitmap EditIcon {
             get {
-                object obj = ResourceManager.GetObject("icons8-edit-64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_edit_64__1_ {
-            get {
-                object obj = ResourceManager.GetObject("icons8-edit-64 (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_search_more_64 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-search-more-64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_update_64 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-update-64", resourceCulture);
+                object obj = ResourceManager.GetObject("EditIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

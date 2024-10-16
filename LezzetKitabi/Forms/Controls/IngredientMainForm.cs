@@ -17,13 +17,13 @@ using System.Windows.Forms;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class SearchControl : UserControl
+    public partial class IngredientMainForm : UserControl
     {
         private readonly IIngredientService _ingredientService;
         IngredientSortingType _sortingType = IngredientSortingType.A_from_Z;
         private List<FilterCriteria> filterCriteriaList;
 
-        public SearchControl(IServiceProvider serviceProvider)
+        public IngredientMainForm(IServiceProvider serviceProvider)
         {
             filterCriteriaList = new List<FilterCriteria>();
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();

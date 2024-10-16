@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class FilterForm : Form
+    public partial class RecipeEditForm : UserControl
     {
-        public FilterForm()
+        public RecipeEditForm()
         {
             InitializeComponent();
         }

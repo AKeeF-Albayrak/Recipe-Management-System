@@ -8,8 +8,13 @@ namespace LezzetKitabi.Domain.Enums
 {
     public enum UnitType
     {
-        kg ,
-        gr ,
-        adet
+        kg,
+        gram,
+        adet,
+        litre,
+        yemek_kaşığı,
+        tatlı_kaşığı,
+        çay_kaşığı,
+        su_bardağı,
     }
 }

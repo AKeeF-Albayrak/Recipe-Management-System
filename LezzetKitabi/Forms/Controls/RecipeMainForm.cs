@@ -14,17 +14,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static LezzetKitabi.Forms.Controls.RecipeUpdateControl;
+using static LezzetKitabi.Forms.Controls.RecipeAddForm;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class RecipeControl : UserControl
+    public partial class RecipeMainForm : UserControl
     {
         private readonly IRecipeService _recipeService;
         private readonly IIngredientService _ingredientService;
         RecipeSortingType _sortingType = RecipeSortingType.A_from_Z;
         private List<FilterCriteria> filterCriteriaList;
-        public RecipeControl(IServiceProvider serviceProvider)
+        public RecipeMainForm(IServiceProvider serviceProvider)
         {
             filterCriteriaList = new List<FilterCriteria>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
@@ -40,7 +40,7 @@ namespace LezzetKitabi.Forms.Controls
             // Arka plan rengini transparent yapın
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
-            comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Catagory)));
+            comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Category)));
             SetUpCombobox();
         }
         public async void SetUpCombobox()
@@ -137,28 +137,28 @@ namespace LezzetKitabi.Forms.Controls
                 PictureBox pictureBoxDetail = new PictureBox();
                 pictureBoxDetail.Size = new Size(50, 50);  // PictureBox boyutu
                 pictureBoxDetail.Location = new Point((panelWidth - pictureBoxDetail.Width) / 2, 20);  // İlk PictureBox için pozisyon
-                pictureBoxDetail.Image = Properties.Resources.icons8_search_more_64;  // Detail ikonu
+                pictureBoxDetail.Image = Properties.Resources.DetailsIcon;  // Detail ikonu
                 pictureBoxDetail.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
-                                                                              //pictureBoxEdit.Click += (s, e) => DeRecipe(recipes[i]);  // Tıklama olayını tanımla
+                //pictureBoxEdit.Click += (s, e) => DeRecipe(recipes[i]);  // Tıklama olayını tanımla
 
                 // Güncelleme butonu
                 PictureBox pictureBoxUpdate = new PictureBox();
                 pictureBoxUpdate.Size = new Size(50, 50);  // PictureBox boyutu
                 pictureBoxUpdate.Location = new Point((panelWidth - pictureBoxUpdate.Width) / 2, 70);  // İkinci PictureBox için pozisyon
-                pictureBoxUpdate.Image = Properties.Resources.icons8_edit_64__1_;  // Güncelleme ikonu
+                pictureBoxUpdate.Image = Properties.Resources.EditIcon;  // Güncelleme ikonu
                 pictureBoxUpdate.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
                 pictureBoxUpdate.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
-                                                         //pictureBoxUpdate.Click += (s, e) => UpdateRecipe(recipes[i]);  // Tıklama olayını tanımla
+                //pictureBoxUpdate.Click += (s, e) => UpdateRecipe(recipes[i]);  // Tıklama olayını tanımla
 
                 // Silme butonu
                 PictureBox pictureBoxDelete = new PictureBox();
                 pictureBoxDelete.Size = new Size(50, 50);  // PictureBox boyutu
                 pictureBoxDelete.Location = new Point((panelWidth - pictureBoxDelete.Width) / 2, 130);  // Üçüncü PictureBox için pozisyon
-                pictureBoxDelete.Image = Properties.Resources.icons8_delete_64__1_;  // Silme ikonu
+                pictureBoxDelete.Image = Properties.Resources.DeleteIcon;  // Silme ikonu
                 pictureBoxDelete.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
                 pictureBoxDelete.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
-                                                         //pictureBoxDelete.Click += DeleteButton_Click;  // Tıklama olayını tanımla
-                                                         //pictureBoxDelete.Tag = recipes[i];  // Tag olarak tarifi ekleyin
+                //pictureBoxDelete.Click += DeleteButton_Click;  // Tıklama olayını tanımla
+                //pictureBoxDelete.Tag = recipes[i];  // Tag olarak tarifi ekleyin
 
                 // Overlay paneline butonları ekleyin
                 overlayPanel.Controls.Add(pictureBoxDetail);

@@ -1,6 +1,6 @@
 ﻿namespace LezzetKitabi.Forms.Controls
 {
-    partial class RecipeControl
+    partial class RecipeMainForm
     {
         /// <summary> 
         /// Required designer variable.
@@ -461,7 +461,7 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += buttonFilter_Click;
             // 
-            // RecipeControl
+            // RecipeMainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -469,7 +469,7 @@
             Controls.Add(panelFilter);
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
-            Name = "RecipeControl";
+            Name = "RecipeMainForm";
             Size = new Size(1323, 796);
             panelSearch.ResumeLayout(false);
             panelSearch.PerformLayout();

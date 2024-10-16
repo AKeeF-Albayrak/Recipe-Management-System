@@ -18,12 +18,12 @@ using LezzetKitabi.Domain.Dtos.CrossTableDtos;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class RecipeUpdateControl : UserControl
+    public partial class RecipeAddForm : UserControl
     {
         private readonly IIngredientService _ingredientService;
         private readonly IRecipeService _recipeService;
         private readonly IRecipeIngredientService _recipeIngredientService;
-        public RecipeUpdateControl(IServiceProvider serviceProvider)
+        public RecipeAddForm(IServiceProvider serviceProvider)
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();

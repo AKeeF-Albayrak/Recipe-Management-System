@@ -41,10 +41,12 @@ namespace LezzetKitabi
             services.AddScoped<MainForm>();
 
             //Adding Controls
-            services.AddScoped<IngredientControl>();
-            services.AddScoped<RecipeControl>();
-            services.AddScoped<SearchControl>();
-            services.AddScoped<RecipeUpdateControl>();
+            services.AddScoped<IngredientAddForm>();
+            services.AddScoped<RecipeAddForm>();
+            services.AddScoped<RecipeDeleteForm>();
+            services.AddScoped<RecipeEditForm>();
+            services.AddScoped<RecipeMainForm>();
+            services.AddScoped<IngredientMainForm>();
 
             services.AddScoped<IDbConnection>(sp => new SqlConnection(ConstVariables.ConnectionString));
 
@@ -55,7 +57,3 @@ namespace LezzetKitabi
         }
     }
 }
-// tarif eklenirken aynı isimli tarif eklenemiyor ( evet GetRecipeByName yeniden bizlerlee :D ), tarif eklendikten sonra textbox vs içleri temizleniyor, adam yanlışlıkla bir malzeme eklerse silemiyor -> silmek için bir buton ekledim, silme işlemini yapıyordu ancak 2 listbox olduğu için ikisini de select ediyor orada görüntü hoşuma gitmedi o yüzden şimdilik yorum satırına aldım, tasarımda da butonlar hala leş onlar değişecek bir de malzeme ekleme kısmında yeni malzeme ekle butonu olacak o buton senin daha önce yaptığın malzeme ekleme form'una yönlendirecek gibi dusundum ama oyle yapınca da hali hazırda yarım eklenmis olan tarif içeriği siliniyo (en iyisi böyle kalsın) 
-
-
-//BOŞ TARİF EKLENEBİLİYOR HİÇBİR AŞAMA ATLANMAMALI !

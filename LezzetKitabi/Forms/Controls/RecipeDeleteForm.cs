@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class TestAmacli : UserControl
+    public partial class RecipeDeleteForm : UserControl
     {
-        public TestAmacli()
+        public RecipeDeleteForm()
         {
             InitializeComponent();
-        }
-
-        private void metroSetListBox1_SelectedIndexChanged(object sender)
-        {
-
         }
     }
 }
