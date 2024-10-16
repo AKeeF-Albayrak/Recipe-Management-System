@@ -22,14 +22,20 @@ namespace LezzetKitabi.Forms.Controls
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
-
             cmbUnit.DataSource = Enum.GetValues(typeof(UnitType));
-
-
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtIngredientName.Text) ||
+                string.IsNullOrWhiteSpace(txtTotalQuantity.Text) ||
+                string.IsNullOrWhiteSpace(txtUnitPrice.Text) ||
+                cmbUnit.SelectedIndex == -1)
+            {
+                MessageBox.Show("Lütfen tüm alanları doldurunuz.");
+                return;
+            }
+
             IngredientAddDto ingredient = new IngredientAddDto()
             {
                 IngredientName = txtIngredientName.Text,
@@ -40,7 +46,10 @@ namespace LezzetKitabi.Forms.Controls
             if (decimal.TryParse(txtUnitPrice.Text, out decimal unitPrice))
             {
                 ingredient.UnitPrice = unitPrice;
+
                 _ingredientService.AddIngredient(ingredient);
+
+                MessageBox.Show("Malzeme başarıyla eklendi!");
 
                 txtIngredientName.Clear();
                 txtTotalQuantity.Clear();
@@ -51,11 +60,6 @@ namespace LezzetKitabi.Forms.Controls
             {
                 MessageBox.Show("Lütfen geçerli bir fiyat giriniz.");
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

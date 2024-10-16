@@ -44,48 +44,53 @@
             // 
             lblIngredientName.AutoSize = true;
             lblIngredientName.BackColor = Color.Transparent;
-            lblIngredientName.Location = new Point(565, 226);
+            lblIngredientName.Font = new Font("Segoe Print", 15.75F);
+            lblIngredientName.Location = new Point(745, 226);
             lblIngredientName.Margin = new Padding(4, 0, 4, 0);
             lblIngredientName.Name = "lblIngredientName";
-            lblIngredientName.Size = new Size(79, 15);
+            lblIngredientName.Size = new Size(158, 36);
             lblIngredientName.TabIndex = 0;
             lblIngredientName.Text = "Malzeme Adı:";
             // 
             // txtIngredientName
             // 
-            txtIngredientName.Location = new Point(692, 226);
+            txtIngredientName.Font = new Font("Segoe UI", 15.75F);
+            txtIngredientName.Location = new Point(955, 227);
             txtIngredientName.Margin = new Padding(4, 3, 4, 3);
             txtIngredientName.Name = "txtIngredientName";
-            txtIngredientName.Size = new Size(233, 23);
+            txtIngredientName.Size = new Size(233, 35);
             txtIngredientName.TabIndex = 1;
             // 
             // lblTotalQuantity
             // 
             lblTotalQuantity.AutoSize = true;
             lblTotalQuantity.BackColor = Color.Transparent;
-            lblTotalQuantity.Location = new Point(558, 272);
+            lblTotalQuantity.Font = new Font("Segoe Print", 15.75F);
+            lblTotalQuantity.Location = new Point(745, 290);
             lblTotalQuantity.Margin = new Padding(4, 0, 4, 0);
             lblTotalQuantity.Name = "lblTotalQuantity";
-            lblTotalQuantity.Size = new Size(86, 15);
+            lblTotalQuantity.Size = new Size(180, 36);
             lblTotalQuantity.TabIndex = 2;
             lblTotalQuantity.Text = "Toplam Miktar:";
             // 
             // txtTotalQuantity
             // 
-            txtTotalQuantity.Location = new Point(692, 272);
+            txtTotalQuantity.Font = new Font("Segoe UI", 15.75F);
+            txtTotalQuantity.Location = new Point(955, 289);
             txtTotalQuantity.Margin = new Padding(4, 3, 4, 3);
             txtTotalQuantity.Name = "txtTotalQuantity";
-            txtTotalQuantity.Size = new Size(233, 23);
+            txtTotalQuantity.Size = new Size(233, 35);
             txtTotalQuantity.TabIndex = 3;
             // 
             // lblUnit
             // 
             lblUnit.AutoSize = true;
             lblUnit.BackColor = Color.Transparent;
-            lblUnit.Location = new Point(575, 321);
+            lblUnit.Font = new Font("Segoe Print", 15.75F);
+            lblUnit.Location = new Point(745, 353);
             lblUnit.Margin = new Padding(4, 0, 4, 0);
             lblUnit.Name = "lblUnit";
-            lblUnit.Size = new Size(38, 15);
+            lblUnit.Size = new Size(81, 36);
             lblUnit.TabIndex = 4;
             lblUnit.Text = "Birim:";
             // 
@@ -93,26 +98,28 @@
             // 
             lblUnitPrice.AutoSize = true;
             lblUnitPrice.BackColor = Color.Transparent;
-            lblUnitPrice.Location = new Point(575, 368);
+            lblUnitPrice.Font = new Font("Segoe Print", 15.75F);
+            lblUnitPrice.Location = new Point(745, 418);
             lblUnitPrice.Margin = new Padding(4, 0, 4, 0);
             lblUnitPrice.Name = "lblUnitPrice";
-            lblUnitPrice.Size = new Size(69, 15);
+            lblUnitPrice.Size = new Size(147, 36);
             lblUnitPrice.TabIndex = 6;
             lblUnitPrice.Text = "Birim Fiyatı:";
             // 
             // txtUnitPrice
             // 
-            txtUnitPrice.Location = new Point(692, 364);
+            txtUnitPrice.Font = new Font("Segoe UI", 15.75F);
+            txtUnitPrice.Location = new Point(955, 419);
             txtUnitPrice.Margin = new Padding(4, 3, 4, 3);
             txtUnitPrice.Name = "txtUnitPrice";
-            txtUnitPrice.Size = new Size(233, 23);
+            txtUnitPrice.Size = new Size(233, 35);
             txtUnitPrice.TabIndex = 7;
             // 
             // btnAdd
             // 
             btnAdd.BackColor = Color.FromArgb(40, 167, 69);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(670, 490);
+            btnAdd.Location = new Point(960, 547);
             btnAdd.Margin = new Padding(4, 3, 4, 3);
             btnAdd.Name = "btnAdd";
             btnAdd.Padding = new Padding(10, 20, 10, 20);
@@ -128,28 +135,26 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe Print", 36F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ActiveCaptionText;
-            label1.Location = new Point(319, 68);
+            label1.Location = new Point(582, 79);
             label1.Name = "label1";
             label1.Size = new Size(606, 85);
             label1.TabIndex = 9;
             label1.Text = "  Add New Ingredient  ";
-            label1.Click += label1_Click;
             // 
             // cmbUnit
             // 
             cmbUnit.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbUnit.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbUnit.Font = new Font("Segoe UI", 15.75F);
             cmbUnit.FormattingEnabled = true;
-            cmbUnit.Location = new Point(692, 318);
+            cmbUnit.Location = new Point(955, 353);
             cmbUnit.Name = "cmbUnit";
-            cmbUnit.Size = new Size(233, 29);
+            cmbUnit.Size = new Size(233, 38);
             cmbUnit.TabIndex = 10;
             // 
             // IngredientAddForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.spoons_with_powder_condiments_copy_space;
             BackgroundImageLayout = ImageLayout.Stretch;
             Controls.Add(cmbUnit);
             Controls.Add(label1);
@@ -163,7 +168,7 @@
             Controls.Add(lblIngredientName);
             Margin = new Padding(4, 3, 4, 3);
             Name = "IngredientAddForm";
-            Size = new Size(1045, 738);
+            Size = new Size(1323, 796);
             ResumeLayout(false);
             PerformLayout();
         }
