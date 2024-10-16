@@ -33,16 +33,18 @@
             lblTotalQuantity = new Label();
             txtTotalQuantity = new TextBox();
             lblUnit = new Label();
-            txtUnit = new TextBox();
             lblUnitPrice = new Label();
             txtUnitPrice = new TextBox();
             btnAdd = new Button();
+            label1 = new Label();
+            cmbUnit = new ComboBox();
             SuspendLayout();
             // 
             // lblIngredientName
             // 
             lblIngredientName.AutoSize = true;
-            lblIngredientName.Location = new Point(161, 137);
+            lblIngredientName.BackColor = Color.Transparent;
+            lblIngredientName.Location = new Point(565, 226);
             lblIngredientName.Margin = new Padding(4, 0, 4, 0);
             lblIngredientName.Name = "lblIngredientName";
             lblIngredientName.Size = new Size(79, 15);
@@ -51,7 +53,7 @@
             // 
             // txtIngredientName
             // 
-            txtIngredientName.Location = new Point(278, 134);
+            txtIngredientName.Location = new Point(692, 226);
             txtIngredientName.Margin = new Padding(4, 3, 4, 3);
             txtIngredientName.Name = "txtIngredientName";
             txtIngredientName.Size = new Size(233, 23);
@@ -60,7 +62,8 @@
             // lblTotalQuantity
             // 
             lblTotalQuantity.AutoSize = true;
-            lblTotalQuantity.Location = new Point(161, 183);
+            lblTotalQuantity.BackColor = Color.Transparent;
+            lblTotalQuantity.Location = new Point(558, 272);
             lblTotalQuantity.Margin = new Padding(4, 0, 4, 0);
             lblTotalQuantity.Name = "lblTotalQuantity";
             lblTotalQuantity.Size = new Size(86, 15);
@@ -69,7 +72,7 @@
             // 
             // txtTotalQuantity
             // 
-            txtTotalQuantity.Location = new Point(278, 180);
+            txtTotalQuantity.Location = new Point(692, 272);
             txtTotalQuantity.Margin = new Padding(4, 3, 4, 3);
             txtTotalQuantity.Name = "txtTotalQuantity";
             txtTotalQuantity.Size = new Size(233, 23);
@@ -78,25 +81,19 @@
             // lblUnit
             // 
             lblUnit.AutoSize = true;
-            lblUnit.Location = new Point(161, 229);
+            lblUnit.BackColor = Color.Transparent;
+            lblUnit.Location = new Point(575, 321);
             lblUnit.Margin = new Padding(4, 0, 4, 0);
             lblUnit.Name = "lblUnit";
             lblUnit.Size = new Size(38, 15);
             lblUnit.TabIndex = 4;
             lblUnit.Text = "Birim:";
             // 
-            // txtUnit
-            // 
-            txtUnit.Location = new Point(278, 226);
-            txtUnit.Margin = new Padding(4, 3, 4, 3);
-            txtUnit.Name = "txtUnit";
-            txtUnit.Size = new Size(233, 23);
-            txtUnit.TabIndex = 5;
-            // 
             // lblUnitPrice
             // 
             lblUnitPrice.AutoSize = true;
-            lblUnitPrice.Location = new Point(161, 276);
+            lblUnitPrice.BackColor = Color.Transparent;
+            lblUnitPrice.Location = new Point(575, 368);
             lblUnitPrice.Margin = new Padding(4, 0, 4, 0);
             lblUnitPrice.Name = "lblUnitPrice";
             lblUnitPrice.Size = new Size(69, 15);
@@ -105,7 +102,7 @@
             // 
             // txtUnitPrice
             // 
-            txtUnitPrice.Location = new Point(278, 272);
+            txtUnitPrice.Location = new Point(692, 364);
             txtUnitPrice.Margin = new Padding(4, 3, 4, 3);
             txtUnitPrice.Name = "txtUnitPrice";
             txtUnitPrice.Size = new Size(233, 23);
@@ -113,31 +110,60 @@
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(278, 322);
+            btnAdd.BackColor = Color.FromArgb(40, 167, 69);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.Location = new Point(670, 490);
             btnAdd.Margin = new Padding(4, 3, 4, 3);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(88, 27);
+            btnAdd.Padding = new Padding(10, 20, 10, 20);
+            btnAdd.Size = new Size(228, 73);
             btnAdd.TabIndex = 8;
             btnAdd.Text = "Ekle";
-            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.UseVisualStyleBackColor = false;
             btnAdd.Click += btnAdd_Click;
             // 
-            // IngredientControl
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe Print", 36F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = SystemColors.ActiveCaptionText;
+            label1.Location = new Point(319, 68);
+            label1.Name = "label1";
+            label1.Size = new Size(606, 85);
+            label1.TabIndex = 9;
+            label1.Text = "  Add New Ingredient  ";
+            label1.Click += label1_Click;
+            // 
+            // cmbUnit
+            // 
+            cmbUnit.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbUnit.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbUnit.FormattingEnabled = true;
+            cmbUnit.Location = new Point(692, 318);
+            cmbUnit.Name = "cmbUnit";
+            cmbUnit.Size = new Size(233, 29);
+            cmbUnit.TabIndex = 10;
+            // 
+            // IngredientAddForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.spoons_with_powder_condiments_copy_space;
+            BackgroundImageLayout = ImageLayout.Stretch;
+            Controls.Add(cmbUnit);
+            Controls.Add(label1);
             Controls.Add(btnAdd);
             Controls.Add(txtUnitPrice);
             Controls.Add(lblUnitPrice);
-            Controls.Add(txtUnit);
             Controls.Add(lblUnit);
             Controls.Add(txtTotalQuantity);
             Controls.Add(lblTotalQuantity);
             Controls.Add(txtIngredientName);
             Controls.Add(lblIngredientName);
             Margin = new Padding(4, 3, 4, 3);
-            Name = "IngredientControl";
-            Size = new Size(624, 567);
+            Name = "IngredientAddForm";
+            Size = new Size(1045, 738);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -149,9 +175,10 @@
         private System.Windows.Forms.Label lblTotalQuantity;
         private System.Windows.Forms.TextBox txtTotalQuantity;
         private System.Windows.Forms.Label lblUnit;
-        private System.Windows.Forms.TextBox txtUnit;
         private System.Windows.Forms.Label lblUnitPrice;
         private System.Windows.Forms.TextBox txtUnitPrice;
         private System.Windows.Forms.Button btnAdd;
+        private Label label1;
+        private ComboBox cmbUnit;
     }
 }

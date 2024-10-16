@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroSet_UI.Controls;
 using LezzetKitabi.Domain.Dtos.IngredientDtos;
+using LezzetKitabi.Domain.Enums;
 
 namespace LezzetKitabi.Forms.Controls
 {
@@ -21,6 +22,10 @@ namespace LezzetKitabi.Forms.Controls
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
+
+            cmbUnit.DataSource = Enum.GetValues(typeof(UnitType));
+
+
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -29,27 +34,28 @@ namespace LezzetKitabi.Forms.Controls
             {
                 IngredientName = txtIngredientName.Text,
                 TotalQuantity = txtTotalQuantity.Text,
-                Unit = txtUnit.Text,
+                Unit = cmbUnit.SelectedItem.ToString(),
             };
 
-            // UnitPrice'ı decimal'e çevirme
             if (decimal.TryParse(txtUnitPrice.Text, out decimal unitPrice))
             {
                 ingredient.UnitPrice = unitPrice;
                 _ingredientService.AddIngredient(ingredient);
+
                 txtIngredientName.Clear();
                 txtTotalQuantity.Clear();
-                txtUnit.Clear();
+                txtUnitPrice.Clear();
+                cmbUnit.SelectedIndex = -1;
             }
             else
             {
-                // Dönüşüm başarısız olursa, hata mesajı gösterilebilir
                 MessageBox.Show("Lütfen geçerli bir fiyat giriniz.");
             }
-
-            // TextBox'ları temizle
-            txtUnitPrice.Clear();
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
