@@ -118,12 +118,13 @@
             // btnAdd
             // 
             btnAdd.BackColor = Color.FromArgb(40, 167, 69);
+            btnAdd.Font = new Font("Segoe Print", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(960, 547);
+            btnAdd.Location = new Point(868, 545);
             btnAdd.Margin = new Padding(4, 3, 4, 3);
             btnAdd.Name = "btnAdd";
             btnAdd.Padding = new Padding(10, 20, 10, 20);
-            btnAdd.Size = new Size(228, 73);
+            btnAdd.Size = new Size(228, 79);
             btnAdd.TabIndex = 8;
             btnAdd.Text = "Ekle";
             btnAdd.UseVisualStyleBackColor = false;
@@ -135,7 +136,7 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe Print", 36F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ActiveCaptionText;
-            label1.Location = new Point(582, 79);
+            label1.Location = new Point(637, 70);
             label1.Name = "label1";
             label1.Size = new Size(606, 85);
             label1.TabIndex = 9;
@@ -151,7 +152,7 @@
             cmbUnit.Size = new Size(233, 38);
             cmbUnit.TabIndex = 10;
             // 
-            // IngredientAddForm
+            // IngredientAddControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -167,7 +168,7 @@
             Controls.Add(txtIngredientName);
             Controls.Add(lblIngredientName);
             Margin = new Padding(4, 3, 4, 3);
-            Name = "IngredientAddForm";
+            Name = "IngredientAddControl";
             Size = new Size(1323, 796);
             ResumeLayout(false);
             PerformLayout();

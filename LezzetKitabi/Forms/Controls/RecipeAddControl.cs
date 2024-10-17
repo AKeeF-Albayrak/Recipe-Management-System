@@ -231,5 +231,47 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Lütfen silmek istediğiniz yönergeyi seçin.");
             }*/
         }
+
+        private void metroSetButton2_Click(object sender, EventArgs e)
+        {
+            var selectedItem = comboBoxIngredients.SelectedItem as ComboBoxItem;
+
+            if (selectedItem != null)
+            {
+                // Seçilen öğenin adı ve birimi
+                string ingredientName = selectedItem.Text;
+                string unit = selectedItem.Unit;
+                string amountText = textBoxAmount.Text;
+
+                // Miktarı float'a çevir
+                if (float.TryParse(amountText, out float ingredientAmount))
+                {
+                    // Malzeme adı ve birimi birleştir
+                    string displayText = $"- {ingredientName} {ingredientAmount} {unit}"; // "Malzeme Adı (Miktar Birimi)" şeklinde
+
+                    // ListBox'a ekle
+                    var listBoxItem = new ListBoxIngredient
+                    {
+                        DisplayText = displayText,
+                        IngredientId = selectedItem.Value, // Burada ID'yi atıyoruz
+                        Amount = ingredientAmount // Miktarı atıyoruz
+                    };
+
+                    listBoxIngredients.Items.Add(listBoxItem); // ListBox'a öğeyi ekle
+
+                    // Başarılı ekleme sonrası kutuları temizle
+                    textBoxAmount.Clear(); // Miktar kutusunu temizle
+                    comboBoxIngredients.SelectedItem = null; // ComboBox'taki seçimi sıfırla
+                }
+                else
+                {
+                    MessageBox.Show("Lütfen geçerli bir miktar girin.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Lütfen bir malzeme seçin.");
+            }
+        }
     }
 }
