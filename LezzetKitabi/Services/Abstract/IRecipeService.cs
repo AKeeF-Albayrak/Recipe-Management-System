@@ -13,7 +13,7 @@ namespace LezzetKitabi.Services.Abstract
     public interface IRecipeService
     {
         Guid AddRecipe(RecipeAddDto recipeAddDto);
-        Task<List<RecipeViewGetDto>> GetAllRecipesAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList);
+        Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList = null);
         bool DeleteRecipe(Guid id);
         Task<RecipeGetDto?> GetRecipeByNameAsync(string name);
 

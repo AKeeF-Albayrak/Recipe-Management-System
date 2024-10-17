@@ -18,16 +18,18 @@ using LezzetKitabi.Domain.Dtos.CrossTableDtos;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class RecipeAddForm : UserControl
+    public partial class RecipeAddControl : UserControl
     {
         private readonly IIngredientService _ingredientService;
         private readonly IRecipeService _recipeService;
         private readonly IRecipeIngredientService _recipeIngredientService;
-        public RecipeAddForm(IServiceProvider serviceProvider)
+        private readonly IServiceProvider _serviceProvider;
+        public RecipeAddControl(IServiceProvider serviceProvider)
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
             _recipeIngredientService = serviceProvider.GetRequiredService<IRecipeIngredientService>();
+            _serviceProvider = serviceProvider;
             SetUpCombobox();
             InitializeComponent();
             numericUpDownHours.Minimum = 0;
@@ -84,8 +86,29 @@ namespace LezzetKitabi.Forms.Controls
         {
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
 
+            // ComboBox'u temizle
             comboBoxIngredients.Items.Clear();
 
+            if (ingredients == null || !ingredients.Any())
+            {
+                MessageBox.Show("Malzeme bulunamadı! Lütfen önce bir malzeme ekleyin.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Ekleme kontrolünü oluştur
+                var ingredientControl = _serviceProvider.GetRequiredService<IngredientAddControl>();
+
+                // Ekleme kontrolünü bir forma veya üst düzey bir kontrol içine ekleyin
+                var parentForm = this.FindForm(); // Bu RecipeAddControl'ün üst formunu bul
+
+                if (parentForm != null)
+                {
+                    // Ekleme kontrolünü formun içerisine ekleyin
+                    ingredientControl.Dock = DockStyle.Fill; // İsteğe bağlı: tam boyutlandır
+                    parentForm.Controls.Add(ingredientControl); // Formun kontrolüne ekleyin
+                    ingredientControl.BringToFront(); // Kontrolü ön plana getirin
+                }
+
+                return;
+            }
             foreach (var ingredient in ingredients)
             {
                 // Yeni ComboBoxItem oluştur
@@ -100,8 +123,8 @@ namespace LezzetKitabi.Forms.Controls
             }
 
             // ComboBox ayarları
-            comboBoxIngredients.DisplayMember = "Text"; // Gösterilecek alan
-            comboBoxIngredients.ValueMember = "Value"; // Seçilen öğenin değeri
+            comboBoxIngredients.DisplayMember = "Text";
+            comboBoxIngredients.ValueMember = "Value";
         }
 
         public class ListBoxIngredient

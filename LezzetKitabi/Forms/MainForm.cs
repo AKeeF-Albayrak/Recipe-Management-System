@@ -13,13 +13,13 @@ namespace LezzetKitabi.Forms
     public partial class MainForm : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        RecipeMainForm recipeMainForm;
+        RecipeMainControl recipeMainForm;
         private bool isAnimating = false;
-        string page;
+        public static string page;
         public MainForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            recipeMainForm = new RecipeMainForm(serviceProvider);
+            recipeMainForm = new RecipeMainControl(serviceProvider);
             InitializeComponent();
             LoadForm(recipeMainForm);
             page = "Search";
@@ -93,19 +93,19 @@ namespace LezzetKitabi.Forms
 
         private void btnIngredients_Click(object sender, EventArgs e)
         {
-            if (page != "Ingredients") LoadForm(new IngredientMainForm(_serviceProvider));
+            if (page != "Ingredients") LoadForm(new IngredientMainControl(_serviceProvider));
             page = "Ingredients";
         }
 
-        private void btnAddIngredient_Click(object sender, EventArgs e)
+        public async void btnAddIngredient_Click(object sender, EventArgs e)
         {
-            if (page != "AddIngredient") LoadForm(new IngredientAddForm(_serviceProvider));
+            if (page != "AddIngredient") LoadForm(new IngredientAddControl(_serviceProvider));
             page = "AddIngredient";
         }
 
         private void btnAddRecipe_Click(object sender, EventArgs e)
         {
-            if (page != "AddRecipe") LoadForm(new RecipeAddForm(_serviceProvider));
+            if (page != "AddRecipe") LoadForm(new RecipeAddControl(_serviceProvider));
             page = "AddRecipe";
         }
 

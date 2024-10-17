@@ -17,13 +17,13 @@ using System.Windows.Forms;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class IngredientMainForm : UserControl
+    public partial class IngredientMainControl : UserControl
     {
         private readonly IIngredientService _ingredientService;
         IngredientSortingType _sortingType = IngredientSortingType.A_from_Z;
         private List<FilterCriteria> filterCriteriaList;
 
-        public IngredientMainForm(IServiceProvider serviceProvider)
+        public IngredientMainControl(IServiceProvider serviceProvider)
         {
             filterCriteriaList = new List<FilterCriteria>();
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
@@ -38,6 +38,26 @@ namespace LezzetKitabi.Forms.Controls
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
             comboBoxUnit.Items.AddRange(Enum.GetNames(typeof(UnitType)));
+            InitializeSearchTextBox();
+        }
+
+        private async Task InitializeSearchTextBox()
+        {
+            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType);
+
+            // AutoComplete ayarlarını yapılandır
+            textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
+
+            // Malzeme isimlerini ekleyin
+            foreach (var ingredient in ingredients)
+            {
+                suggestions.Add(ingredient.IngredientName); // ingredient.IngredientName ile malzeme adını alıyoruz
+            }
+
+            // Suggestions'u textbox'a ata
+            textBoxSearch.AutoCompleteCustomSource = suggestions;
         }
 
         private async Task InitializeCustomPanelsAsync()
@@ -272,21 +292,29 @@ namespace LezzetKitabi.Forms.Controls
 
             if (deleteButton != null)
             {
-                // Delete butonunun Tag'inde hangi ingredient olduğunu al
                 Ingredient ingredientToDelete = deleteButton.Tag as Ingredient;
 
                 if (ingredientToDelete != null)
                 {
-                    bool isDeleted = await Task.Run(() => _ingredientService.DeleteIngredient(ingredientToDelete.Id)); // Silme işlemini async hale getir
+                    DialogResult dialogResult = MessageBox.Show(
+                        $"{ingredientToDelete.IngredientName} Malzemesini Silmek Istediginize Emin Misiniz?",
+                        "Emin Misiniz",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
 
-                    if (isDeleted)
+                    if (dialogResult == DialogResult.Yes)
                     {
-                        MessageBox.Show("Ingredient deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        await RefreshPanelsAsync();  // Panel yenileme işlemini async yap
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to delete the ingredient.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        bool isDeleted = await Task.Run(() => _ingredientService.DeleteIngredient(ingredientToDelete.Id));
+
+                        if (isDeleted)
+                        {
+                            MessageBox.Show("Ingredient deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            await RefreshPanelsAsync();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to delete the ingredient.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
@@ -296,85 +324,64 @@ namespace LezzetKitabi.Forms.Controls
         {
             panelItems.Controls.Clear();
 
-            await InitializeCustomPanelsAsync();  // Bu işlemi de async yaparak UI'nin kilitlenmesini önleyin
+            await InitializeCustomPanelsAsync();
         }
-
-        
-
-        // Formda filtre kriterlerini tutan liste
-
 
         private void buttonPriceRangeAdd_Click(object sender, EventArgs e)
         {
-            // Fiyat aralığı değerlerini al
             decimal? minPrice = null;
             decimal? maxPrice = null;
 
-            // Minimum fiyatı kontrol et
             if (decimal.TryParse(textBoxMinPrice.Text, out decimal minPriceValue))
             {
                 minPrice = minPriceValue;
             }
 
-            // Maksimum fiyatı kontrol et (boşsa null bırak)
             if (decimal.TryParse(textBoxMaxPrice.Text, out decimal maxPriceValue))
             {
                 maxPrice = maxPriceValue;
             }
 
-            // Eğer minimum fiyat var ise ve maksimum fiyat varsa, kontrol et
             if (minPrice.HasValue && maxPrice.HasValue && minPrice.Value > maxPrice.Value)
             {
                 MessageBox.Show("Minimum fiyat maksimum fiyatı geçemez.");
                 return;
             }
 
-            // Fiyat filtresini kontrol et ve gerekirse sil
             RemoveExistingFilter("Fiyat");
 
-            // Yeni filtreyi listeye ekle
             if (minPrice.HasValue || maxPrice.HasValue)
             {
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Fiyat", Value = $"{minPrice} - {maxPrice}" });
-                // Yeni filtreyi panelCurrentFilter'a ekle
                 AddFilterToPanel($"Fiyat: {minPrice} - {maxPrice}", RemoveFilter);
             }
         }
 
         private void buttonStockRangeAdd_Click(object sender, EventArgs e)
         {
-            // Stok aralığı değerlerini al
             int? minStock = null;
             int? maxStock = null;
 
-            // Minimum stok değerini kontrol et
             if (int.TryParse(textBoxMinStock.Text, out int minStockValue))
             {
                 minStock = minStockValue;
             }
 
-            // Maksimum stok değerini kontrol et (boşsa null bırak)
             if (int.TryParse(textBoxMaxStock.Text, out int maxStockValue))
             {
                 maxStock = maxStockValue;
             }
 
-            // Eğer minimum stok var ise ve maksimum stok varsa, kontrol et
             if (minStock.HasValue && maxStock.HasValue && minStock.Value > maxStock.Value)
             {
                 MessageBox.Show("Minimum stok maksimum stok değerini geçemez.");
                 return;
             }
 
-            // Stok filtresini kontrol et ve gerekirse sil
             RemoveExistingFilter("Stok");
-
-            // Yeni filtreyi listeye ekle
-            // Eğer sadece minStock veya maxStock varsa, filtreyi uygun bir şekilde ekleyin
             if (minStock.HasValue || maxStock.HasValue)
             {
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Stok", Value = $"{minStock} - {maxStock}" });
-                // Yeni filtreyi panelCurrentFilter'a ekle
                 AddFilterToPanel($"Stok: {minStock} - {maxStock}", RemoveFilter);
             }
         }

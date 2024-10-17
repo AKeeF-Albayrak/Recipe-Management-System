@@ -75,10 +75,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                    LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
                    LEFT JOIN Ingredients i ON ri.IngredientID = i.Id ";
 
-            // Filtreleme işlemleri
+            filterCriteriaList ??= new List<FilterCriteria>();
+
             List<string> filters = new List<string>();
 
-            // Fiyat aralığı filtresi
             var priceFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Fiyat");
             if (priceFilter != null)
             {
@@ -91,6 +91,33 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                         filters.Add($"(i.UnitPrice >= {minPrice})");
                     if (!string.IsNullOrEmpty(maxPrice))
                         filters.Add($"(i.UnitPrice <= {maxPrice})");
+                }
+            }
+
+            var ingredientFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Sayisi");
+            if (ingredientFilter != null)
+            {
+                var ingredientCounts = ingredientFilter.Value.Split('-');
+                if (ingredientCounts.Length == 2)
+                {
+                    string minCount = ingredientCounts[0].Trim();
+                    string maxCount = ingredientCounts[1].Trim();
+
+                    if (!string.IsNullOrEmpty(minCount))
+                    {
+                        filters.Add($@"
+                                    (SELECT COUNT(*) 
+                                     FROM RecipeIngredients ri 
+                                     WHERE ri.RecipeID = r.Id) >= {minCount}");
+                    }
+
+                    if (!string.IsNullOrEmpty(maxCount))
+                    {
+                        filters.Add($@"
+                                    (SELECT COUNT(*) 
+                                     FROM RecipeIngredients ri 
+                                     WHERE ri.RecipeID = r.Id) <= {maxCount}");
+                    }
                 }
             }
 
@@ -130,7 +157,14 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             if (nameFilter != null)
             {
                 string name = nameFilter.Value;
-                filters.Add($"(r.RecipeName LIKE '%{name}%')");
+
+                // Tarif adı ile malzeme adı için SQL sorgusu ekleniyor
+                filters.Add($@"
+                        (r.RecipeName LIKE '%{name}%' OR 
+                         r.Id IN (SELECT ri.RecipeID 
+                                  FROM RecipeIngredients ri 
+                                  JOIN Ingredients i ON ri.IngredientID = i.Id 
+                                  WHERE i.IngredientName LIKE '%{name}%'))");
             }
 
             // Filtreleri sorguya ekleme
@@ -162,6 +196,26 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     break;
                 case RecipeSortingType.Expensive_to_Cheapest:
                     sql += "ORDER BY TotalCost DESC;";
+                    break;
+                case RecipeSortingType.Ascending_Percentage:
+                    sql += "ORDER BY AvailabilityPercentage ASC;";
+                    break;
+                case RecipeSortingType.Descending_Percentage:
+                    sql += "ORDER BY AvailabilityPercentage DESC;";
+                    break;
+                case RecipeSortingType.Increasing_Ingredients:
+                    sql += @"
+                            ORDER BY 
+                            (SELECT COUNT(*) 
+                             FROM RecipeIngredients ri 
+                             WHERE ri.RecipeID = r.Id) ASC;";
+                    break;
+                case RecipeSortingType.Decrising_Ingredients:
+                    sql += @"
+                            ORDER BY 
+                            (SELECT COUNT(*) 
+                             FROM RecipeIngredients ri 
+                             WHERE ri.RecipeID = r.Id) DESC;";
                     break;
                 default:
                     sql += ";";

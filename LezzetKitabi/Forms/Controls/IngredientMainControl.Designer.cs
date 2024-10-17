@@ -1,6 +1,6 @@
 ﻿namespace LezzetKitabi.Forms.Controls
 {
-    partial class IngredientMainForm
+    partial class IngredientMainControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -100,11 +100,6 @@
             textBoxSearch.Name = "textBoxSearch";
             textBoxSearch.Size = new Size(445, 23);
             textBoxSearch.TabIndex = 0;
-            textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
-            suggestions.AddRange(new string[] { "Apple", "Banana", "Cherry" });
-            textBoxSearch.AutoCompleteCustomSource = suggestions;
             // 
             // panelElements
             // 

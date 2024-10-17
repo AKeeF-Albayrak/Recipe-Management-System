@@ -14,17 +14,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static LezzetKitabi.Forms.Controls.RecipeAddForm;
+using static LezzetKitabi.Forms.Controls.RecipeAddControl;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class RecipeMainForm : UserControl
+    public partial class RecipeMainControl : UserControl
     {
         private readonly IRecipeService _recipeService;
         private readonly IIngredientService _ingredientService;
-        RecipeSortingType _sortingType = RecipeSortingType.A_from_Z;
+        RecipeSortingType _sortingType = RecipeSortingType.Descending_Percentage;
         private List<FilterCriteria> filterCriteriaList;
-        public RecipeMainForm(IServiceProvider serviceProvider)
+        public RecipeMainControl(IServiceProvider serviceProvider)
         {
             filterCriteriaList = new List<FilterCriteria>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
@@ -42,6 +42,22 @@ namespace LezzetKitabi.Forms.Controls
             panelDown.BackColor = Color.Transparent;
             comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Category)));
             SetUpCombobox();
+            InitializeSearchBar();
+        }
+        public async void  InitializeSearchBar()
+        {
+            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType);
+            textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
+
+            foreach (var recipe in recipes)
+            {
+                suggestions.Add(recipe.RecipeName);
+            }
+
+            // Suggestions'u textbox'a ata
+            textBoxSearch.AutoCompleteCustomSource = suggestions;
         }
         public async void SetUpCombobox()
         {
@@ -52,18 +68,18 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async Task InitializeCustomPanelsAsync()
         {
-            int rows = 3;  // 3 rows
-            int cols = 6;  // 6 columns
-            int panelWidth = 160;  // Panel width
-            int panelHeight = 190; // Panel height
+            int rows = 2;  // 3 rows
+            int cols = 4;  // 6 columns
+            int panelWidth = 240;  // Panel width
+            int panelHeight = 285; // Panel height
             int xPadding = 12;  // Horizontal padding between panels
             int yPadding = 12;  // Vertical padding between panels
             int startX = 10; // Starting X position
             int startY = 10; // Starting Y position
             int cornerRadius = 20;  // Yuvarlak köşe yarıçapı
 
-            // Tüm malzemeleri al
-            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesAsync(_sortingType, filterCriteriaList);
+            // Tüm tarifleri al
+            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType, filterCriteriaList);
 
             if (recipes == null || recipes.Count == 0)
             {
@@ -79,7 +95,7 @@ namespace LezzetKitabi.Forms.Controls
                 // Ana panel oluştur
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = recipes[i];
-                mainPanel.BackColor = Color.Transparent;  // Şeffaf arka plan
+                mainPanel.BackColor = recipes[i].AvailabilityPercentage == 100 ? Color.Green : Color.DarkRed;
                 mainPanel.Size = new Size(panelWidth, panelHeight);
                 int x = startX + col * (panelWidth + xPadding);
                 int y = startY + row * (panelHeight + yPadding);
@@ -95,10 +111,13 @@ namespace LezzetKitabi.Forms.Controls
                     // Yuvarlatılmış dikdörtgen oluştur
                     using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
                     {
-                        using (Brush brush = new SolidBrush(SystemColors.ActiveCaption))
+                        using (Brush brush = new SolidBrush(mainPanel.BackColor))  // Ana panelin arka plan rengi
                         {
                             g.FillPath(brush, path);  // Arka planı doldur
                         }
+
+                        // Panelin görünümünü yuvarlak yap
+                        mainPanel.Region = new Region(path);
                     }
                 };
 
@@ -139,7 +158,7 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxDetail.Location = new Point((panelWidth - pictureBoxDetail.Width) / 2, 20);  // İlk PictureBox için pozisyon
                 pictureBoxDetail.Image = Properties.Resources.DetailsIcon;  // Detail ikonu
                 pictureBoxDetail.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
-                //pictureBoxEdit.Click += (s, e) => DeRecipe(recipes[i]);  // Tıklama olayını tanımla
+                                                                              //pictureBoxDetail.Click += (s, e) => DeRecipe(recipes[i]);  // Tıklama olayını tanımla
 
                 // Güncelleme butonu
                 PictureBox pictureBoxUpdate = new PictureBox();
@@ -148,17 +167,17 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxUpdate.Image = Properties.Resources.EditIcon;  // Güncelleme ikonu
                 pictureBoxUpdate.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
                 pictureBoxUpdate.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
-                //pictureBoxUpdate.Click += (s, e) => UpdateRecipe(recipes[i]);  // Tıklama olayını tanımla
+                                                         //pictureBoxUpdate.Click += (s, e) => UpdateRecipe(recipes[i]);  // Tıklama olayını tanımla
 
                 // Silme butonu
                 PictureBox pictureBoxDelete = new PictureBox();
-                pictureBoxDelete.Size = new Size(50, 50);  // PictureBox boyutu
-                pictureBoxDelete.Location = new Point((panelWidth - pictureBoxDelete.Width) / 2, 130);  // Üçüncü PictureBox için pozisyon
-                pictureBoxDelete.Image = Properties.Resources.DeleteIcon;  // Silme ikonu
-                pictureBoxDelete.SizeMode = PictureBoxSizeMode.StretchImage;  // Resmi stretch yap
-                pictureBoxDelete.Cursor = Cursors.Hand;  // Fare üzerine geldiğinde el ikonu göster
-                //pictureBoxDelete.Click += DeleteButton_Click;  // Tıklama olayını tanımla
-                //pictureBoxDelete.Tag = recipes[i];  // Tag olarak tarifi ekleyin
+                pictureBoxDelete.Size = new Size(50, 50);
+                pictureBoxDelete.Location = new Point((panelWidth - pictureBoxDelete.Width) / 2, 130);
+                pictureBoxDelete.Image = Properties.Resources.DeleteIcon;
+                pictureBoxDelete.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBoxDelete.Cursor = Cursors.Hand;
+                pictureBoxDelete.Click += DeleteIcon_Click;
+                pictureBoxDelete.Tag = recipes[i];                                        
 
                 // Overlay paneline butonları ekleyin
                 overlayPanel.Controls.Add(pictureBoxDetail);
@@ -174,7 +193,7 @@ namespace LezzetKitabi.Forms.Controls
                 // Yeni Label'lar için oluşturma
                 Label percentageLabel = new Label();
                 percentageLabel.AutoSize = true;
-                percentageLabel.Text = "Yüzde: "+ (recipes[i].AvailabilityPercentage).ToString("0.##") + "%"; // Yüzde değeri
+                percentageLabel.Text = "Yüzde: " + (recipes[i].AvailabilityPercentage).ToString("0.##") + "%"; // Yüzde değeri
                 percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2, 40); // Ortalayın
 
                 Label costLabel = new Label();
@@ -183,8 +202,8 @@ namespace LezzetKitabi.Forms.Controls
                 costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 60); // Ortalayın
 
                 mainPanel.Controls.Add(label);
-                mainPanel.Controls.Add(percentageLabel); // Yüzde label'ını ekleyin
-                mainPanel.Controls.Add(costLabel); // Maliyet label'ını ekleyin
+                mainPanel.Controls.Add(percentageLabel); 
+                mainPanel.Controls.Add(costLabel);
                 mainPanel.Controls.Add(overlayPanel);
 
                 // Ana paneli panelItems'a ekleyin
@@ -217,25 +236,28 @@ namespace LezzetKitabi.Forms.Controls
         private async void DeleteIcon_Click(object sender, EventArgs e)
         {
             PictureBox deleteIcon = sender as PictureBox;
-
             if (deleteIcon != null)
             {
-                // PictureBox'ın Tag'inde hangi Recipe olduğunu al
-                Recipe recipeToDelete = deleteIcon.Tag as Recipe;
-
+                RecipeViewGetDto recipeToDelete = deleteIcon.Tag as RecipeViewGetDto;
                 if (recipeToDelete != null)
                 {
-                    // Tarifi silme işlemi
-                    bool isDeleted = await Task.Run(() => _recipeService.DeleteRecipe(recipeToDelete.Id));
-
-                    if (isDeleted)
+                    DialogResult dialogResult = MessageBox.Show(
+                        $"'{recipeToDelete.RecipeName}' Adli Tarifi Silmek Istediginize Emin Misiniz?",
+                        "Emin Misiniz",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+                    if (dialogResult == DialogResult.Yes)
                     {
-                        MessageBox.Show("Recipe deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        await RefreshPanelsAsync();  // Panel yenileme işlemini async yap
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to delete the Recipe.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        bool isDeleted = await Task.Run(() => _recipeService.DeleteRecipe(recipeToDelete.Id));
+                        if (isDeleted)
+                        {
+                            MessageBox.Show("Tarif Basariyla Silindi!", "Basarili", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            await RefreshPanelsAsync();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Tarifi Silerken Bir Hata Olustu!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
@@ -305,22 +327,34 @@ namespace LezzetKitabi.Forms.Controls
             switch (comboBoxSort.SelectedIndex)
             {
                 case 0:
-                    _sortingType = RecipeSortingType.A_from_Z;
+                    _sortingType = RecipeSortingType.Ascending_Percentage;
                     break;
                 case 1:
-                    _sortingType = RecipeSortingType.Z_from_A;
+                    _sortingType = RecipeSortingType.Descending_Percentage;
                     break;
                 case 2:
-                    _sortingType = RecipeSortingType.Cheapest_to_Expensive;
+                    _sortingType = RecipeSortingType.A_from_Z;
                     break;
                 case 3:
-                    _sortingType = RecipeSortingType.Expensive_to_Cheapest;
+                    _sortingType = RecipeSortingType.Z_from_A;
                     break;
                 case 4:
-                    _sortingType = RecipeSortingType.Fastest_to_Slowest;
+                    _sortingType = RecipeSortingType.Cheapest_to_Expensive;
                     break;
                 case 5:
+                    _sortingType = RecipeSortingType.Expensive_to_Cheapest;
+                    break;
+                case 6:
+                    _sortingType = RecipeSortingType.Fastest_to_Slowest;
+                    break;
+                case 7:
                     _sortingType = RecipeSortingType.Slowest_to_Fastest;
+                    break;
+                case 8:
+                    _sortingType = RecipeSortingType.Increasing_Ingredients;
+                    break;
+                case 9:
+                    _sortingType = RecipeSortingType.Decrising_Ingredients;
                     break;
                 default:
                     _sortingType = RecipeSortingType.A_from_Z;

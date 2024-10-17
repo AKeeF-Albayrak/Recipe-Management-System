@@ -1,6 +1,6 @@
 ﻿namespace LezzetKitabi.Forms.Controls
 {
-    partial class IngredientAddForm
+    partial class IngredientAddControl
     {
         /// <summary> 
         /// Required designer variable.

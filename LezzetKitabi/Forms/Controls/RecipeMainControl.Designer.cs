@@ -1,6 +1,6 @@
 ﻿namespace LezzetKitabi.Forms.Controls
 {
-    partial class RecipeMainForm
+    partial class RecipeMainControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -180,7 +180,7 @@
             // comboBoxSort
             // 
             comboBoxSort.FormattingEnabled = true;
-            comboBoxSort.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza", "Hizlidan Yavasa", "Yavasdan Hizliya" });
+            comboBoxSort.Items.AddRange(new object[] { "Artan Yuzde", "Azalan Yuzde", "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza", "Hizlidan Yavasa", "Yavasdan Hizliya", "Malzeme Sayisina Gore Artan", "Malzeme Sayisina Gore Azalan" });
             comboBoxSort.Location = new Point(616, 11);
             comboBoxSort.Name = "comboBoxSort";
             comboBoxSort.Size = new Size(192, 23);
@@ -453,7 +453,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(15, 24);
+            button1.Location = new Point(26, 24);
             button1.Name = "button1";
             button1.Size = new Size(149, 23);
             button1.TabIndex = 0;

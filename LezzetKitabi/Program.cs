@@ -41,10 +41,10 @@ namespace LezzetKitabi
             services.AddScoped<MainForm>();
 
             //Adding Controls
-            services.AddScoped<IngredientAddForm>();
-            services.AddScoped<RecipeAddForm>();
-            services.AddScoped<RecipeMainForm>();
-            services.AddScoped<IngredientMainForm>();
+            services.AddScoped<IngredientAddControl>();
+            services.AddScoped<RecipeAddControl>();
+            services.AddScoped<RecipeMainControl>();
+            services.AddScoped<IngredientMainControl>();
 
             services.AddScoped<IDbConnection>(sp => new SqlConnection(ConstVariables.ConnectionString));
 
@@ -55,3 +55,4 @@ namespace LezzetKitabi
         }
     }
 }
+// tarif filtresinde malzeme sayisi gore calisiyor ama koyacak yer bulamadim

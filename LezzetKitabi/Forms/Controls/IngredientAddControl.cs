@@ -15,10 +15,10 @@ using LezzetKitabi.Domain.Enums;
 
 namespace LezzetKitabi.Forms.Controls
 {
-    public partial class IngredientAddForm : UserControl
+    public partial class IngredientAddControl : UserControl
     {
         private readonly IIngredientService _ingredientService;
-        public IngredientAddForm(IServiceProvider serviceProvider)
+        public IngredientAddControl(IServiceProvider serviceProvider)
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
