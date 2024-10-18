@@ -228,8 +228,15 @@ namespace LezzetKitabi.Forms.Controls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Add((listBox1.Items.Count + 1) + " - " + textBox3.Text);
-            textBox3.Clear();
+            if (textBox3.Text == "")
+            {
+                MessageBox.Show("Lutfen Gecerli Bir Yonerge Giriniz!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                listBox1.Items.Add((listBox1.Items.Count + 1) + " - " + textBox3.Text);
+                textBox3.Clear();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -268,5 +275,34 @@ namespace LezzetKitabi.Forms.Controls
             }
         }
 
+        private bool isChanging = false;
+
+        private void listBoxIngredients_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isChanging) return;
+
+            if (listBoxIngredients.SelectedIndex != -1)
+            {
+                isChanging = true;
+
+                listBox1.ClearSelected();
+
+                isChanging = false;
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isChanging) return;
+
+            if (listBox1.SelectedIndex != -1)
+            {
+                isChanging = true;
+
+                listBoxIngredients.ClearSelected();
+
+                isChanging = false;
+            }
+        }
     }
 }

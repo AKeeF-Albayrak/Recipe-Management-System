@@ -230,6 +230,7 @@
             listBoxIngredients.Name = "listBoxIngredients";
             listBoxIngredients.Size = new Size(305, 502);
             listBoxIngredients.TabIndex = 25;
+            listBoxIngredients.SelectedIndexChanged += listBoxIngredients_SelectedIndexChanged;
             // 
             // textBox3
             // 
@@ -238,9 +239,9 @@
             textBox3.Location = new Point(38, 603);
             textBox3.Multiline = true;
             textBox3.Name = "textBox3";
-            textBox3.PlaceholderText = "Instructions";
+            textBox3.PlaceholderText = " Instructions";
             textBox3.Size = new Size(420, 100);
-            textBox3.TabIndex = 26;
+            textBox3.TabIndex = 24;
             // 
             // button1
             // 
@@ -266,6 +267,7 @@
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(305, 502);
             listBox1.TabIndex = 28;
+            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // button2
             // 

@@ -69,7 +69,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             string sql = @"SELECT r.Id, r.RecipeName, 
                           SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
                           (CASE WHEN SUM(ri.IngredientAmount) > 0 THEN 
-                              SUM(CASE WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity != '0' THEN ri.IngredientAmount / CAST(i.TotalQuantity AS FLOAT) * 100 ELSE 0 END) / COUNT(ri.IngredientID)
+                              SUM(CASE WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity != '0' THEN CAST(i.TotalQuantity AS FLOAT) / ri.IngredientAmount * 100 ELSE 0 END) / COUNT(ri.IngredientID)
                            ELSE 0 END) AS AvailabilityPercentage
                    FROM Recipes r 
                    LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 

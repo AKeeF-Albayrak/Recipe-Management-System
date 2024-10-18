@@ -305,12 +305,15 @@
             // 
             // buttonTimeAdd
             // 
+            buttonTimeAdd.BackColor = Color.Linen;
+            buttonTimeAdd.FlatStyle = FlatStyle.Flat;
+            buttonTimeAdd.ForeColor = Color.FromArgb(128, 255, 128);
             buttonTimeAdd.Location = new Point(58, 73);
             buttonTimeAdd.Name = "buttonTimeAdd";
             buttonTimeAdd.Size = new Size(75, 23);
             buttonTimeAdd.TabIndex = 4;
             buttonTimeAdd.Text = "Ekle";
-            buttonTimeAdd.UseVisualStyleBackColor = true;
+            buttonTimeAdd.UseVisualStyleBackColor = false;
             buttonTimeAdd.Click += buttonTimeAdd_Click;
             // 
             // label4
@@ -461,7 +464,7 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += buttonFilter_Click;
             // 
-            // RecipeMainForm
+            // RecipeMainControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -469,7 +472,7 @@
             Controls.Add(panelFilter);
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
-            Name = "RecipeMainForm";
+            Name = "RecipeMainControl";
             Size = new Size(1323, 796);
             panelSearch.ResumeLayout(false);
             panelSearch.PerformLayout();
