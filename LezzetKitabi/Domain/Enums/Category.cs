@@ -8,7 +8,10 @@ namespace LezzetKitabi.Domain.Enums
 {
     public enum Category
     {
-        Starter,
-        Desert
+        AnaYemek,
+        Corba,
+        Salata,
+        Tatli,
+        Aperatif
     }
 }

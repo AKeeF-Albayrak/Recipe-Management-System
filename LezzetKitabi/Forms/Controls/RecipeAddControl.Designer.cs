@@ -32,7 +32,6 @@
             label2 = new Label();
             label1 = new Label();
             label3 = new Label();
-            textBoxCategory = new TextBox();
             label4 = new Label();
             numericUpDownHours = new NumericUpDown();
             label5 = new Label();
@@ -53,6 +52,7 @@
             label11 = new Label();
             label8 = new Label();
             label9 = new Label();
+            comboBoxCategory = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)numericUpDownHours).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMinutes).BeginInit();
             SuspendLayout();
@@ -97,16 +97,6 @@
             label3.Name = "label3";
             label3.Size = new Size(0, 25);
             label3.TabIndex = 8;
-            // 
-            // textBoxCategory
-            // 
-            textBoxCategory.BorderStyle = BorderStyle.FixedSingle;
-            textBoxCategory.Font = new Font("Segoe UI", 14.25F);
-            textBoxCategory.Location = new Point(38, 328);
-            textBoxCategory.Name = "textBoxCategory";
-            textBoxCategory.PlaceholderText = "Category";
-            textBoxCategory.Size = new Size(278, 33);
-            textBoxCategory.TabIndex = 10;
             // 
             // label4
             // 
@@ -345,12 +335,24 @@
             label9.TabIndex = 34;
             label9.Text = "Instructions";
             // 
+            // comboBoxCategory
+            // 
+            comboBoxCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCategory.FlatStyle = FlatStyle.Popup;
+            comboBoxCategory.Font = new Font("Segoe UI", 14.25F);
+            comboBoxCategory.FormattingEnabled = true;
+            comboBoxCategory.Location = new Point(38, 323);
+            comboBoxCategory.Name = "comboBoxCategory";
+            comboBoxCategory.Size = new Size(278, 33);
+            comboBoxCategory.TabIndex = 37;
+            // 
             // RecipeAddControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.InactiveCaption;
             BackgroundImageLayout = ImageLayout.Stretch;
+            Controls.Add(comboBoxCategory);
             Controls.Add(label9);
             Controls.Add(label8);
             Controls.Add(label11);
@@ -371,7 +373,6 @@
             Controls.Add(label5);
             Controls.Add(numericUpDownHours);
             Controls.Add(label4);
-            Controls.Add(textBoxCategory);
             Controls.Add(label3);
             Controls.Add(label1);
             Controls.Add(label2);
@@ -389,7 +390,6 @@
         private Label label2;
         private Label label1;
         private Label label3;
-        private TextBox textBoxCategory;
         private Label label4;
         private NumericUpDown numericUpDownHours;
         private Label label5;
@@ -410,5 +410,6 @@
         private Label label11;
         private Label label8;
         private Label label9;
+        private ComboBox comboBoxCategory;
     }
 }

@@ -5,16 +5,10 @@ using LezzetKitabi.Services.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using LezzetKitabi.Domain.Dtos.CrossTableDtos;
-
 
 namespace LezzetKitabi.Forms.Controls
 {
@@ -24,19 +18,32 @@ namespace LezzetKitabi.Forms.Controls
         private readonly IRecipeService _recipeService;
         private readonly IRecipeIngredientService _recipeIngredientService;
         private readonly IServiceProvider _serviceProvider;
+
         public RecipeAddControl(IServiceProvider serviceProvider)
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
             _recipeIngredientService = serviceProvider.GetRequiredService<IRecipeIngredientService>();
             _serviceProvider = serviceProvider;
-            SetUpCombobox();
             InitializeComponent();
+            SetUpCombobox();
+            SetUpCategoryComboBox();
             numericUpDownHours.Minimum = 0;
             numericUpDownHours.Maximum = 23;
-
             numericUpDownMinutes.Minimum = 0;
             numericUpDownMinutes.Maximum = 59;
+        }
+
+        private void SetUpCategoryComboBox()
+        {
+            comboBoxCategory.Items.Clear();
+
+            foreach (var category in Enum.GetValues(typeof(Category)))
+            {
+                comboBoxCategory.Items.Add(category);
+            }
+
+            comboBoxCategory.SelectedIndex = 0;
         }
 
         private void buttonAddIngredient_Click(object sender, EventArgs e)
@@ -45,30 +52,25 @@ namespace LezzetKitabi.Forms.Controls
 
             if (selectedItem != null)
             {
-                // Seçilen öğenin adı ve birimi
                 string ingredientName = selectedItem.Text;
                 string unit = selectedItem.Unit;
                 string amountText = textBoxAmount.Text;
 
-                // Miktarı float'a çevir
                 if (float.TryParse(amountText, out float ingredientAmount))
                 {
-                    // Malzeme adı ve birimi birleştir
-                    string displayText = $"- {ingredientName} {ingredientAmount} {unit}"; // "Malzeme Adı (Miktar Birimi)" şeklinde
+                    string displayText = $"- {ingredientName} {ingredientAmount} {unit}";
 
-                    // ListBox'a ekle
                     var listBoxItem = new ListBoxIngredient
                     {
                         DisplayText = displayText,
-                        IngredientId = selectedItem.Value, // Burada ID'yi atıyoruz
-                        Amount = ingredientAmount // Miktarı atıyoruz
+                        IngredientId = selectedItem.Value,
+                        Amount = ingredientAmount
                     };
 
-                    listBoxIngredients.Items.Add(listBoxItem); // ListBox'a öğeyi ekle
+                    listBoxIngredients.Items.Add(listBoxItem);
 
-                    // Başarılı ekleme sonrası kutuları temizle
-                    textBoxAmount.Clear(); // Miktar kutusunu temizle
-                    comboBoxIngredients.SelectedItem = null; // ComboBox'taki seçimi sıfırla
+                    textBoxAmount.Clear();
+                    comboBoxIngredients.SelectedItem = null;
                 }
                 else
                 {
@@ -81,37 +83,32 @@ namespace LezzetKitabi.Forms.Controls
             }
         }
 
-
         public async void SetUpCombobox()
         {
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
 
-            // ComboBox'u temizle
             comboBoxIngredients.Items.Clear();
 
             if (ingredients == null || !ingredients.Any())
             {
                 MessageBox.Show("Malzeme bulunamadı! Lütfen önce bir malzeme ekleyin.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Ekleme kontrolünü oluştur
                 var ingredientControl = _serviceProvider.GetRequiredService<IngredientAddControl>();
 
-                // Ekleme kontrolünü bir forma veya üst düzey bir kontrol içine ekleyin
-                var parentForm = this.FindForm(); // Bu RecipeAddControl'ün üst formunu bul
+                var parentForm = this.FindForm();
 
                 if (parentForm != null)
                 {
-                    // Ekleme kontrolünü formun içerisine ekleyin
-                    ingredientControl.Dock = DockStyle.Fill; // İsteğe bağlı: tam boyutlandır
-                    parentForm.Controls.Add(ingredientControl); // Formun kontrolüne ekleyin
-                    ingredientControl.BringToFront(); // Kontrolü ön plana getirin
+                    ingredientControl.Dock = DockStyle.Fill;
+                    parentForm.Controls.Add(ingredientControl);
+                    ingredientControl.BringToFront();
                 }
 
                 return;
             }
+
             foreach (var ingredient in ingredients)
             {
-                // Yeni ComboBoxItem oluştur
                 var item = new ComboBoxItem
                 {
                     Text = ingredient.IngredientName,
@@ -122,18 +119,17 @@ namespace LezzetKitabi.Forms.Controls
                 comboBoxIngredients.Items.Add(item);
             }
 
-            // ComboBox ayarları
             comboBoxIngredients.DisplayMember = "Text";
             comboBoxIngredients.ValueMember = "Value";
         }
 
         public class ListBoxIngredient
         {
-            public string DisplayText { get; set; } // ListBox'ta gösterilecek metin
-            public Guid IngredientId { get; set; } // Malzeme ID'si
-            public float Amount { get; set; } // Malzeme miktarı
+            public string DisplayText { get; set; }
+            public Guid IngredientId { get; set; }
+            public float Amount { get; set; }
 
-            public override string ToString() // ListBox'ta gösterilecek metni döndür
+            public override string ToString()
             {
                 return DisplayText;
             }
@@ -141,6 +137,36 @@ namespace LezzetKitabi.Forms.Controls
 
         private async void metroSetButton1_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(textBoxTitle.Text))
+            {
+                MessageBox.Show("Lütfen tarif ismini girin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (comboBoxCategory.SelectedItem == null)
+            {
+                MessageBox.Show("Lütfen bir kategori seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (numericUpDownHours.Value == 0 && numericUpDownMinutes.Value == 0)
+            {
+                MessageBox.Show("Lütfen hazırlama süresini girin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (listBoxIngredients.Items.Count == 0)
+            {
+                MessageBox.Show("Lütfen en az bir malzeme ekleyin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (listBox1.Items.Count == 0)
+            {
+                MessageBox.Show("Lütfen talimatları girin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var instructions = string.Join(Environment.NewLine, listBox1.Items.Cast<string>());
 
             var recipeName = textBoxTitle.Text;
@@ -156,7 +182,7 @@ namespace LezzetKitabi.Forms.Controls
             var recipeAddDto = new RecipeAddDto
             {
                 RecipeName = textBoxTitle.Text,
-                Category = textBoxCategory.Text,
+                Category = comboBoxCategory.SelectedItem.ToString(), // Enum'dan alınan kategori
                 PreparationTime = (int)(numericUpDownHours.Value * 60) + (int)numericUpDownMinutes.Value,
                 Instructions = instructions
             };
@@ -165,35 +191,29 @@ namespace LezzetKitabi.Forms.Controls
 
             List<AddRecipeIngredientDto> recipeIngredients = new List<AddRecipeIngredientDto>();
 
-            // ComboBox'taki her bir öğeyi dolaş
             foreach (ListBoxIngredient listBoxItem in listBoxIngredients.Items)
             {
-                // ID'yi al
                 Guid ingredientId = listBoxItem.IngredientId;
 
-                // Miktarı al
                 float ingredientAmount = listBoxItem.Amount;
 
-                // RecipeIngredient DTO'su oluştur
                 var recipeIngredient = new AddRecipeIngredientDto
                 {
                     RecipeID = id,
                     IngredientID = ingredientId,
-                    IngredientAmount = ingredientAmount // Burada miktarı al
+                    IngredientAmount = ingredientAmount
                 };
 
-                // Listeye ekle
                 recipeIngredients.Add(recipeIngredient);
             }
             await _recipeIngredientService.AddRangeAsync(recipeIngredients);
 
             MessageBox.Show("Tarif başarıyla eklendi!", "Bilgilendirme", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Formdaki kutuları temizle
             comboBoxIngredients.SelectedItem = null;
             textBoxAmount.Clear();
             textBoxTitle.Clear();
-            textBoxCategory.Clear();
+            comboBoxCategory.SelectedItem = null; // Kategori seçimini temizle
             textBox3.Clear();
             listBox1.Items.Clear();
             listBoxIngredients.Items.Clear();
@@ -203,75 +223,18 @@ namespace LezzetKitabi.Forms.Controls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Add((listBox1.Items.Count + 1) + " - " + textBox3.Text); // Sadece metin olarak ekliyoruz
+            listBox1.Items.Add((listBox1.Items.Count + 1) + " - " + textBox3.Text);
             textBox3.Clear();
-            //MessageBox.Show("Yönerge Eklendi");
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            /*if (listBoxIngredients.SelectedItem != null)
-            {
-                listBoxIngredients.Items.Remove(listBoxIngredients.SelectedItem);
-            }
-            else
-            {
-                MessageBox.Show("Lütfen silmek istediğiniz malzemeyi seçin.");
-            }*/
+            // Malzeme silme işlemi
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            /*if (listBox1.SelectedItem != null)
-            {
-                listBox1.Items.Remove(listBox1.SelectedItem);
-            }
-            else
-            {
-                MessageBox.Show("Lütfen silmek istediğiniz yönergeyi seçin.");
-            }*/
-        }
-
-        private void metroSetButton2_Click(object sender, EventArgs e)
-        {
-            var selectedItem = comboBoxIngredients.SelectedItem as ComboBoxItem;
-
-            if (selectedItem != null)
-            {
-                // Seçilen öğenin adı ve birimi
-                string ingredientName = selectedItem.Text;
-                string unit = selectedItem.Unit;
-                string amountText = textBoxAmount.Text;
-
-                // Miktarı float'a çevir
-                if (float.TryParse(amountText, out float ingredientAmount))
-                {
-                    // Malzeme adı ve birimi birleştir
-                    string displayText = $"- {ingredientName} {ingredientAmount} {unit}"; // "Malzeme Adı (Miktar Birimi)" şeklinde
-
-                    // ListBox'a ekle
-                    var listBoxItem = new ListBoxIngredient
-                    {
-                        DisplayText = displayText,
-                        IngredientId = selectedItem.Value, // Burada ID'yi atıyoruz
-                        Amount = ingredientAmount // Miktarı atıyoruz
-                    };
-
-                    listBoxIngredients.Items.Add(listBoxItem); // ListBox'a öğeyi ekle
-
-                    // Başarılı ekleme sonrası kutuları temizle
-                    textBoxAmount.Clear(); // Miktar kutusunu temizle
-                    comboBoxIngredients.SelectedItem = null; // ComboBox'taki seçimi sıfırla
-                }
-                else
-                {
-                    MessageBox.Show("Lütfen geçerli bir miktar girin.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Lütfen bir malzeme seçin.");
-            }
+            // Yönerge silme işlemi
         }
     }
 }
