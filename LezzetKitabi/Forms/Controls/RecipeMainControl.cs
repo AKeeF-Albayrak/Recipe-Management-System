@@ -3,6 +3,7 @@ using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
+using LezzetKitabi.Forms.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -151,6 +152,7 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxDetail.Image = Properties.Resources.DetailsIcon;
                 pictureBoxDetail.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBoxDetail.Cursor = Cursors.Hand;
+                pictureBoxDetail.Tag = recipes[i];
                 pictureBoxDetail.Click += DetailsIcon_Click;
 
                 PictureBox pictureBoxEdit = new PictureBox();
@@ -200,11 +202,16 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void DetailsIcon_Click(object sender, EventArgs e)
         {
-            /*PictureBox picBox = sender as PictureBox;
-            Recipe recipe = picBox?.Tag as Recipe;
-            if (recipe != null)
+            PictureBox pictureBox = sender as PictureBox;
+            if (pictureBox?.Tag is RecipeViewGetDto selectedRecipe)
             {
-            }*/
+                // Tarif detaylarını göstermek için RecipeDetailsForm oluştur
+                RecipeDetailsForm detailsForm = new RecipeDetailsForm();
+                detailsForm.LoadRecipeDetails(selectedRecipe);
+
+                // Detay formunu göster
+                detailsForm.ShowDialog();
+            }
         }
         private void EditIcon_Click(object sender, EventArgs e)
         {

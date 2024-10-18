@@ -39,12 +39,15 @@ namespace LezzetKitabi
 
             //Saving Forms
             services.AddScoped<MainForm>();
+            services.AddScoped<RecipeDetailsForm>();
+
 
             //Adding Controls
             services.AddScoped<IngredientAddControl>();
             services.AddScoped<RecipeAddControl>();
             services.AddScoped<RecipeMainControl>();
             services.AddScoped<IngredientMainControl>();
+
 
             services.AddScoped<IDbConnection>(sp => new SqlConnection(ConstVariables.ConnectionString));
 
