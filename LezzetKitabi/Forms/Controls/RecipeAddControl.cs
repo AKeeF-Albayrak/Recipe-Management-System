@@ -69,6 +69,8 @@ namespace LezzetKitabi.Forms.Controls
 
                     listBoxIngredients.Items.Add(listBoxItem);
 
+                    comboBoxIngredients.Items.Remove(selectedItem);
+
                     textBoxAmount.Clear();
                     comboBoxIngredients.SelectedItem = null;
                 }
@@ -83,7 +85,8 @@ namespace LezzetKitabi.Forms.Controls
             }
         }
 
-        public async void SetUpCombobox()
+
+        public async Task SetUpCombobox()
         {
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
 
@@ -219,6 +222,8 @@ namespace LezzetKitabi.Forms.Controls
             listBoxIngredients.Items.Clear();
             numericUpDownHours.Value = 0;
             numericUpDownMinutes.Value = 0;
+
+            await SetUpCombobox();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -229,12 +234,39 @@ namespace LezzetKitabi.Forms.Controls
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // Malzeme silme işlemi
+            if (listBoxIngredients.SelectedItem != null)
+            {
+                var selectedItem = (ListBoxIngredient)listBoxIngredients.SelectedItem;
+
+                if (selectedItem != null)
+                {
+                    listBoxIngredients.Items.Remove(selectedItem);
+
+                    comboBoxIngredients.Items.Add(new ComboBoxItem
+                    {
+                        Text = selectedItem.DisplayText.Split(' ')[1], // Malzeme adını ayıkla
+                        Value = selectedItem.IngredientId,
+                        Unit = selectedItem.DisplayText.Split(' ').Last() // Birimi al
+                    });
+                }
+            }
+            else
+            {
+                MessageBox.Show("Lütfen silmek istediğiniz malzemeyi seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // Yönerge silme işlemi
+            if (listBox1.SelectedItem != null)
+            {
+                listBox1.Items.Remove(listBox1.SelectedItem);
+            }
+            else
+            {
+                MessageBox.Show("Lütfen silmek istediğiniz talimatı seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
+
     }
 }

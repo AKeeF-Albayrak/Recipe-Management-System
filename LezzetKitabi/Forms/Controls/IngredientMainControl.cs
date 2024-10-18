@@ -162,7 +162,7 @@ namespace LezzetKitabi.Forms.Controls
                     // Yuvarlatılmış dikdörtgen oluştur
                     using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
                     {
-                        using (Brush brush = new SolidBrush(Color.Purple))
+                        using (Brush brush = new SolidBrush(Color.SandyBrown))
                         {
                             g.FillPath(brush, path);  // Paneli doldurun
                         }
@@ -259,7 +259,7 @@ namespace LezzetKitabi.Forms.Controls
         // Fare panelden çıktığında, mor panel görünüyorsa geri gelmesini kontrol et
         private void CheckMouseLeave(Panel panel)
         {
-            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.Purple);
+            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
             if (overlayPanel != null && overlayPanel.Visible)
             {
                 // Mor panel gizli ise ana paneli göster
