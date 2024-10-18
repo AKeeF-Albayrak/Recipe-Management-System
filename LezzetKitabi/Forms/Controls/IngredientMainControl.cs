@@ -308,12 +308,12 @@ namespace LezzetKitabi.Forms.Controls
 
                         if (isDeleted)
                         {
-                            MessageBox.Show("Ingredient deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Malzeme Basariyla Silindi!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             await RefreshPanelsAsync();
                         }
                         else
                         {
-                            MessageBox.Show("Failed to delete the ingredient.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Malzeme Silinemedi Lutfen Tekrar Deneyiniz.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }

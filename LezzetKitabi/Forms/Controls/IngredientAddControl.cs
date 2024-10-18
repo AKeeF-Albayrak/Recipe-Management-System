@@ -47,9 +47,15 @@ namespace LezzetKitabi.Forms.Controls
             {
                 ingredient.UnitPrice = unitPrice;
 
-                _ingredientService.AddIngredient(ingredient);
-
-                MessageBox.Show("Malzeme başarıyla eklendi!");
+                bool isAdded = _ingredientService.AddIngredient(ingredient);
+                if(isAdded)
+                {
+                    MessageBox.Show("Malzeme Basariyla Kayit edildi!", "Basarili", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Boyle Bir Malzeme Kayitli!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 txtIngredientName.Clear();
                 txtTotalQuantity.Clear();

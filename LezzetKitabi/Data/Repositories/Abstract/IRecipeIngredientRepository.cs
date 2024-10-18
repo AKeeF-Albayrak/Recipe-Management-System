@@ -13,5 +13,6 @@ namespace LezzetKitabi.Data.Repositories.Abstract
     public interface IRecipeIngredientRepository : IBaseRepository<RecipeIngredient>
     {
         public Task AddRangeAsync(List<AddRecipeIngredientDto> recipeIngredients);
+        public Task<List<Ingredient>> GetIngredientsByRecipeIdAsync(Guid recipeId);
     }
 }

@@ -32,13 +32,26 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 connection.Open();
             }
 
-            string sql = $"""
-                    INSERT INTO Ingredients  (Id, IngredientName, TotalQuantity, Unit, UnitPrice)
-                    VALUES ('{Guid.NewGuid()}', '{entity.IngredientName}', '{entity.TotalQuantity}', '{entity.Unit}',
-                    '{entity.UnitPrice}');
-                    """;
+            string checkSql = "SELECT COUNT(*) FROM Ingredients WHERE IngredientName = @IngredientName";
 
-            connection.Query(sql);
+            int ingredientCount = connection.ExecuteScalar<int>(checkSql, new { IngredientName = entity.IngredientName });
+            if (ingredientCount > 0)
+            {
+                return false;
+            }
+            string sql = """
+            INSERT INTO Ingredients (Id, IngredientName, TotalQuantity, Unit, UnitPrice)
+            VALUES (@Id, @IngredientName, @TotalQuantity, @Unit, @UnitPrice);
+            """;
+
+            connection.Execute(sql, new
+            {
+                Id = Guid.NewGuid(),
+                IngredientName = entity.IngredientName,
+                TotalQuantity = entity.TotalQuantity,
+                Unit = entity.Unit,
+                UnitPrice = entity.UnitPrice
+            });
 
             return true;
         }
@@ -150,12 +163,21 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.OpenAsync();
             }
 
-            string sql = "DELETE FROM Ingredients WHERE Id = @Id";
+            string checkSql = "SELECT COUNT(*) FROM RecipeIngredients WHERE IngredientID = @Id";
 
-            int rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+            int ingredientUsageCount = await connection.ExecuteScalarAsync<int>(checkSql, new { Id = id });
+
+            if (ingredientUsageCount > 0)
+            {
+                return false;
+            }
+            string deleteSql = "DELETE FROM Ingredients WHERE Id = @Id";
+
+            int rowsAffected = await connection.ExecuteAsync(deleteSql, new { Id = id });
 
             return rowsAffected > 0;
         }
+
         public async Task<Ingredient> GetEntityById(Guid id)
         {
             using var connection = new SqlConnection(_connectionString);

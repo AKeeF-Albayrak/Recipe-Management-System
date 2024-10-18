@@ -1,4 +1,5 @@
 ﻿using LezzetKitabi.Domain.Dtos.RecipeDtos;
+using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Services.Abstract;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,12 +24,19 @@ namespace LezzetKitabi.Forms
         {
             InitializeComponent();
         }
-        public void LoadRecipeDetails(RecipeViewGetDto recipe)
+        public async void LoadRecipeDetailsAsync(RecipeViewGetDto recipe, List<Ingredient> ingredients)
         {
             // Tarifin bilgilerini dinamik olarak doldur
             labelRecipeName.Text = recipe.RecipeName;
 
-            // Diğer tarif detaylarını ekleyebilirsiniz
+            richTextBoxIngredients.Clear();  // Önceden varsa içerik temizlenir
+
+            foreach (var ingredient in ingredients)
+            {
+                richTextBoxIngredients.AppendText(
+                    $"{ingredient.IngredientName} - {ingredient.TotalQuantity} {ingredient.Unit}\n"
+                );
+            }
         }
     }
 }

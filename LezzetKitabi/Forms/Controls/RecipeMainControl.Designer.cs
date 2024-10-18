@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panelSearch = new Panel();
+            label1 = new Label();
             buttonSearch = new Button();
             buttonFilter = new Button();
             textBoxSearch = new TextBox();
@@ -62,14 +63,20 @@
             textBoxMinPrice = new TextBox();
             label2 = new Label();
             panel6 = new Panel();
-            label1 = new Label();
-            panel3 = new Panel();
+            button2 = new Button();
+            label8 = new Label();
+            textBoxmaxIngredientCount = new TextBox();
+            textBoxminIngredientCount = new TextBox();
+            label6 = new Label();
             panelCurrentFilters = new Panel();
             panel4 = new Panel();
             button1 = new Button();
+            button3 = new Button();
+            button4 = new Button();
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
+            panelDown.SuspendLayout();
             panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
             panel2.SuspendLayout();
@@ -85,6 +92,7 @@
             // panelSearch
             // 
             panelSearch.BackColor = Color.Transparent;
+            panelSearch.Controls.Add(label1);
             panelSearch.Controls.Add(buttonSearch);
             panelSearch.Controls.Add(buttonFilter);
             panelSearch.Controls.Add(textBoxSearch);
@@ -93,6 +101,16 @@
             panelSearch.Name = "panelSearch";
             panelSearch.Size = new Size(1323, 65);
             panelSearch.TabIndex = 0;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            label1.Location = new Point(1185, 13);
+            label1.Name = "label1";
+            label1.Size = new Size(94, 32);
+            label1.TabIndex = 0;
+            label1.Text = "Filtreler";
             // 
             // buttonSearch
             // 
@@ -115,12 +133,12 @@
             // 
             // textBoxSearch
             // 
-            textBoxSearch.BackColor = SystemColors.ControlDarkDark;
+            textBoxSearch.BackColor = Color.White;
             textBoxSearch.Location = new Point(251, 22);
             textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.PlaceholderText = "Arama";
             textBoxSearch.Size = new Size(445, 23);
             textBoxSearch.TabIndex = 0;
-            textBoxSearch.Text = "Arama Yeri";
             // 
             // panelElements
             // 
@@ -153,6 +171,8 @@
             // 
             // panelDown
             // 
+            panelDown.Controls.Add(button4);
+            panelDown.Controls.Add(button3);
             panelDown.Dock = DockStyle.Bottom;
             panelDown.Location = new Point(48, 662);
             panelDown.Name = "panelDown";
@@ -192,7 +212,6 @@
             panelFilter.BackgroundImageLayout = ImageLayout.None;
             panelFilter.Controls.Add(panel2);
             panelFilter.Controls.Add(panel6);
-            panelFilter.Controls.Add(panel3);
             panelFilter.Controls.Add(panelCurrentFilters);
             panelFilter.Dock = DockStyle.Left;
             panelFilter.Location = new Point(1127, 65);
@@ -207,7 +226,7 @@
             panel2.Controls.Add(panel5);
             panel2.Controls.Add(panelFilterPrice);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(0, 71);
+            panel2.Location = new Point(0, 98);
             panel2.Name = "panel2";
             panel2.Size = new Size(198, 412);
             panel2.TabIndex = 19;
@@ -411,30 +430,61 @@
             // 
             // panel6
             // 
-            panel6.Controls.Add(label1);
+            panel6.Controls.Add(button2);
+            panel6.Controls.Add(label8);
+            panel6.Controls.Add(textBoxmaxIngredientCount);
+            panel6.Controls.Add(textBoxminIngredientCount);
+            panel6.Controls.Add(label6);
             panel6.Dock = DockStyle.Top;
             panel6.Location = new Point(0, 0);
             panel6.Name = "panel6";
-            panel6.Size = new Size(198, 71);
+            panel6.Size = new Size(198, 98);
             panel6.TabIndex = 18;
             // 
-            // label1
+            // button2
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label1.Location = new Point(50, 17);
-            label1.Name = "label1";
-            label1.Size = new Size(94, 32);
-            label1.TabIndex = 0;
-            label1.Text = "Filtreler";
+            button2.Location = new Point(58, 65);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 5;
+            button2.Text = "Ekle";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
-            // panel3
+            // label8
             // 
-            panel3.Dock = DockStyle.Bottom;
-            panel3.Location = new Point(0, 483);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(198, 27);
-            panel3.TabIndex = 16;
+            label8.AutoSize = true;
+            label8.Location = new Point(83, 41);
+            label8.Name = "label8";
+            label8.Size = new Size(22, 15);
+            label8.TabIndex = 5;
+            label8.Text = "---";
+            // 
+            // textBoxmaxIngredientCount
+            // 
+            textBoxmaxIngredientCount.BorderStyle = BorderStyle.None;
+            textBoxmaxIngredientCount.Location = new Point(111, 41);
+            textBoxmaxIngredientCount.Name = "textBoxmaxIngredientCount";
+            textBoxmaxIngredientCount.Size = new Size(64, 16);
+            textBoxmaxIngredientCount.TabIndex = 3;
+            // 
+            // textBoxminIngredientCount
+            // 
+            textBoxminIngredientCount.BorderStyle = BorderStyle.None;
+            textBoxminIngredientCount.Location = new Point(15, 43);
+            textBoxminIngredientCount.Name = "textBoxminIngredientCount";
+            textBoxminIngredientCount.Size = new Size(64, 16);
+            textBoxminIngredientCount.TabIndex = 2;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            label6.Location = new Point(27, 11);
+            label6.Name = "label6";
+            label6.Size = new Size(137, 17);
+            label6.TabIndex = 0;
+            label6.Text = "Malzeme Sayisin Gore";
             // 
             // panelCurrentFilters
             // 
@@ -464,6 +514,26 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += buttonFilter_Click;
             // 
+            // button3
+            // 
+            button3.Location = new Point(126, 3);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 0;
+            button3.Text = "button3";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(653, 5);
+            button4.Name = "button4";
+            button4.Size = new Size(75, 23);
+            button4.TabIndex = 1;
+            button4.Text = "button4";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
             // RecipeMainControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -478,6 +548,7 @@
             panelSearch.PerformLayout();
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
+            panelDown.ResumeLayout(false);
             panelSort.ResumeLayout(false);
             panelFilter.ResumeLayout(false);
             panel2.ResumeLayout(false);
@@ -511,7 +582,6 @@
         private Panel panelFilter;
         private Label label1;
         private Panel panelCurrentFilters;
-        private Panel panel3;
         private Panel panel6;
         private ComboBox comboBoxSort;
         private Panel panel2;
@@ -537,5 +607,12 @@
         private TextBox textBoxMinPrice;
         private Label label2;
         private ComboBox comboBoxIngredients;
+        private Button button2;
+        private Label label8;
+        private TextBox textBoxmaxIngredientCount;
+        private TextBox textBoxminIngredientCount;
+        private Label label6;
+        private Button button4;
+        private Button button3;
     }
 }

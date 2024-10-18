@@ -18,7 +18,7 @@ namespace LezzetKitabi.Application.Services
             _ingredientRepository = ingredientRepository;
         }
 
-        public void AddIngredient(IngredientAddDto ingredientAddDto)
+        public bool AddIngredient(IngredientAddDto ingredientAddDto)
         {
             Ingredient ingredient = new Ingredient()
             {
@@ -28,7 +28,7 @@ namespace LezzetKitabi.Application.Services
                 UnitPrice = ingredientAddDto.UnitPrice,
             };
 
-            _ingredientRepository.AddEntity(ingredient);
+            return _ingredientRepository.AddEntity(ingredient);
         }
 
         public bool DeleteIngredient(Guid id)

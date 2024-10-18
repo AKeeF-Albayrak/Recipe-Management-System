@@ -45,6 +45,26 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             throw new NotImplementedException();
         }
 
+        public async Task<List<Ingredient>> GetIngredientsByRecipeIdAsync(Guid recipeId)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = @"
+        SELECT i.Id, i.IngredientName, i.TotalQuantity, i.Unit, i.UnitPrice
+        FROM RecipeIngredients ri
+        INNER JOIN Ingredients i ON ri.IngredientID = i.Id
+        WHERE ri.RecipeID = @RecipeID";
+
+            var ingredients = await connection.QueryAsync<Ingredient>(sql, new { RecipeID = recipeId });
+
+            return ingredients.ToList();
+        }
+
         public Task<int> UpdateEntity(RecipeIngredient entity)
         {
             throw new NotImplementedException();

@@ -95,9 +95,10 @@
             // 
             // textBoxSearch
             // 
-            textBoxSearch.BackColor = SystemColors.ControlDarkDark;
+            textBoxSearch.BackColor = Color.White;
             textBoxSearch.Location = new Point(251, 22);
             textBoxSearch.Name = "textBoxSearch";
+            textBoxSearch.PlaceholderText = "Arama";
             textBoxSearch.Size = new Size(445, 23);
             textBoxSearch.TabIndex = 0;
             // 
@@ -386,7 +387,7 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += buttonFilters_Click;
             // 
-            // SearchControl
+            // IngredientMainControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -394,7 +395,7 @@
             Controls.Add(panelFilter);
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
-            Name = "SearchControl";
+            Name = "IngredientMainControl";
             Size = new Size(1323, 796);
             panelSearch.ResumeLayout(false);
             panelSearch.PerformLayout();

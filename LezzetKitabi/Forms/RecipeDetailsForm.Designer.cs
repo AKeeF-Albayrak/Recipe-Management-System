@@ -29,23 +29,33 @@
         private void InitializeComponent()
         {
             labelRecipeName = new Label();
+            richTextBoxIngredients = new RichTextBox();
             SuspendLayout();
             // 
             // labelRecipeName
             // 
             labelRecipeName.AutoSize = true;
             labelRecipeName.Font = new Font("Segoe UI", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelRecipeName.Location = new Point(313, 128);
+            labelRecipeName.Location = new Point(142, 72);
             labelRecipeName.Name = "labelRecipeName";
             labelRecipeName.Size = new Size(120, 50);
             labelRecipeName.TabIndex = 0;
             labelRecipeName.Text = "label1";
+            // 
+            // richTextBoxIngredients
+            // 
+            richTextBoxIngredients.Location = new Point(504, 201);
+            richTextBoxIngredients.Name = "richTextBoxIngredients";
+            richTextBoxIngredients.Size = new Size(379, 258);
+            richTextBoxIngredients.TabIndex = 1;
+            richTextBoxIngredients.Text = "";
             // 
             // RecipeDetailsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(966, 559);
+            Controls.Add(richTextBoxIngredients);
             Controls.Add(labelRecipeName);
             Name = "RecipeDetailsForm";
             Text = "RecipeDetailsForm";
@@ -56,5 +66,6 @@
         #endregion
 
         private Label labelRecipeName;
+        private RichTextBox richTextBoxIngredients;
     }
 }

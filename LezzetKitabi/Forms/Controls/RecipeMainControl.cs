@@ -23,13 +23,16 @@ namespace LezzetKitabi.Forms.Controls
     {
         private readonly IRecipeService _recipeService;
         private readonly IIngredientService _ingredientService;
+        private readonly IRecipeIngredientService _recipeIngredientService;
         RecipeSortingType _sortingType = RecipeSortingType.Descending_Percentage;
+        private int currentPage = 1;
         private List<FilterCriteria> filterCriteriaList;
         public RecipeMainControl(IServiceProvider serviceProvider)
         {
             filterCriteriaList = new List<FilterCriteria>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
+            _recipeIngredientService = serviceProvider.GetRequiredService<IRecipeIngredientService>();
             InitializeComponent();
             InitializeGradientPanel(panelElements);
             InitializeCustomPanelsAsync();
@@ -44,7 +47,7 @@ namespace LezzetKitabi.Forms.Controls
             SetUpCombobox();
             InitializeSearchBar();
         }
-        public async void  InitializeSearchBar()
+        public async void InitializeSearchBar()
         {
             List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType);
             textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -85,10 +88,13 @@ namespace LezzetKitabi.Forms.Controls
                 return;
             }
 
-            for (int i = 0; i < Math.Min(recipes.Count, rows * cols); i++)
+            int startIndex = (currentPage - 1) * 8; // Başlangıç indeksi
+            int endIndex = Math.Min(startIndex + 8, recipes.Count); // Bitiş indeksi
+
+            for (int i = startIndex; i < endIndex; i++)
             {
-                int row = i / cols;
-                int col = i % cols;
+                int row = (i - startIndex) / cols; // Satır hesaplama
+                int col = (i - startIndex) % cols;
 
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = recipes[i];
@@ -96,7 +102,7 @@ namespace LezzetKitabi.Forms.Controls
                 mainPanel.Size = new Size(panelWidth, panelHeight);
                 int x = startX + col * (panelWidth + xPadding);
                 int y = startY + row * (panelHeight + yPadding);
-                mainPanel.Location = new Point(x, y);
+                mainPanel.Location = new Point(x, y );
 
                 mainPanel.Paint += (s, e) =>
                 {
@@ -198,7 +204,7 @@ namespace LezzetKitabi.Forms.Controls
                 missingcostLabel.Location = new Point((panelWidth - missingcostLabel.Width) / 2, 80);
 
                 mainPanel.Controls.Add(label);
-                mainPanel.Controls.Add(percentageLabel); 
+                mainPanel.Controls.Add(percentageLabel);
                 mainPanel.Controls.Add(costLabel);
                 mainPanel.Controls.Add(missingcostLabel);
                 mainPanel.Controls.Add(overlayPanel);
@@ -206,14 +212,14 @@ namespace LezzetKitabi.Forms.Controls
                 panelItems.Controls.Add(mainPanel);
             }
         }
-        private void DetailsIcon_Click(object sender, EventArgs e)
+        private async void DetailsIcon_Click(object sender, EventArgs e)
         {
             PictureBox pictureBox = sender as PictureBox;
             if (pictureBox?.Tag is RecipeViewGetDto selectedRecipe)
             {
-                // Tarif detaylarını göstermek için RecipeDetailsForm oluştur
                 RecipeDetailsForm detailsForm = new RecipeDetailsForm();
-                detailsForm.LoadRecipeDetails(selectedRecipe);
+                List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
+                detailsForm.LoadRecipeDetailsAsync(selectedRecipe, ingredients);
 
                 // Detay formunu göster
                 detailsForm.ShowDialog();
@@ -514,7 +520,7 @@ namespace LezzetKitabi.Forms.Controls
             {
                 filterCriteriaList.Remove(existingFilter);
             }
-            if(filterCriteriaList.Count == 0)
+            if (filterCriteriaList.Count == 0)
             {
                 RefreshPanelsAsync();
             }
@@ -535,6 +541,46 @@ namespace LezzetKitabi.Forms.Controls
                     }
                 }
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int? minCount = null;
+            int? maxCount = null;
+
+            if (int.TryParse(textBoxMinPrepTime.Text, out int minTimeValue))
+            {
+                minCount = minTimeValue;
+            }
+
+            if (int.TryParse(textBoxMaxPrepTime.Text, out int maxTimeValue))
+            {
+                maxCount = maxTimeValue;
+            }
+
+            if (minCount.HasValue || maxCount.HasValue)
+            {
+                RemoveExistingFilter("Malzeme Sayisi");
+
+                AddFilterToPanel($"Malzeme Sayisi: {minCount} - {maxCount}", RemoveFilter);
+                filterCriteriaList.Add(new FilterCriteria { FilterType = "Malzeme Sayisi", Value = $"{minCount} - {maxCount}" });
+            }
+            else
+            {
+                MessageBox.Show("Geçerli bir malzeme sayisi aralığı girin.");
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if(currentPage != 1) currentPage--;
+            RefreshPanelsAsync();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            currentPage++;
+            RefreshPanelsAsync();
         }
     }
 }
