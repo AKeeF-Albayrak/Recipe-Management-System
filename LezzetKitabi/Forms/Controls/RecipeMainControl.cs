@@ -26,6 +26,7 @@ namespace LezzetKitabi.Forms.Controls
         private readonly IRecipeIngredientService _recipeIngredientService;
         RecipeSortingType _sortingType = RecipeSortingType.Descending_Percentage;
         private int currentPage = 1;
+        private int totalPages;
         private List<FilterCriteria> filterCriteriaList;
         public RecipeMainControl(IServiceProvider serviceProvider)
         {
@@ -81,6 +82,7 @@ namespace LezzetKitabi.Forms.Controls
             int cornerRadius = 20;
 
             List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType, filterCriteriaList);
+            totalPages = recipes.Count/8;
 
             if (recipes == null || recipes.Count == 0)
             {
@@ -548,14 +550,14 @@ namespace LezzetKitabi.Forms.Controls
             int? minCount = null;
             int? maxCount = null;
 
-            if (int.TryParse(textBoxMinPrepTime.Text, out int minTimeValue))
+            if (int.TryParse(textBoxminIngredientCount.Text, out int minCountValue))
             {
-                minCount = minTimeValue;
+                minCount = minCountValue;
             }
 
-            if (int.TryParse(textBoxMaxPrepTime.Text, out int maxTimeValue))
+            if (int.TryParse(textBoxmaxIngredientCount.Text, out int maxCountValue))
             {
-                maxCount = maxTimeValue;
+                maxCount = maxCountValue;
             }
 
             if (minCount.HasValue || maxCount.HasValue)
@@ -564,6 +566,8 @@ namespace LezzetKitabi.Forms.Controls
 
                 AddFilterToPanel($"Malzeme Sayisi: {minCount} - {maxCount}", RemoveFilter);
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Malzeme Sayisi", Value = $"{minCount} - {maxCount}" });
+                textBoxmaxIngredientCount.Clear();
+                textBoxminIngredientCount.Clear();
             }
             else
             {
@@ -573,14 +577,29 @@ namespace LezzetKitabi.Forms.Controls
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if(currentPage != 1) currentPage--;
-            RefreshPanelsAsync();
+            if (currentPage != 1)
+            {
+                currentPage--;
+                RefreshPanelsAsync();
+            }
+            else
+            {
+                MessageBox.Show("Ilk Sayfaya Ulastiniz Daha Geri Gidemezsiniz!","Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            currentPage++;
-            RefreshPanelsAsync();
+            if (currentPage < totalPages - 1)
+            {
+                currentPage++;
+                RefreshPanelsAsync();
+            }
+            else
+            {
+                MessageBox.Show("Son sayfaya ulaştınız, daha ileri gidemiyorsunuz.","Hata",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+            }
         }
     }
 }

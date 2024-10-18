@@ -60,9 +60,12 @@
             panelCurrentFilters = new Panel();
             panel9 = new Panel();
             button1 = new Button();
+            buttonPrevius = new Button();
+            buttonNext = new Button();
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
+            panelDown.SuspendLayout();
             panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
             panel6.SuspendLayout();
@@ -133,6 +136,8 @@
             // 
             // panelDown
             // 
+            panelDown.Controls.Add(buttonNext);
+            panelDown.Controls.Add(buttonPrevius);
             panelDown.Dock = DockStyle.Bottom;
             panelDown.Location = new Point(48, 662);
             panelDown.Name = "panelDown";
@@ -387,6 +392,26 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += buttonFilters_Click;
             // 
+            // buttonPrevius
+            // 
+            buttonPrevius.Location = new Point(168, 1);
+            buttonPrevius.Name = "buttonPrevius";
+            buttonPrevius.Size = new Size(75, 23);
+            buttonPrevius.TabIndex = 0;
+            buttonPrevius.Text = "button3";
+            buttonPrevius.UseVisualStyleBackColor = true;
+            buttonPrevius.Click += buttonPrevius_Click;
+            // 
+            // buttonNext
+            // 
+            buttonNext.Location = new Point(625, 4);
+            buttonNext.Name = "buttonNext";
+            buttonNext.Size = new Size(75, 23);
+            buttonNext.TabIndex = 1;
+            buttonNext.Text = "button4";
+            buttonNext.UseVisualStyleBackColor = true;
+            buttonNext.Click += buttonNext_Click;
+            // 
             // IngredientMainControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -401,6 +426,7 @@
             panelSearch.PerformLayout();
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
+            panelDown.ResumeLayout(false);
             panelSort.ResumeLayout(false);
             panelFilter.ResumeLayout(false);
             panel6.ResumeLayout(false);
@@ -449,5 +475,7 @@
         private Panel panel5;
         private ComboBox comboBoxSort;
         private Button button1;
+        private Button buttonNext;
+        private Button buttonPrevius;
     }
 }

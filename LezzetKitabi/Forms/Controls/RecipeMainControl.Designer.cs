@@ -37,6 +37,8 @@
             panelPage = new Panel();
             panelItems = new Panel();
             panelDown = new Panel();
+            button4 = new Button();
+            button3 = new Button();
             panelPrevius = new Panel();
             panelSort = new Panel();
             comboBoxSort = new ComboBox();
@@ -71,8 +73,6 @@
             panelCurrentFilters = new Panel();
             panel4 = new Panel();
             button1 = new Button();
-            button3 = new Button();
-            button4 = new Button();
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
@@ -178,6 +178,26 @@
             panelDown.Name = "panelDown";
             panelDown.Size = new Size(1078, 28);
             panelDown.TabIndex = 2;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(714, 2);
+            button4.Name = "button4";
+            button4.Size = new Size(75, 23);
+            button4.TabIndex = 1;
+            button4.Text = "--->";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(163, 3);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 0;
+            button3.Text = "<---";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // panelPrevius
             // 
@@ -513,26 +533,6 @@
             button1.Text = "Filtrele";
             button1.UseVisualStyleBackColor = true;
             button1.Click += buttonFilter_Click;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(126, 3);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 0;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
-            // 
-            // button4
-            // 
-            button4.Location = new Point(653, 5);
-            button4.Name = "button4";
-            button4.Size = new Size(75, 23);
-            button4.TabIndex = 1;
-            button4.Text = "button4";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
             // 
             // RecipeMainControl
             // 

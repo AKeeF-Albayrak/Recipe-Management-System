@@ -22,6 +22,8 @@ namespace LezzetKitabi.Forms.Controls
         private readonly IIngredientService _ingredientService;
         IngredientSortingType _sortingType = IngredientSortingType.A_from_Z;
         private List<FilterCriteria> filterCriteriaList;
+        private int currentPage = 1;
+        private int totalPages;
 
         public IngredientMainControl(IServiceProvider serviceProvider)
         {
@@ -74,6 +76,7 @@ namespace LezzetKitabi.Forms.Controls
 
             // Filtreleme işlemi için servisi çağır
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList);
+            totalPages = ingredients.Count / 18;
 
             if (ingredients == null || ingredients.Count == 0)
             {
@@ -81,15 +84,17 @@ namespace LezzetKitabi.Forms.Controls
                 return;
             }
 
-            for (int i = 0; i < Math.Min(ingredients.Count, rows * cols); i++)
-            {
-                int row = i / cols;
-                int col = i % cols;
+            int startIndex = (currentPage - 1) * 18;
+            int endIndex = Math.Min(startIndex + 18, ingredients.Count);
 
-                // Ana panel oluştur
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                int row = (i - startIndex) / cols; // Satır hesaplama
+                int col = (i - startIndex) % cols;
+
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = ingredients[i];
-                mainPanel.BackColor = Color.Transparent;  // Şeffaf arka plan
+                mainPanel.BackColor = Color.Transparent;
                 mainPanel.Size = new Size(panelWidth, panelHeight);
                 int x = startX + col * (panelWidth + xPadding);
                 int y = startY + row * (panelHeight + yPadding);
@@ -118,7 +123,7 @@ namespace LezzetKitabi.Forms.Controls
 
                 // PictureBox ve diğer öğeleri ekle
                 PictureBox pictureBox = new PictureBox();
-                if(i == 1)
+                if (i == 1)
                 {
                     pictureBox.Image = Properties.Resources.domates;
                 }
@@ -522,6 +527,32 @@ namespace LezzetKitabi.Forms.Controls
             // Paneli yenile
             RefreshPanelsAsync();
             InitializeCustomPanelsAsync();
+        }
+
+        private void buttonPrevius_Click(object sender, EventArgs e)
+        {
+            if (currentPage != 1)
+            {
+                currentPage--;
+                RefreshPanelsAsync();
+            }
+            else
+            {
+                MessageBox.Show("Ilk Sayfaya Ulastiniz Daha Geri Gidemezsiniz!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+            if (currentPage < totalPages - 1)
+            {
+                currentPage++;
+                RefreshPanelsAsync();
+            }
+            else
+            {
+                MessageBox.Show("Son sayfaya ulaştınız, daha ileri gidemiyorsunuz.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }
