@@ -192,9 +192,15 @@ namespace LezzetKitabi.Forms.Controls
                 costLabel.Text = "Maliyet: " + recipes[i].TotalCost.ToString("C");
                 costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 60);
 
+                Label missingcostLabel = new Label();
+                missingcostLabel.AutoSize = true;
+                missingcostLabel.Text = "Eksik Maliyet: " + recipes[i].MissingCost.ToString("C");
+                missingcostLabel.Location = new Point((panelWidth - missingcostLabel.Width) / 2, 80);
+
                 mainPanel.Controls.Add(label);
                 mainPanel.Controls.Add(percentageLabel); 
                 mainPanel.Controls.Add(costLabel);
+                mainPanel.Controls.Add(missingcostLabel);
                 mainPanel.Controls.Add(overlayPanel);
 
                 panelItems.Controls.Add(mainPanel);

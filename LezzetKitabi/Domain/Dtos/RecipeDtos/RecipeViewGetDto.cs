@@ -15,5 +15,6 @@ namespace LezzetKitabi.Domain.Dtos.RecipeDtos
         public string Instructions { get; set; }
         public decimal TotalCost { get; set; }
         public decimal AvailabilityPercentage { get; set; }
+        public decimal MissingCost { get; set; }
     }
 }

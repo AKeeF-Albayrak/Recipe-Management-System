@@ -66,14 +66,31 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.OpenAsync();
             }
 
-            string sql = @"SELECT r.Id, r.RecipeName, 
-                          SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
-                          (CASE WHEN SUM(ri.IngredientAmount) > 0 THEN 
-                              SUM(CASE WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity != '0' THEN CAST(i.TotalQuantity AS FLOAT) / ri.IngredientAmount * 100 ELSE 0 END) / COUNT(ri.IngredientID)
-                           ELSE 0 END) AS AvailabilityPercentage
-                   FROM Recipes r 
-                   LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
-                   LEFT JOIN Ingredients i ON ri.IngredientID = i.Id ";
+            string sql = @"
+       WITH RecipeIngredientCount AS (
+           SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
+           FROM Recipes r
+           LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
+           GROUP BY r.Id
+       )
+       SELECT r.Id, r.RecipeName, 
+              SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
+              -- AvailabilityPercentage: Her malzemenin katkı payı tarifteki malzeme sayısına göre hesaplanır
+              SUM(CASE 
+                    WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
+                      (CASE 
+                        WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount -- Yeterli malzeme varsa tam katkı ekle
+                        ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount) -- Yetersizse mevcut miktara göre katkı ekle
+                      END)
+                    ELSE 0 -- Hiç malzeme yoksa katkı ekleme
+                  END) AS AvailabilityPercentage,
+              SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
+                   THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
+                   ELSE 0 END) AS MissingCost
+       FROM Recipes r 
+       LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
+       LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
+       LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
 
             filterCriteriaList ??= new List<FilterCriteria>();
 
