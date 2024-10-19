@@ -219,6 +219,7 @@
             textBoxAmount.PlaceholderText = "Ingredient Amount";
             textBoxAmount.Size = new Size(407, 33);
             textBoxAmount.TabIndex = 24;
+            textBoxAmount.KeyPress += textBoxAmount_KeyPress;
             // 
             // listBoxIngredients
             // 

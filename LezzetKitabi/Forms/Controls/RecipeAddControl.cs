@@ -43,7 +43,7 @@ namespace LezzetKitabi.Forms.Controls
                 comboBoxCategory.Items.Add(category);
             }
 
-            comboBoxCategory.SelectedIndex = 0;
+            comboBoxCategory.SelectedIndex = -1;
         }
 
         private void buttonAddIngredient_Click(object sender, EventArgs e)
@@ -143,6 +143,7 @@ namespace LezzetKitabi.Forms.Controls
             if (string.IsNullOrWhiteSpace(textBoxTitle.Text))
             {
                 MessageBox.Show("Lütfen tarif ismini girin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxTitle.Focus();
                 return;
             }
 
@@ -302,6 +303,14 @@ namespace LezzetKitabi.Forms.Controls
                 listBoxIngredients.ClearSelected();
 
                 isChanging = false;
+            }
+        }
+
+        private void textBoxAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true;
             }
         }
     }

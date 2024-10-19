@@ -28,6 +28,13 @@ namespace LezzetKitabi.Forms
         {
             // Tarifin bilgilerini dinamik olarak doldur
             labelRecipeName.Text = recipe.RecipeName;
+            labelCategory.Text = recipe.Category;
+            labelPreparationTime.Text = $"{recipe.PreparationTime} dakika";
+
+            textBoxInstructions.Multiline = true;
+            textBoxInstructions.ReadOnly = true;
+            textBoxInstructions.Text = recipe.Instructions;
+
 
             richTextBoxIngredients.Clear();  // Önceden varsa içerik temizlenir
 
@@ -38,5 +45,6 @@ namespace LezzetKitabi.Forms
                 );
             }
         }
+        
     }
 }

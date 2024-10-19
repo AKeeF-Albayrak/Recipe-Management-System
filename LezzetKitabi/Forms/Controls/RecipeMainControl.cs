@@ -169,6 +169,7 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxEdit.Image = Properties.Resources.EditIcon;
                 pictureBoxEdit.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBoxEdit.Cursor = Cursors.Hand;
+                pictureBoxEdit.Tag = recipes[i];
                 pictureBoxEdit.Click += EditIcon_Click;
 
 
@@ -231,8 +232,8 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async void DetailsIcon_Click(object sender, EventArgs e)
         {
-            PictureBox pictureBox = sender as PictureBox;
-            if (pictureBox?.Tag is RecipeViewGetDto selectedRecipe)
+            PictureBox DetailsIcon = sender as PictureBox;
+            if (DetailsIcon?.Tag is RecipeViewGetDto selectedRecipe)
             {
                 RecipeDetailsForm detailsForm = new RecipeDetailsForm();
                 List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
@@ -242,14 +243,18 @@ namespace LezzetKitabi.Forms.Controls
                 detailsForm.ShowDialog();
             }
         }
-        private void EditIcon_Click(object sender, EventArgs e)
+        private async void EditIcon_Click(object sender, EventArgs e)
         {
-            /*PictureBox picBox = sender as PictureBox;
-            Recipe recipe = picBox?.Tag as Recipe;
-            if (recipe != null)
+            PictureBox EditIcon = sender as PictureBox;
+
+            if (EditIcon?.Tag is RecipeViewGetDto selectedRecipe)
             {
-                // Düzenleme işlemini gerçekleştirin
-            }*/
+                RecipeEditForm editForm = new RecipeEditForm();
+                //List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
+                //editForm.LoadRecipeDetailsAsync(selectedRecipe, ingredients);
+
+                editForm.ShowDialog();
+            }
         }
         private async void DeleteIcon_Click(object sender, EventArgs e)
         {
@@ -581,7 +586,6 @@ namespace LezzetKitabi.Forms.Controls
                 }
             }
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             int? minCount = null;
@@ -611,7 +615,6 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Geçerli bir malzeme sayisi aralığı girin.");
             }
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
             if (currentPage != 1)
@@ -625,7 +628,6 @@ namespace LezzetKitabi.Forms.Controls
             }
 
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             if (currentPage < totalPages - 1)

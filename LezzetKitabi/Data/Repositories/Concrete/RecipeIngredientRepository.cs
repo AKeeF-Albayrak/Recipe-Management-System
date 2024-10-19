@@ -55,10 +55,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             string sql = @"
-        SELECT i.Id, i.IngredientName, i.TotalQuantity, i.Unit, i.UnitPrice
-        FROM RecipeIngredients ri
-        INNER JOIN Ingredients i ON ri.IngredientID = i.Id
-        WHERE ri.RecipeID = @RecipeID";
+            SELECT i.Id, i.IngredientName, ri.IngredientAmount AS TotalQuantity, i.Unit, i.UnitPrice
+            FROM RecipeIngredients ri
+            INNER JOIN Ingredients i ON ri.IngredientID = i.Id
+            WHERE ri.RecipeID = @RecipeID";
 
             var ingredients = await connection.QueryAsync<Ingredient>(sql, new { RecipeID = recipeId });
 

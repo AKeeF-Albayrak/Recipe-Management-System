@@ -75,6 +75,8 @@ WITH RecipeIngredientCount AS (
 )
 SELECT r.Id, 
        r.RecipeName, 
+       r.Category,       -- Kategori ekleniyor
+       r.Instructions,   -- Instructions ekleniyor
        SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
        SUM(CASE 
              WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
@@ -87,7 +89,7 @@ SELECT r.Id,
        SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
             THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
             ELSE 0 END) AS MissingCost,
-       r.PreparationTime -- Include PreparationTime in the select list
+       r.PreparationTime -- Hazırlama Süresi ekleniyor
 FROM Recipes r 
 LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
 LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
@@ -126,17 +128,17 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                     if (!string.IsNullOrEmpty(minCount))
                     {
                         filters.Add($@"
-                            (SELECT COUNT(*) 
-                             FROM RecipeIngredients ri 
-                             WHERE ri.RecipeID = r.Id) >= {minCount}");
+                    (SELECT COUNT(*) 
+                     FROM RecipeIngredients ri 
+                     WHERE ri.RecipeID = r.Id) >= {minCount}");
                     }
 
                     if (!string.IsNullOrEmpty(maxCount))
                     {
                         filters.Add($@"
-                            (SELECT COUNT(*) 
-                             FROM RecipeIngredients ri 
-                             WHERE ri.RecipeID = r.Id) <= {maxCount}");
+                    (SELECT COUNT(*) 
+                     FROM RecipeIngredients ri 
+                     WHERE ri.RecipeID = r.Id) <= {maxCount}");
                     }
                 }
             }
@@ -178,11 +180,11 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
             {
                 string name = nameFilter.Value;
                 filters.Add($@"
-                (r.RecipeName LIKE '%{name}%' OR 
-                 r.Id IN (SELECT ri.RecipeID 
-                          FROM RecipeIngredients ri 
-                          JOIN Ingredients i ON ri.IngredientID = i.Id 
-                          WHERE i.IngredientName LIKE '%{name}%'))");
+        (r.RecipeName LIKE '%{name}%' OR 
+         r.Id IN (SELECT ri.RecipeID 
+                  FROM RecipeIngredients ri 
+                  JOIN Ingredients i ON ri.IngredientID = i.Id 
+                  WHERE i.IngredientName LIKE '%{name}%'))");
             }
 
             // Add filters to the SQL query
@@ -192,7 +194,7 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
             }
 
             // Grouping
-            sql += " GROUP BY r.Id, r.RecipeName, r.PreparationTime"; // Include PreparationTime in GROUP BY
+            sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.PreparationTime"; // Group by ekleniyor
 
             // Sorting
             switch (sortingType)
@@ -223,17 +225,17 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                     break;
                 case RecipeSortingType.Increasing_Ingredients:
                     sql += @"
-                    ORDER BY 
-                    (SELECT COUNT(*) 
-                     FROM RecipeIngredients ri 
-                     WHERE ri.RecipeID = r.Id) ASC;";
+            ORDER BY 
+            (SELECT COUNT(*) 
+             FROM RecipeIngredients ri 
+             WHERE ri.RecipeID = r.Id) ASC;";
                     break;
                 case RecipeSortingType.Decrising_Ingredients:
                     sql += @"
-                    ORDER BY 
-                    (SELECT COUNT(*) 
-                     FROM RecipeIngredients ri 
-                     WHERE ri.RecipeID = r.Id) DESC;";
+            ORDER BY 
+            (SELECT COUNT(*) 
+             FROM RecipeIngredients ri 
+             WHERE ri.RecipeID = r.Id) DESC;";
                     break;
                 default:
                     sql += ";";
