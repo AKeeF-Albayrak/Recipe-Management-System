@@ -21,7 +21,6 @@ namespace LezzetKitabi.Services.Concrete
         {
             await _recipeIngredientRepository.AddRangeAsync(recipeIngredients);
         }
-
         public async Task<List<Ingredient>> GetIngredientsByRecipeIdAsync(Guid recipeId)
         {
             return await _recipeIngredientRepository.GetIngredientsByRecipeIdAsync(recipeId);

@@ -22,7 +22,6 @@ namespace LezzetKitabi.Forms
             LoadForm(new RecipeMainControl(_serviceProvider));
             page = "Recipes";
         }
-
         private async void button1_Click(object sender, EventArgs e)
         {
             if (isAnimating) return;
@@ -73,7 +72,6 @@ namespace LezzetKitabi.Forms
                 isAnimating = false;
             }
         }
-
         private void LoadForm(UserControl userControl)
         {
             panelForms.Controls.Clear();
@@ -81,32 +79,25 @@ namespace LezzetKitabi.Forms
             panelForms.Controls.Add(userControl);
             userControl.BringToFront();
         }
-
-
         private void btnRecipes_Click(object sender, EventArgs e)
         {
             if (page != "Recipes") LoadForm(new RecipeMainControl(_serviceProvider));
             page = "Recipes";
         }
-
         private void btnIngredients_Click(object sender, EventArgs e)
         {
             if (page != "Ingredients") LoadForm(new IngredientMainControl(_serviceProvider));
             page = "Ingredients";
         }
-
-        public async void btnAddIngredient_Click(object sender, EventArgs e)
+        public void btnAddIngredient_Click(object sender, EventArgs e)
         {
             if (page != "AddIngredient") LoadForm(new IngredientAddControl(_serviceProvider));
             page = "AddIngredient";
         }
-
         private void btnAddRecipe_Click(object sender, EventArgs e)
         {
             if (page != "AddRecipe") LoadForm(new RecipeAddControl(_serviceProvider));
             page = "AddRecipe";
         }
-
-        
     }
 }

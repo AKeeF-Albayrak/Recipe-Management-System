@@ -26,7 +26,6 @@ namespace LezzetKitabi.Forms
             _ingredientService = ingredientService;
             comboBoxUnit.DataSource = Enum.GetValues(typeof(UnitType));
         }
-
         public async void LoadIngredientDetails(Ingredient ingredient)
         {
             ingredient1 = ingredient;
@@ -35,12 +34,10 @@ namespace LezzetKitabi.Forms
             textBoxUnitPrice.Text = ingredient.UnitPrice.ToString();
             comboBoxUnit.SelectedItem = ingredient.Unit;
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
         private async void buttonEdit_Click(object sender, EventArgs e)
         {
             Ingredient updatedIngredient = new Ingredient

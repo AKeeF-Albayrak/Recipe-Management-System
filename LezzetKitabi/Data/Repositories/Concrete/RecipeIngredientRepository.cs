@@ -20,10 +20,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
         {
             _connectionString = ConstVariables.ConnectionString;
         }
-        public bool AddEntity(RecipeIngredient entity)
-        {
-            throw new NotImplementedException();
-        }
         public async Task AddRangeAsync(List<AddRecipeIngredientDto> recipeIngredients)
         {
             const string query = "INSERT INTO RecipeIngredients (RecipeID, IngredientID, IngredientAmount) VALUES (@RecipeID, @IngredientID, @IngredientAmount)";
@@ -34,17 +30,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.ExecuteAsync(query, recipeIngredients);
             }
         }
-
-        public Task<bool> DeleteAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<RecipeIngredient> GetEntityById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<Ingredient>> GetIngredientsByRecipeIdAsync(Guid recipeId)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -63,11 +48,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             var ingredients = await connection.QueryAsync<Ingredient>(sql, new { RecipeID = recipeId });
 
             return ingredients.ToList();
-        }
-
-        public Task<bool> UpdateEntityAsync(RecipeIngredient entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

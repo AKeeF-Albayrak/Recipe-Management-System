@@ -38,45 +38,38 @@ namespace LezzetKitabi.Forms.Controls
             Color panelBackground = Color.FromArgb(50, Color.DarkRed);
             panelItems.BackColor = panelBackground;
             panelFilter.BackColor = Color.White;
-            // Arka plan rengini transparent yapın
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
             comboBoxUnit.Items.AddRange(Enum.GetNames(typeof(UnitType)));
             InitializeSearchTextBox();
         }
-
         private async Task InitializeSearchTextBox()
         {
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType);
 
-            // AutoComplete ayarlarını yapılandır
             textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
             AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
 
-            // Malzeme isimlerini ekleyin
             foreach (var ingredient in ingredients)
             {
-                suggestions.Add(ingredient.IngredientName); // ingredient.IngredientName ile malzeme adını alıyoruz
+                suggestions.Add(ingredient.IngredientName);
             }
 
-            // Suggestions'u textbox'a ata
             textBoxSearch.AutoCompleteCustomSource = suggestions;
         }
-
         public async Task InitializeCustomPanelsAsync()
         {
-            int rows = 3;  // 3 rows
-            int cols = 6;  // 6 columns
-            int panelWidth = 160;  // Panel width
-            int panelHeight = 190; // Panel height
-            int xPadding = 12;  // Horizontal padding between panels
-            int yPadding = 12;  // Vertical padding between panels
-            int startX = 10; // Starting X position
-            int startY = 10; // Starting Y position
-            int cornerRadius = 20;  // Yuvarlak köşe yarıçapı
+            int rows = 3;
+            int cols = 6;
+            int panelWidth = 160;
+            int panelHeight = 190;
+            int xPadding = 12;
+            int yPadding = 12;
+            int startX = 10;
+            int startY = 10;
+            int cornerRadius = 20;
 
-            // Filtreleme işlemi için servisi çağır
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList);
             totalPages = ingredients.Count / 18;
 
@@ -91,7 +84,7 @@ namespace LezzetKitabi.Forms.Controls
 
             for (int i = startIndex; i < endIndex; i++)
             {
-                int row = (i - startIndex) / cols; // Satır hesaplama
+                int row = (i - startIndex) / cols;
                 int col = (i - startIndex) % cols;
 
                 Panel mainPanel = new Panel();
@@ -102,28 +95,24 @@ namespace LezzetKitabi.Forms.Controls
                 int y = startY + row * (panelHeight + yPadding);
                 mainPanel.Location = new Point(x, y);
 
-                // Panelin arkaplanını Paint ile yuvarlatılmış olarak çizin
                 mainPanel.Paint += (s, e) =>
                 {
                     Graphics g = e.Graphics;
                     Rectangle rect = mainPanel.ClientRectangle;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    // Yuvarlatılmış dikdörtgen oluştur
                     using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
                     {
                         using (Brush brush = new SolidBrush(SystemColors.ActiveCaption))
                         {
-                            g.FillPath(brush, path);  // Arka planı doldur
+                            g.FillPath(brush, path);
                         }
                     }
                 };
 
-                // Fare olaylarını ayarla
                 mainPanel.MouseEnter += (s, e) => BringToFront(mainPanel);
                 mainPanel.MouseLeave += (s, e) => CheckMouseLeave(mainPanel);
 
-                // PictureBox ve diğer öğeleri ekle
                 PictureBox pictureBox = new PictureBox();
                 if (i == 1)
                 {
@@ -131,55 +120,50 @@ namespace LezzetKitabi.Forms.Controls
                 }
                 else
                 {
-                    pictureBox.Image = Properties.Resources.Screenshot_2024_10_09_121511; // Resmi dinamik hale getirin
+                    pictureBox.Image = Properties.Resources.Screenshot_2024_10_09_121511;
                 }
                 pictureBox.Size = new Size(115, 94);
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox.Location = new Point((panelWidth - pictureBox.Width) / 2, 35);  // Ortalayın
+                pictureBox.Location = new Point((panelWidth - pictureBox.Width) / 2, 35);
 
                 Label label = new Label();
                 label.AutoSize = true;
-                label.Text = ingredients[i].IngredientName; // Dinamik malzeme adı
-                label.Location = new Point((panelWidth - label.Width) / 2, 12);  // Ortalayın
+                label.Text = ingredients[i].IngredientName;
+                label.Location = new Point((panelWidth - label.Width) / 2, 12);
 
                 Label labelMiktar = new Label();
                 labelMiktar.AutoSize = true;
-                labelMiktar.Text = $"{ingredients[i].TotalQuantity} {ingredients[i].Unit}"; // Dinamik miktar
+                labelMiktar.Text = $"{ingredients[i].TotalQuantity} {ingredients[i].Unit}";
                 labelMiktar.Location = new Point((panelWidth - labelMiktar.Width) / 2, pictureBox.Bottom + 5);
 
                 Label labelBirimFiyati = new Label();
                 labelBirimFiyati.AutoSize = true;
-                labelBirimFiyati.Text = $"{ingredients[i].UnitPrice:C}"; // Dinamik birim fiyatı
+                labelBirimFiyati.Text = $"₺{ingredients[i].UnitPrice:0.00}";
                 labelBirimFiyati.Location = new Point((panelWidth - labelBirimFiyati.Width) / 2, labelMiktar.Bottom + 5);
 
-                // Overlay paneli oluşturun
                 Panel overlayPanel = new Panel();
-                overlayPanel.BackColor = Color.Purple;  // Overlay panel rengi
+                overlayPanel.BackColor = Color.Gray;
                 overlayPanel.Size = new Size(panelWidth, panelHeight);
                 overlayPanel.Location = new Point(0, 0);
                 overlayPanel.Visible = false;
 
-                // Yuvarlatılmış köşe overlay panel için de Paint olayında çizim
                 overlayPanel.Paint += (s, e) =>
                 {
                     Graphics g = e.Graphics;
                     Rectangle rect = overlayPanel.ClientRectangle;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    // Yuvarlatılmış dikdörtgen oluştur
                     using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
                     {
                         using (Brush brush = new SolidBrush(Color.SandyBrown))
                         {
-                            g.FillPath(brush, path);  // Paneli doldurun
+                            g.FillPath(brush, path);
                         }
 
-                        // Panelin görünümünü yuvarlak yap
                         overlayPanel.Region = new Region(path);
                     }
                 };
 
-                // Butonlar ve diğer elemanlar overlay paneline eklenebilir
                 Button buttonEdit = new Button();
                 buttonEdit.Text = "Button 1";
                 buttonEdit.Size = new Size(80, 30);
@@ -197,18 +181,15 @@ namespace LezzetKitabi.Forms.Controls
                 overlayPanel.Controls.Add(buttonEdit);
                 overlayPanel.Controls.Add(buttonDelete);
 
-                // Ana paneli içerikleriyle birlikte ekleyin
                 mainPanel.Controls.Add(label);
                 mainPanel.Controls.Add(pictureBox);
                 mainPanel.Controls.Add(labelMiktar);
                 mainPanel.Controls.Add(labelBirimFiyati);
                 mainPanel.Controls.Add(overlayPanel);
 
-                // Ana paneli panelItems'a ekleyin
                 panelItems.Controls.Add(mainPanel);
             }
         }
-
         private void ButtonEdit_Click(object sender, EventArgs e)
         {
             Button editButton = sender as Button;
@@ -227,13 +208,10 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async void Form_IngredientUpdated(object sender, EventArgs e)
         {
-            MessageBox.Show("Mia");
-            await InitializeCustomPanelsAsync();
+            await RefreshPanelsAsync();
         }
-
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Seçilen index'e göre sortingType'ı ayarlama
             switch (comboBoxSort.SelectedIndex)
             {
                 case 0:
@@ -252,65 +230,56 @@ namespace LezzetKitabi.Forms.Controls
                     _sortingType = IngredientSortingType.A_from_Z;
                     break;
             }
-            RefreshPanelsAsync();
+            await RefreshPanelsAsync();
         }
         private GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int cornerRadius)
         {
             GraphicsPath path = new GraphicsPath();
             int arcDiameter = cornerRadius * 2;
 
-            path.AddArc(rect.X, rect.Y, arcDiameter, arcDiameter, 180, 90); // Sol üst köşe
-            path.AddArc(rect.Right - arcDiameter, rect.Y, arcDiameter, arcDiameter, 270, 90); // Sağ üst köşe
-            path.AddArc(rect.Right - arcDiameter, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 0, 90); // Sağ alt köşe
-            path.AddArc(rect.X, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 90, 90); // Sol alt köşe
+            path.AddArc(rect.X, rect.Y, arcDiameter, arcDiameter, 180, 90);
+            path.AddArc(rect.Right - arcDiameter, rect.Y, arcDiameter, arcDiameter, 270, 90);
+            path.AddArc(rect.Right - arcDiameter, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 90, 90);
 
             path.CloseFigure();
             return path;
         }
-
-        // Fare panelin içine girdiğinde üstteki paneli göster
         private void BringToFront(Panel panel)
         {
             Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.Purple);
             if (overlayPanel != null)
             {
-                overlayPanel.Visible = true; // Üstteki paneli göster
-                overlayPanel.BringToFront(); // Üstteki paneli öne getir
-                overlayPanel.MouseEnter += (s, e) => overlayPanel.Visible = true; // Üstteki panelin fare üzerinde kalmasını sağla
-                overlayPanel.MouseLeave += (s, e) => overlayPanel.Visible = false; // Fare üstteyken gizleme
+                overlayPanel.Visible = true;
+                overlayPanel.BringToFront();
+                overlayPanel.MouseEnter += (s, e) => overlayPanel.Visible = true;
+                overlayPanel.MouseLeave += (s, e) => overlayPanel.Visible = false;
             }
         }
-
-        // Fare panelden çıktığında, mor panel görünüyorsa geri gelmesini kontrol et
         private void CheckMouseLeave(Panel panel)
         {
             Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
             if (overlayPanel != null && overlayPanel.Visible)
             {
-                // Mor panel gizli ise ana paneli göster
                 if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
                 {
-                    overlayPanel.Visible = false; // Üstteki paneli gizle
+                    overlayPanel.Visible = false;
                 }
             }
         }
-
         private void InitializeGradientPanel(Panel panel)
         {
             panel.Paint += (s, e) =>
             {
-                // Gradient için başlangıç ve bitiş renkleri
-                Color startColor = Color.FromArgb(200, 255, 165, 0); // Mat turuncu
-                Color endColor = Color.FromArgb(255, 255, 99, 71); // Açık kırmızı (tomato rengi)
+                Color startColor = Color.FromArgb(200, 255, 165, 0);
+                Color endColor = Color.FromArgb(255, 255, 99, 71);
 
-                // Degrade oluştur
                 using (LinearGradientBrush brush = new LinearGradientBrush(panel.ClientRectangle, startColor, endColor, 45f))
                 {
                     e.Graphics.FillRectangle(brush, panel.ClientRectangle);
                 }
             };
         }
-
         private async void DeleteButton_Click(object sender, EventArgs e)
         {
             Button deleteButton = sender as Button;
@@ -344,14 +313,12 @@ namespace LezzetKitabi.Forms.Controls
                 }
             }
         }
-
         public async Task RefreshPanelsAsync()
         {
             panelItems.Controls.Clear();
 
             await InitializeCustomPanelsAsync();
         }
-
         private void buttonPriceRangeAdd_Click(object sender, EventArgs e)
         {
             decimal? minPrice = null;
@@ -381,7 +348,6 @@ namespace LezzetKitabi.Forms.Controls
                 AddFilterToPanel($"Fiyat: {minPrice} - {maxPrice}", RemoveFilter);
             }
         }
-
         private void buttonStockRangeAdd_Click(object sender, EventArgs e)
         {
             int? minStock = null;
@@ -410,21 +376,14 @@ namespace LezzetKitabi.Forms.Controls
                 AddFilterToPanel($"Stok: {minStock} - {maxStock}", RemoveFilter);
             }
         }
-
         private void buttonUnitAdd_Click(object sender, EventArgs e)
         {
-            // ComboBox'dan birim değerini al
-            string unit = comboBoxUnit.SelectedItem?.ToString(); // Seçili öğe null olabileceği için güvenli erişim
+            string unit = comboBoxUnit.SelectedItem?.ToString();
 
-            // Eğer birim seçiliyse, filtreyi ekle
             if (!string.IsNullOrEmpty(unit))
             {
-                // Birim filtresini kontrol et ve gerekirse sil
                 RemoveExistingFilter("Birim");
-
-                // Yeni filtreyi listeye ekle
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Birim", Value = unit });
-                // Yeni filtreyi panelCurrentFilter'a ekle
                 AddFilterToPanel($"Birim: {unit}", RemoveFilter);
             }
             else
@@ -432,22 +391,18 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Lütfen birim seçin.");
             }
         }
-
-        // Filtreyi panel'e ekleyen metot
         private void AddFilterToPanel(string filterText, Action<Control> removeAction)
         {
-            // Yeni bir filtre için panel oluştur
             Panel filterPanel = new Panel
             {
-                AutoSize = false, // Otomatik boyutlamayı kapat
-                Width = 50, // Panelin genişliğini ayarla
-                Height = 30, // Panelin yüksekliğini ayarla
+                AutoSize = false,
+                Width = 50,
+                Height = 30,
                 Margin = new Padding(10),
-                Dock = DockStyle.Top, // Panelin üstte yer almasını sağla
+                Dock = DockStyle.Top,
                 BackColor = Color.Gray
             };
 
-            // Yeni label oluştur
             Label label = new Label
             {
                 Text = filterText,
@@ -455,38 +410,31 @@ namespace LezzetKitabi.Forms.Controls
                 Margin = new Padding(5)
             };
 
-            // Silme butonu oluştur
             Button removeButton = new Button
             {
                 Text = "X",
-                Width = 25, // Butonun genişliğini ayarla
-                Height = 25, // Butonun yüksekliğini ayarla
+                Width = 25,
+                Height = 25,
                 Margin = new Padding(5),
                 Dock = DockStyle.Right
             };
 
-            // Silme butonuna tıklandığında filtreyi kaldır
             removeButton.Click += (sender, e) =>
             {
-                // Silme işlemi
                 removeAction(filterPanel);
-                RemoveFilter(filterPanel); // Panelden ve listeden sil
+                RemoveFilter(filterPanel);
             };
 
-            // Panel'e label ve butonu ekle
             filterPanel.Controls.Add(label);
             filterPanel.Controls.Add(removeButton);
 
-            // PanelCurrentFilter'a ekle
             panelCurrentFilters.Controls.Add(filterPanel);
         }
-
         private void RemoveFilter(Control filterPanel)
         {
             panelCurrentFilters.Controls.Remove(filterPanel);
 
-            // Silinen filtreyi filterCriteriaList'ten kaldırma işlemini burada gerçekleştirin
-            var filterType = filterPanel.Controls[0].Text.Split(':')[0].Trim(); // Label'dan filtre türünü al
+            var filterType = filterPanel.Controls[0].Text.Split(':')[0].Trim();
             var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == filterType);
             if (existingFilter != null)
             {
@@ -497,58 +445,43 @@ namespace LezzetKitabi.Forms.Controls
                 RefreshPanelsAsync();
             }
         }
-
-        // Mevcut filtreyi silme işlemi
         private void RemoveExistingFilter(string filterType)
         {
-            // Mevcut filtreyi bul
             var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == filterType);
             if (existingFilter != null)
             {
-                // Filtreyi listeden çıkar
                 filterCriteriaList.Remove(existingFilter);
 
-                // Panel'den sil
                 foreach (Control control in panelCurrentFilters.Controls)
                 {
                     if (control is Panel filterPanel && filterPanel.Controls[0].Text.StartsWith(filterType))
                     {
                         panelCurrentFilters.Controls.Remove(filterPanel);
-                        break; // Silindikten sonra döngüyü sonlandır
+                        break;
                     }
                 }
             }
         }
-
         private void buttonFilters_Click(object sender, EventArgs e)
         {
             RefreshPanelsAsync();
             InitializeCustomPanelsAsync();
         }
-
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            // Malzeme adını al
             string name = textBoxSearch.Text.Trim();
-
-            // "Malzeme Adı" filtresini kontrol et ve güncelle
             var existingFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Adi");
             if (existingFilter != null)
             {
-                // Eğer mevcut filtre varsa, değeri güncelle
                 existingFilter.Value = name;
             }
             else
             {
-                // Eğer mevcut filtre yoksa, yeni filtre ekle
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Malzeme Adi", Value = name });
             }
-
-            // Paneli yenile
             RefreshPanelsAsync();
             InitializeCustomPanelsAsync();
         }
-
         private void buttonPrevius_Click(object sender, EventArgs e)
         {
             if (currentPage != 1)
@@ -561,7 +494,6 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Ilk Sayfaya Ulastiniz Daha Geri Gidemezsiniz!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         private void buttonNext_Click(object sender, EventArgs e)
         {
             if (currentPage < totalPages - 1)

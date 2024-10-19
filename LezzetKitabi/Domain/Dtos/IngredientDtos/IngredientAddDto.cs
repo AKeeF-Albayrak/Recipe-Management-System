@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Domain.Dtos.IngredientDtos
 {
-    public class IngredientAddDto // değişecek IngredientAmount??
+    public class IngredientAddDto
     {
         public string IngredientName { get; set; }
         public string TotalQuantity { get; set; }

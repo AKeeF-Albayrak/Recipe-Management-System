@@ -58,4 +58,3 @@ namespace LezzetKitabi
         }
     }
 }
-// tarif filtresinde malzeme sayisi gore calisiyor ama koyacak yer bulamadim

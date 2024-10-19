@@ -67,39 +67,38 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             string sql = @"
-WITH RecipeIngredientCount AS (
-    SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
-    FROM Recipes r
-    LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
-    GROUP BY r.Id
-)
-SELECT r.Id, 
-       r.RecipeName, 
-       r.Category,       -- Kategori ekleniyor
-       r.Instructions,   -- Instructions ekleniyor
-       SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
-       SUM(CASE 
-             WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
-               (CASE 
-                 WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
-                 ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
-               END)
-             ELSE 0 
-           END) AS AvailabilityPercentage,
-       SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
-            THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
-            ELSE 0 END) AS MissingCost,
-       r.PreparationTime -- Hazırlama Süresi ekleniyor
-FROM Recipes r 
-LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
-LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
-LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
+            WITH RecipeIngredientCount AS (
+                SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
+                FROM Recipes r
+                LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
+                GROUP BY r.Id
+            )
+            SELECT r.Id, 
+                   r.RecipeName, 
+                   r.Category,       -- Kategori ekleniyor
+                   r.Instructions,   -- Instructions ekleniyor
+                   SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
+                   SUM(CASE 
+                         WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
+                           (CASE 
+                             WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
+                             ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
+                           END)
+                         ELSE 0 
+                       END) AS AvailabilityPercentage,
+                   SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
+                        THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
+                        ELSE 0 END) AS MissingCost,
+                   r.PreparationTime -- Hazırlama Süresi ekleniyor
+            FROM Recipes r 
+            LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
+            LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
+            LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
 
             filterCriteriaList ??= new List<FilterCriteria>();
 
             List<string> filters = new List<string>();
 
-            // Price filter
             var priceFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Fiyat");
             if (priceFilter != null)
             {
@@ -115,7 +114,6 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                 }
             }
 
-            // Ingredient Count filter
             var ingredientFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Sayisi");
             if (ingredientFilter != null)
             {
@@ -143,7 +141,6 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                 }
             }
 
-            // Preparation Time filter
             var timeFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Hazırlama Süresi");
             if (timeFilter != null)
             {
@@ -159,7 +156,6 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                 }
             }
 
-            // Category filter
             var categoryFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Kategori");
             if (categoryFilter != null)
             {
@@ -167,36 +163,31 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                 filters.Add($"(r.Category = '{category}')");
             }
 
-            // Ingredient filters
             var ingredientFilters = filterCriteriaList
                 .Where(f => f.FilterType == "Malzeme")
                 .Select(f => $"(ri.IngredientID IN (SELECT Id FROM Ingredients WHERE IngredientName = '{f.Value}'))");
 
             filters.AddRange(ingredientFilters);
 
-            // Name filter
             var nameFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Tarif Adi");
             if (nameFilter != null)
             {
                 string name = nameFilter.Value;
                 filters.Add($@"
-        (r.RecipeName LIKE '%{name}%' OR 
-         r.Id IN (SELECT ri.RecipeID 
+                  (r.RecipeName LIKE '%{name}%' OR 
+                  r.Id IN (SELECT ri.RecipeID 
                   FROM RecipeIngredients ri 
                   JOIN Ingredients i ON ri.IngredientID = i.Id 
                   WHERE i.IngredientName LIKE '%{name}%'))");
             }
 
-            // Add filters to the SQL query
             if (filters.Count > 0)
             {
                 sql += " WHERE " + string.Join(" AND ", filters);
             }
 
-            // Grouping
-            sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.PreparationTime"; // Group by ekleniyor
+            sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.PreparationTime";
 
-            // Sorting
             switch (sortingType)
             {
                 case RecipeSortingType.A_from_Z:
@@ -225,24 +216,23 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                     break;
                 case RecipeSortingType.Increasing_Ingredients:
                     sql += @"
-            ORDER BY 
-            (SELECT COUNT(*) 
-             FROM RecipeIngredients ri 
-             WHERE ri.RecipeID = r.Id) ASC;";
+                    ORDER BY 
+                    (SELECT COUNT(*) 
+                     FROM RecipeIngredients ri 
+                     WHERE ri.RecipeID = r.Id) ASC;";
                     break;
                 case RecipeSortingType.Decrising_Ingredients:
                     sql += @"
-            ORDER BY 
-            (SELECT COUNT(*) 
-             FROM RecipeIngredients ri 
-             WHERE ri.RecipeID = r.Id) DESC;";
+                    ORDER BY 
+                    (SELECT COUNT(*) 
+                     FROM RecipeIngredients ri 
+                     WHERE ri.RecipeID = r.Id) DESC;";
                     break;
                 default:
                     sql += ";";
                     break;
             }
 
-            // Execute the query and return the results
             var recipes = await connection.QueryAsync<RecipeViewGetDto>(sql);
 
             return recipes.ToList();
@@ -294,9 +284,9 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                 foreach (var ingredientUpdate in recipeUpdateDto.Ingredients)
                 {
                     string updateIngredientSql = @"
-                UPDATE RecipeIngredients 
-                SET IngredientAmount = @IngredientAmount 
-                WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
+                    UPDATE RecipeIngredients 
+                    SET IngredientAmount = @IngredientAmount 
+                    WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
 
                     var ingredientUpdateResult = await connection.ExecuteAsync(updateIngredientSql, new
                     {
@@ -320,7 +310,6 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
                 throw; 
             }
         }
-
         public async Task<Recipe> GetRecipeByNameAsync(string name)
         {
             using var connection = new SqlConnection(_connectionString);

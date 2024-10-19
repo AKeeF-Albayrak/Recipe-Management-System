@@ -8,7 +8,7 @@ namespace LezzetKitabi.Domain.Dtos.CrossTableDtos
 {
     public class RecipeIngredientUpdateDto
     {
-        public Guid IngredientID { get; set; } // Malzeme ID'si
-        public float IngredientAmount { get; set; } // Malzeme miktarı
+        public Guid IngredientID { get; set; }
+        public float IngredientAmount { get; set; }
     }
 }

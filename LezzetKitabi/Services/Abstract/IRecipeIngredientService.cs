@@ -12,7 +12,6 @@ namespace LezzetKitabi.Services.Abstract
     public interface IRecipeIngredientService
     {
         Task AddRangeAsync(List<AddRecipeIngredientDto> recipeIngredients);
-
         public Task<List<Ingredient>> GetIngredientsByRecipeIdAsync(Guid recipeId);
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Data.Repositories.Abstract
 {
-    public interface IRecipeIngredientRepository : IBaseRepository<RecipeIngredient>
+    public interface IRecipeIngredientRepository
     {
         public Task AddRangeAsync(List<AddRecipeIngredientDto> recipeIngredients);
         public Task<List<Ingredient>> GetIngredientsByRecipeIdAsync(Guid recipeId);

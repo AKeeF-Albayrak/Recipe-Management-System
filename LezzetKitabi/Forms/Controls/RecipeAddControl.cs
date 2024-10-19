@@ -18,7 +18,7 @@ namespace LezzetKitabi.Forms.Controls
         private readonly IRecipeService _recipeService;
         private readonly IRecipeIngredientService _recipeIngredientService;
         private readonly IServiceProvider _serviceProvider;
-
+        private bool isChanging = false;
         public RecipeAddControl(IServiceProvider serviceProvider)
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
@@ -33,7 +33,6 @@ namespace LezzetKitabi.Forms.Controls
             numericUpDownMinutes.Minimum = 0;
             numericUpDownMinutes.Maximum = 59;
         }
-
         private void SetUpCategoryComboBox()
         {
             comboBoxCategory.Items.Clear();
@@ -45,7 +44,6 @@ namespace LezzetKitabi.Forms.Controls
 
             comboBoxCategory.SelectedIndex = -1;
         }
-
         private void buttonAddIngredient_Click(object sender, EventArgs e)
         {
             var selectedItem = comboBoxIngredients.SelectedItem as ComboBoxItem;
@@ -84,8 +82,6 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Lütfen bir malzeme seçin.");
             }
         }
-
-
         public async Task SetUpCombobox()
         {
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
@@ -125,7 +121,6 @@ namespace LezzetKitabi.Forms.Controls
             comboBoxIngredients.DisplayMember = "Text";
             comboBoxIngredients.ValueMember = "Value";
         }
-
         public class ListBoxIngredient
         {
             public string DisplayText { get; set; }
@@ -137,7 +132,6 @@ namespace LezzetKitabi.Forms.Controls
                 return DisplayText;
             }
         }
-
         private async void metroSetButton1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxTitle.Text))
@@ -186,7 +180,7 @@ namespace LezzetKitabi.Forms.Controls
             var recipeAddDto = new RecipeAddDto
             {
                 RecipeName = textBoxTitle.Text,
-                Category = comboBoxCategory.SelectedItem.ToString(), // Enum'dan alınan kategori
+                Category = comboBoxCategory.SelectedItem.ToString(),
                 PreparationTime = (int)(numericUpDownHours.Value * 60) + (int)numericUpDownMinutes.Value,
                 Instructions = instructions
             };
@@ -217,7 +211,7 @@ namespace LezzetKitabi.Forms.Controls
             comboBoxIngredients.SelectedItem = null;
             textBoxAmount.Clear();
             textBoxTitle.Clear();
-            comboBoxCategory.SelectedItem = null; // Kategori seçimini temizle
+            comboBoxCategory.SelectedItem = null;
             textBox3.Clear();
             listBox1.Items.Clear();
             listBoxIngredients.Items.Clear();
@@ -226,7 +220,6 @@ namespace LezzetKitabi.Forms.Controls
 
             await SetUpCombobox();
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             if (textBox3.Text == "")
@@ -239,7 +232,6 @@ namespace LezzetKitabi.Forms.Controls
                 textBox3.Clear();
             }
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             if (listBoxIngredients.SelectedItem != null)
@@ -252,9 +244,9 @@ namespace LezzetKitabi.Forms.Controls
 
                     comboBoxIngredients.Items.Add(new ComboBoxItem
                     {
-                        Text = selectedItem.DisplayText.Split(' ')[1], // Malzeme adını ayıkla
+                        Text = selectedItem.DisplayText.Split(' ')[1],
                         Value = selectedItem.IngredientId,
-                        Unit = selectedItem.DisplayText.Split(' ').Last() // Birimi al
+                        Unit = selectedItem.DisplayText.Split(' ').Last()
                     });
                 }
             }
@@ -263,7 +255,6 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Lütfen silmek istediğiniz malzemeyi seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedItem != null)
@@ -275,9 +266,6 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Lütfen silmek istediğiniz talimatı seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-        private bool isChanging = false;
-
         private void listBoxIngredients_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isChanging) return;
@@ -291,7 +279,6 @@ namespace LezzetKitabi.Forms.Controls
                 isChanging = false;
             }
         }
-
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isChanging) return;
@@ -305,7 +292,6 @@ namespace LezzetKitabi.Forms.Controls
                 isChanging = false;
             }
         }
-
         private void textBoxAmount_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')

@@ -23,7 +23,6 @@ namespace LezzetKitabi.Forms
         }
         public async void LoadRecipeDetailsAsync(RecipeViewGetDto recipe, List<Ingredient> ingredients)
         {
-            // Tarifin bilgilerini dinamik olarak doldur
             labelRecipeName.Text = recipe.RecipeName;
             labelCategory.Text = recipe.Category;
             labelPreparationTime.Text = $"{recipe.PreparationTime} dakika";
@@ -45,11 +44,8 @@ namespace LezzetKitabi.Forms
 
                 panelIngredients.Controls.Add(label);
             }
-
             LoadInstructionsAsync(recipe.Instructions);
-
         }
-
         public async void LoadInstructionsAsync(string instructions)
         {
             var instructionSteps = instructions.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -75,7 +71,6 @@ namespace LezzetKitabi.Forms
                 panelInstructions.Controls.Add(label);
             }
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();

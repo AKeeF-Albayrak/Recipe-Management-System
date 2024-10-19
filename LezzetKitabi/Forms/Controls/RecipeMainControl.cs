@@ -90,12 +90,12 @@ namespace LezzetKitabi.Forms.Controls
                 return;
             }
 
-            int startIndex = (currentPage - 1) * 8; // Başlangıç indeksi
-            int endIndex = Math.Min(startIndex + 8, recipes.Count); // Bitiş indeksi
+            int startIndex = (currentPage - 1) * 8;
+            int endIndex = Math.Min(startIndex + 8, recipes.Count);
 
             for (int i = startIndex; i < endIndex; i++)
             {
-                int row = (i - startIndex) / cols; // Satır hesaplama
+                int row = (i - startIndex) / cols;
                 int col = (i - startIndex) % cols;
 
                 Panel mainPanel = new Panel();
@@ -192,7 +192,6 @@ namespace LezzetKitabi.Forms.Controls
                 recipeImageBox.Image = Properties.Resources.Screenshot_2024_10_09_121511;
                 recipeImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
-                // Labels
                 Label label = new Label();
                 label.AutoSize = true;
                 label.Text = recipes[i].RecipeName;
@@ -205,12 +204,12 @@ namespace LezzetKitabi.Forms.Controls
 
                 Label costLabel = new Label();
                 costLabel.AutoSize = true;
-                costLabel.Text = "Maliyet: " + recipes[i].TotalCost.ToString("C");
+                costLabel.Text = "Maliyet: ₺" + recipes[i].TotalCost.ToString("0.00");
                 costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 200);
 
                 Label missingCostLabel = new Label();
                 missingCostLabel.AutoSize = true;
-                missingCostLabel.Text = "Eksik Maliyet: " + recipes[i].MissingCost.ToString("C");
+                missingCostLabel.Text = "Eksik Maliyet: ₺" + recipes[i].MissingCost.ToString("0.00");
                 missingCostLabel.Location = new Point((panelWidth - missingCostLabel.Width) / 2, 220);
 
                 Label timeLabel = new Label();
@@ -226,7 +225,6 @@ namespace LezzetKitabi.Forms.Controls
                 mainPanel.Controls.Add(timeLabel);
                 mainPanel.Controls.Add(overlayPanel);
 
-
                 panelItems.Controls.Add(mainPanel);
             }
         }
@@ -238,8 +236,6 @@ namespace LezzetKitabi.Forms.Controls
                 RecipeDetailsForm detailsForm = new RecipeDetailsForm();
                 List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
                 detailsForm.LoadRecipeDetailsAsync(selectedRecipe, ingredients);
-
-                // Detay formunu göster
                 detailsForm.ShowDialog();
             }
         }
@@ -290,15 +286,14 @@ namespace LezzetKitabi.Forms.Controls
             GraphicsPath path = new GraphicsPath();
             int arcDiameter = cornerRadius * 2;
 
-            path.AddArc(rect.X, rect.Y, arcDiameter, arcDiameter, 180, 90); // Sol üst köşe
-            path.AddArc(rect.Right - arcDiameter, rect.Y, arcDiameter, arcDiameter, 270, 90); // Sağ üst köşe
-            path.AddArc(rect.Right - arcDiameter, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 0, 90); // Sağ alt köşe
-            path.AddArc(rect.X, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 90, 90); // Sol alt köşe
+            path.AddArc(rect.X, rect.Y, arcDiameter, arcDiameter, 180, 90);
+            path.AddArc(rect.Right - arcDiameter, rect.Y, arcDiameter, arcDiameter, 270, 90);
+            path.AddArc(rect.Right - arcDiameter, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 90, 90);
 
             path.CloseFigure();
             return path;
         }
-
         private void BringToFront(Panel panel)
         {
             Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
@@ -307,22 +302,16 @@ namespace LezzetKitabi.Forms.Controls
                 overlayPanel.Visible = true;
                 overlayPanel.BringToFront();
 
-                // overlayPanel üzerinde iken görünür kalsın
                 overlayPanel.MouseEnter += (s, e) =>
                 {
                     overlayPanel.Visible = true;
                 };
-
-                // Fare overlayPanel'den çıktığında gizle
                 overlayPanel.MouseLeave += (s, e) => CheckMouseLeave(panel);
 
-                // Ana panel üzerinde iken overlay'i göster
                 panel.MouseEnter += (s, e) =>
                 {
                     overlayPanel.Visible = true;
                 };
-
-                // Fare ana panelden çıktığında kontrol et
                 panel.MouseLeave += (s, e) => CheckMouseLeave(panel);
             }
         }
@@ -332,15 +321,13 @@ namespace LezzetKitabi.Forms.Controls
 
             if (overlayPanel != null)
             {
-                // Fare overlayPanel'in dışına çıkmış mı kontrol et
                 if (!panel.ClientRectangle.Contains(panel.PointToClient(MousePosition)) &&
                     !overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
                 {
-                    overlayPanel.Visible = false; // Eğer fare hem ana panel hem de overlayPanel'in dışındaysa overlay'i gizle
+                    overlayPanel.Visible = false;
                 }
             }
         }
-
         private void InitializeGradientPanel(Panel panel)
         {
             panel.Paint += (s, e) =>
@@ -354,7 +341,6 @@ namespace LezzetKitabi.Forms.Controls
                 }
             };
         }
-        
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (comboBoxSort.SelectedIndex)

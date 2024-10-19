@@ -17,9 +17,5 @@ namespace LezzetKitabi.Services.Abstract
         bool DeleteRecipe(Guid id);
         Task<RecipeGetDto?> GetRecipeByNameAsync(string name);
         Task<bool> UpdateRecipe(RecipeUpdateDto recipeUpdateDto);
-
-        //Task<IEnumerable<RecipeDto>> GetAllRecipesAsync();
-        //Task<RecipeDto> GetRecipeByIdAsync(int id);
-        //Task UpdateRecipeAsync(int id, CreateRecipeDto recipeDto);
     }
 }

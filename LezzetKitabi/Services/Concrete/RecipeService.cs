@@ -35,15 +35,13 @@ namespace LezzetKitabi.Services.Concrete
         }
         public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList = null)
         {
-            // Tüm tarifleri al
             var recipes = await _recipeRepository.GetAllRecipesByOrderAsync(_type, filterCriteriaList);
 
-            // Yüzde değeri %100'den fazla olan tarifleri kontrol et ve eşitle
             foreach (var recipe in recipes)
             {
                 if (recipe.AvailabilityPercentage > 100)
                 {
-                    recipe.AvailabilityPercentage = 100;  // %100'den fazla olanları %100'e eşitle
+                    recipe.AvailabilityPercentage = 100;
                 }
             }
 
@@ -55,7 +53,6 @@ namespace LezzetKitabi.Services.Concrete
 
             return isDeleted;
         }
-
         public async Task<RecipeGetDto?> GetRecipeByNameAsync(string name)
         {
             var recipe = await _recipeRepository.GetRecipeByNameAsync(name);
@@ -76,7 +73,6 @@ namespace LezzetKitabi.Services.Concrete
 
             return recipeGetDto;
         }
-
         public async Task<bool> UpdateRecipe(RecipeUpdateDto recipeUpdateDto)
         {
             return await _recipeRepository.UpdateRecipeAsync(recipeUpdateDto);

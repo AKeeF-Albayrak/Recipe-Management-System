@@ -12,12 +12,10 @@ namespace LezzetKitabi.Application.Services
     public class IngredientService : IIngredientService
     {
         private readonly IIngredientRepository _ingredientRepository;
-
         public IngredientService(IIngredientRepository ingredientRepository)
         {
             _ingredientRepository = ingredientRepository;
         }
-
         public bool AddIngredient(IngredientAddDto ingredientAddDto)
         {
             Ingredient ingredient = new Ingredient()
@@ -30,19 +28,16 @@ namespace LezzetKitabi.Application.Services
 
             return _ingredientRepository.AddEntity(ingredient);
         }
-
         public bool DeleteIngredient(Guid id)
         {
             bool isDeleted = _ingredientRepository.DeleteAsync(id).Result;
 
             return isDeleted;
         }
-
         public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType,List<FilterCriteria> filterCriteriaList = null)
         {
             return await _ingredientRepository.GetAllIngredientsByOrderAndFilterAsync(sortingType,filterCriteriaList);
         }
-
         public async Task<IngredientGetDto?> GetIngredientByIdAsync(Guid id)
         {
             var ingredient = await _ingredientRepository.GetEntityById(id);
@@ -63,7 +58,6 @@ namespace LezzetKitabi.Application.Services
 
             return ingredientGetDto;
         }
-
         public async Task<bool> UpdateIngredientAsync(Ingredient ingredient)
         {
             return await _ingredientRepository.UpdateIngredientAsync(ingredient);

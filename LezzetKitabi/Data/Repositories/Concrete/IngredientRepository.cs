@@ -55,7 +55,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return true;
         }
-        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType,List<FilterCriteria> filterCriteriaList = null)  // Default value set to null
+        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType,List<FilterCriteria> filterCriteriaList = null)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -64,24 +64,19 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.OpenAsync();
             }
 
-            // SQL başlangıç noktası
-            string sql = "SELECT * FROM Ingredients WHERE 1=1";  // Dinamik koşul eklemek için başlangıç.
+            string sql = "SELECT * FROM Ingredients WHERE 1=1";
 
-            // Filtreleme işlemleri
-            var parameters = new DynamicParameters(); // Dapper için dinamik parametreler
+            var parameters = new DynamicParameters();
 
-            // Eğer filterCriteriaList null ise, boş bir liste oluştur
             filterCriteriaList ??= new List<FilterCriteria>();
 
-            // Name filtresi
             var nameFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Adi");
             if (nameFilter != null)
             {
                 sql += " AND IngredientName LIKE @Name";
-                parameters.Add("Name", $"%{nameFilter.Value}%"); // LIKE ile arama için "%" eklenir
+                parameters.Add("Name", $"%{nameFilter.Value}%");
             }
 
-            // Fiyat aralığı filtresi
             var priceFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Fiyat");
             if (priceFilter != null)
             {
@@ -101,7 +96,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 }
             }
 
-            // Stok aralığı filtresi
             var stockFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Stok");
             if (stockFilter != null)
             {
@@ -121,7 +115,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 }
             }
 
-            // Birim filtresi
             var unitFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Birim");
             if (unitFilter != null)
             {
@@ -129,7 +122,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 parameters.Add("Unit", unitFilter.Value);
             }
 
-            // Sıralama işlemleri
             switch (sortingType)
             {
                 case IngredientSortingType.A_from_Z:
@@ -149,7 +141,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     break;
             }
 
-            // Asenkron sorgu ve listeye dönüştürme
             List<Ingredient> ingredients = (await connection.QueryAsync<Ingredient>(sql, parameters)).ToList();
 
             return ingredients;
@@ -177,7 +168,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return rowsAffected > 0;
         }
-
         public async Task<Ingredient> GetEntityById(Guid id)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -199,12 +189,12 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             await connection.OpenAsync();
 
             string sql = @"
-        UPDATE Ingredients 
-        SET IngredientName = @IngredientName, 
-            TotalQuantity = @TotalQuantity, 
-            Unit = @Unit, 
-            UnitPrice = @UnitPrice
-        WHERE Id = @Id";
+            UPDATE Ingredients 
+            SET IngredientName = @IngredientName, 
+                TotalQuantity = @TotalQuantity, 
+                Unit = @Unit, 
+                UnitPrice = @UnitPrice
+            WHERE Id = @Id";
 
             var affectedRows = await connection.ExecuteAsync(sql, new
             {
