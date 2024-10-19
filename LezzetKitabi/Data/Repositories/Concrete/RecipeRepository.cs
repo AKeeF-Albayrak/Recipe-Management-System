@@ -261,9 +261,64 @@ LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
 
             return recipe;
         }
-        public Task<int> UpdateEntity(Recipe recipe)
+        public async Task<bool> UpdateRecipeAsync(RecipeUpdateDto recipeUpdateDto)
         {
-            throw new NotImplementedException();//burada ingredient list olarak olmalı mı??
+            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+            await connection.OpenAsync();
+
+            using var transaction = connection.BeginTransaction();
+
+            try
+            {
+                string updateRecipeSql = @"
+                UPDATE Recipes 
+                SET RecipeName = @RecipeName, 
+                    Category = @Category, 
+                    PreparationTime = @PreparationTime, 
+                    Instructions = @Instructions 
+                WHERE Id = @Id";
+
+                var recipeUpdateResult = await connection.ExecuteAsync(updateRecipeSql, new
+                {
+                    RecipeName = recipeUpdateDto.RecipeName,
+                    Category = recipeUpdateDto.Category,
+                    PreparationTime = recipeUpdateDto.PreparationTime,
+                    Instructions = recipeUpdateDto.Instructions,
+                    Id = recipeUpdateDto.Id
+                }, transaction);
+
+                if (recipeUpdateResult == 0)
+                {
+                    return false;
+                }
+                foreach (var ingredientUpdate in recipeUpdateDto.Ingredients)
+                {
+                    string updateIngredientSql = @"
+                UPDATE RecipeIngredients 
+                SET IngredientAmount = @IngredientAmount 
+                WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
+
+                    var ingredientUpdateResult = await connection.ExecuteAsync(updateIngredientSql, new
+                    {
+                        IngredientAmount = ingredientUpdate.IngredientAmount,
+                        RecipeID = recipeUpdateDto.Id,
+                        IngredientID = ingredientUpdate.IngredientID
+                    }, transaction);
+
+                    if (ingredientUpdateResult == 0)
+                    {
+                        return false;
+                    }
+                }
+
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw; 
+            }
         }
 
         public async Task<Recipe> GetRecipeByNameAsync(string name)

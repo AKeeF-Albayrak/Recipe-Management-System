@@ -1,4 +1,5 @@
 ﻿using LezzetKitabi.Domain.Entities;
+using LezzetKitabi.Domain.Dtos;
 using LezzetKitabi.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,5 @@ namespace LezzetKitabi.Data.Repositories.Abstract
         bool AddEntity(T entity);
         Task<bool> DeleteAsync(Guid id);
         Task<T> GetEntityById(Guid id);
-        Task<int> UpdateEntity(T entity);
     }
 }

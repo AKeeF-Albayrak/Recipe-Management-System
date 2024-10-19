@@ -13,5 +13,6 @@ namespace LezzetKitabi.Data.Repositories.Abstract
     {
         Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType type, List<FilterCriteria> filterCriteriaList);
         Task<Recipe> GetRecipeByNameAsync(string name);
+        Task<bool> UpdateRecipeAsync(RecipeUpdateDto recipeUpdateDto);
     }
 }

@@ -192,22 +192,19 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return ingredient;
         }
-        public async Task<int> UpdateEntity(Ingredient ingredient)
+        public async Task<bool> UpdateIngredientAsync(Ingredient ingredient)
         {
             using var connection = new SqlConnection(_connectionString);
 
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                await connection.OpenAsync();
-            }
+            await connection.OpenAsync();
 
             string sql = @"
-                   UPDATE Ingredients 
-                   SET IngredientName = @IngredientName, 
-                   TotalStock = @TotalStock, 
-                   Unit = @Unit, 
-                   UnitPrice = @UnitPrice
-                   WHERE Id = @Id";
+        UPDATE Ingredients 
+        SET IngredientName = @IngredientName, 
+            TotalQuantity = @TotalQuantity, 
+            Unit = @Unit, 
+            UnitPrice = @UnitPrice
+        WHERE Id = @Id";
 
             var affectedRows = await connection.ExecuteAsync(sql, new
             {
@@ -217,8 +214,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 UnitPrice = ingredient.UnitPrice,
                 Id = ingredient.Id
             });
-
-            return affectedRows;
+            return affectedRows > 0;
         }
     }
 }

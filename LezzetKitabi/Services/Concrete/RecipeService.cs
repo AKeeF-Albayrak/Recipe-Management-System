@@ -76,5 +76,10 @@ namespace LezzetKitabi.Services.Concrete
 
             return recipeGetDto;
         }
+
+        public async Task<bool> UpdateRecipe(RecipeUpdateDto recipeUpdateDto)
+        {
+            return await _recipeRepository.UpdateRecipeAsync(recipeUpdateDto);
+        }
     }
 }

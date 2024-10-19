@@ -65,7 +65,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             return ingredients.ToList();
         }
 
-        public Task<int> UpdateEntity(RecipeIngredient entity)
+        public Task<bool> UpdateEntityAsync(RecipeIngredient entity)
         {
             throw new NotImplementedException();
         }
