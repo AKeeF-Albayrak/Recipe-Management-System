@@ -67,35 +67,37 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             string sql = @"
-       WITH RecipeIngredientCount AS (
-           SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
-           FROM Recipes r
-           LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
-           GROUP BY r.Id
-       )
-       SELECT r.Id, r.RecipeName, 
-              SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
-              -- AvailabilityPercentage: Her malzemenin katkı payı tarifteki malzeme sayısına göre hesaplanır
-              SUM(CASE 
-                    WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
-                      (CASE 
-                        WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount -- Yeterli malzeme varsa tam katkı ekle
-                        ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount) -- Yetersizse mevcut miktara göre katkı ekle
-                      END)
-                    ELSE 0 -- Hiç malzeme yoksa katkı ekleme
-                  END) AS AvailabilityPercentage,
-              SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
-                   THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
-                   ELSE 0 END) AS MissingCost
-       FROM Recipes r 
-       LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
-       LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
-       LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
+WITH RecipeIngredientCount AS (
+    SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
+    FROM Recipes r
+    LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
+    GROUP BY r.Id
+)
+SELECT r.Id, 
+       r.RecipeName, 
+       SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
+       SUM(CASE 
+             WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
+               (CASE 
+                 WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
+                 ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
+               END)
+             ELSE 0 
+           END) AS AvailabilityPercentage,
+       SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
+            THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
+            ELSE 0 END) AS MissingCost,
+       r.PreparationTime -- Include PreparationTime in the select list
+FROM Recipes r 
+LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
+LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
+LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
 
             filterCriteriaList ??= new List<FilterCriteria>();
 
             List<string> filters = new List<string>();
 
+            // Price filter
             var priceFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Fiyat");
             if (priceFilter != null)
             {
@@ -111,6 +113,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 }
             }
 
+            // Ingredient Count filter
             var ingredientFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Malzeme Sayisi");
             if (ingredientFilter != null)
             {
@@ -123,22 +126,22 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     if (!string.IsNullOrEmpty(minCount))
                     {
                         filters.Add($@"
-                                    (SELECT COUNT(*) 
-                                     FROM RecipeIngredients ri 
-                                     WHERE ri.RecipeID = r.Id) >= {minCount}");
+                            (SELECT COUNT(*) 
+                             FROM RecipeIngredients ri 
+                             WHERE ri.RecipeID = r.Id) >= {minCount}");
                     }
 
                     if (!string.IsNullOrEmpty(maxCount))
                     {
                         filters.Add($@"
-                                    (SELECT COUNT(*) 
-                                     FROM RecipeIngredients ri 
-                                     WHERE ri.RecipeID = r.Id) <= {maxCount}");
+                            (SELECT COUNT(*) 
+                             FROM RecipeIngredients ri 
+                             WHERE ri.RecipeID = r.Id) <= {maxCount}");
                     }
                 }
             }
 
-            // Hazırlama süresi filtresi
+            // Preparation Time filter
             var timeFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Hazırlama Süresi");
             if (timeFilter != null)
             {
@@ -154,7 +157,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 }
             }
 
-            // Kategori filtresi
+            // Category filter
             var categoryFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Kategori");
             if (categoryFilter != null)
             {
@@ -162,84 +165,82 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 filters.Add($"(r.Category = '{category}')");
             }
 
-            // Malzeme filtresi
+            // Ingredient filters
             var ingredientFilters = filterCriteriaList
                 .Where(f => f.FilterType == "Malzeme")
                 .Select(f => $"(ri.IngredientID IN (SELECT Id FROM Ingredients WHERE IngredientName = '{f.Value}'))");
 
             filters.AddRange(ingredientFilters);
 
-            // Name filtresi
+            // Name filter
             var nameFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Tarif Adi");
             if (nameFilter != null)
             {
                 string name = nameFilter.Value;
-
-                // Tarif adı ile malzeme adı için SQL sorgusu ekleniyor
                 filters.Add($@"
-                        (r.RecipeName LIKE '%{name}%' OR 
-                         r.Id IN (SELECT ri.RecipeID 
-                                  FROM RecipeIngredients ri 
-                                  JOIN Ingredients i ON ri.IngredientID = i.Id 
-                                  WHERE i.IngredientName LIKE '%{name}%'))");
+                (r.RecipeName LIKE '%{name}%' OR 
+                 r.Id IN (SELECT ri.RecipeID 
+                          FROM RecipeIngredients ri 
+                          JOIN Ingredients i ON ri.IngredientID = i.Id 
+                          WHERE i.IngredientName LIKE '%{name}%'))");
             }
 
-            // Filtreleri sorguya ekleme
+            // Add filters to the SQL query
             if (filters.Count > 0)
             {
                 sql += " WHERE " + string.Join(" AND ", filters);
             }
 
-            // Gruplama ve sıralama
-            sql += " GROUP BY r.Id, r.RecipeName ";
+            // Grouping
+            sql += " GROUP BY r.Id, r.RecipeName, r.PreparationTime"; // Include PreparationTime in GROUP BY
 
-            // Sıralama
+            // Sorting
             switch (sortingType)
             {
                 case RecipeSortingType.A_from_Z:
-                    sql += "ORDER BY r.RecipeName ASC;";
+                    sql += " ORDER BY r.RecipeName ASC;";
                     break;
                 case RecipeSortingType.Z_from_A:
-                    sql += "ORDER BY r.RecipeName DESC;";
+                    sql += " ORDER BY r.RecipeName DESC;";
                     break;
                 case RecipeSortingType.Fastest_to_Slowest:
-                    sql += "ORDER BY r.PreparationTime ASC;";
+                    sql += " ORDER BY r.PreparationTime ASC;";
                     break;
                 case RecipeSortingType.Slowest_to_Fastest:
-                    sql += "ORDER BY r.PreparationTime DESC;";
+                    sql += " ORDER BY r.PreparationTime DESC;";
                     break;
                 case RecipeSortingType.Cheapest_to_Expensive:
-                    sql += "ORDER BY TotalCost ASC;";
+                    sql += " ORDER BY TotalCost ASC;";
                     break;
                 case RecipeSortingType.Expensive_to_Cheapest:
-                    sql += "ORDER BY TotalCost DESC;";
+                    sql += " ORDER BY TotalCost DESC;";
                     break;
                 case RecipeSortingType.Ascending_Percentage:
-                    sql += "ORDER BY AvailabilityPercentage ASC;";
+                    sql += " ORDER BY AvailabilityPercentage ASC;";
                     break;
                 case RecipeSortingType.Descending_Percentage:
-                    sql += "ORDER BY AvailabilityPercentage DESC;";
+                    sql += " ORDER BY AvailabilityPercentage DESC;";
                     break;
                 case RecipeSortingType.Increasing_Ingredients:
                     sql += @"
-                            ORDER BY 
-                            (SELECT COUNT(*) 
-                             FROM RecipeIngredients ri 
-                             WHERE ri.RecipeID = r.Id) ASC;";
+                    ORDER BY 
+                    (SELECT COUNT(*) 
+                     FROM RecipeIngredients ri 
+                     WHERE ri.RecipeID = r.Id) ASC;";
                     break;
                 case RecipeSortingType.Decrising_Ingredients:
                     sql += @"
-                            ORDER BY 
-                            (SELECT COUNT(*) 
-                             FROM RecipeIngredients ri 
-                             WHERE ri.RecipeID = r.Id) DESC;";
+                    ORDER BY 
+                    (SELECT COUNT(*) 
+                     FROM RecipeIngredients ri 
+                     WHERE ri.RecipeID = r.Id) DESC;";
                     break;
                 default:
                     sql += ";";
                     break;
             }
 
-            // DTO'ya veri çekme
+            // Execute the query and return the results
             var recipes = await connection.QueryAsync<RecipeViewGetDto>(sql);
 
             return recipes.ToList();

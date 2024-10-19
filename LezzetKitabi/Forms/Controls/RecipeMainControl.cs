@@ -185,6 +185,13 @@ namespace LezzetKitabi.Forms.Controls
                 overlayPanel.Controls.Add(pictureBoxEdit);
                 overlayPanel.Controls.Add(pictureBoxDelete);
 
+                PictureBox recipeImageBox = new PictureBox();
+                recipeImageBox.Size = new Size(120, 120);
+                recipeImageBox.Location = new Point((panelWidth - recipeImageBox.Width) / 2, 50); 
+                recipeImageBox.Image = Properties.Resources.Screenshot_2024_10_09_121511;
+                recipeImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                // Labels
                 Label label = new Label();
                 label.AutoSize = true;
                 label.Text = recipes[i].RecipeName;
@@ -193,23 +200,31 @@ namespace LezzetKitabi.Forms.Controls
                 Label percentageLabel = new Label();
                 percentageLabel.AutoSize = true;
                 percentageLabel.Text = "Yüzde: " + (recipes[i].AvailabilityPercentage).ToString("0.##") + "%";
-                percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2, 40);
+                percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2, 180);
 
                 Label costLabel = new Label();
                 costLabel.AutoSize = true;
                 costLabel.Text = "Maliyet: " + recipes[i].TotalCost.ToString("C");
-                costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 60);
+                costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 200);
 
-                Label missingcostLabel = new Label();
-                missingcostLabel.AutoSize = true;
-                missingcostLabel.Text = "Eksik Maliyet: " + recipes[i].MissingCost.ToString("C");
-                missingcostLabel.Location = new Point((panelWidth - missingcostLabel.Width) / 2, 80);
+                Label missingCostLabel = new Label();
+                missingCostLabel.AutoSize = true;
+                missingCostLabel.Text = "Eksik Maliyet: " + recipes[i].MissingCost.ToString("C");
+                missingCostLabel.Location = new Point((panelWidth - missingCostLabel.Width) / 2, 220);
+
+                Label timeLabel = new Label();
+                timeLabel.AutoSize = true;
+                timeLabel.Text = "Tarif Süresi: " + recipes[i].PreparationTime + " dk";
+                timeLabel.Location = new Point((panelWidth - timeLabel.Width) / 2, 240);
 
                 mainPanel.Controls.Add(label);
+                mainPanel.Controls.Add(recipeImageBox);
                 mainPanel.Controls.Add(percentageLabel);
                 mainPanel.Controls.Add(costLabel);
-                mainPanel.Controls.Add(missingcostLabel);
+                mainPanel.Controls.Add(missingCostLabel);
+                mainPanel.Controls.Add(timeLabel);
                 mainPanel.Controls.Add(overlayPanel);
+
 
                 panelItems.Controls.Add(mainPanel);
             }
@@ -278,6 +293,7 @@ namespace LezzetKitabi.Forms.Controls
             path.CloseFigure();
             return path;
         }
+
         private void BringToFront(Panel panel)
         {
             Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
@@ -285,10 +301,41 @@ namespace LezzetKitabi.Forms.Controls
             {
                 overlayPanel.Visible = true;
                 overlayPanel.BringToFront();
-                overlayPanel.MouseEnter += (s, e) => overlayPanel.Visible = true;
-                overlayPanel.MouseLeave += (s, e) => overlayPanel.Visible = false;
+
+                // overlayPanel üzerinde iken görünür kalsın
+                overlayPanel.MouseEnter += (s, e) =>
+                {
+                    overlayPanel.Visible = true;
+                };
+
+                // Fare overlayPanel'den çıktığında gizle
+                overlayPanel.MouseLeave += (s, e) => CheckMouseLeave(panel);
+
+                // Ana panel üzerinde iken overlay'i göster
+                panel.MouseEnter += (s, e) =>
+                {
+                    overlayPanel.Visible = true;
+                };
+
+                // Fare ana panelden çıktığında kontrol et
+                panel.MouseLeave += (s, e) => CheckMouseLeave(panel);
             }
         }
+        private void CheckMouseLeave(Panel panel)
+        {
+            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
+
+            if (overlayPanel != null)
+            {
+                // Fare overlayPanel'in dışına çıkmış mı kontrol et
+                if (!panel.ClientRectangle.Contains(panel.PointToClient(MousePosition)) &&
+                    !overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
+                {
+                    overlayPanel.Visible = false; // Eğer fare hem ana panel hem de overlayPanel'in dışındaysa overlay'i gizle
+                }
+            }
+        }
+
         private void InitializeGradientPanel(Panel panel)
         {
             panel.Paint += (s, e) =>
@@ -302,17 +349,7 @@ namespace LezzetKitabi.Forms.Controls
                 }
             };
         }
-        private void CheckMouseLeave(Panel panel)
-        {
-            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
-            if (overlayPanel != null && overlayPanel.Visible)
-            {
-                if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
-                {
-                    overlayPanel.Visible = false; // Üstteki paneli gizle
-                }
-            }
-        }
+        
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (comboBoxSort.SelectedIndex)

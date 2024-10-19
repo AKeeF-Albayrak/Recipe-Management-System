@@ -48,7 +48,7 @@ namespace LezzetKitabi.Forms.Controls
                 ingredient.UnitPrice = unitPrice;
 
                 bool isAdded = _ingredientService.AddIngredient(ingredient);
-                if(isAdded)
+                if (isAdded)
                 {
                     MessageBox.Show("Malzeme Basariyla Kayit edildi!", "Basarili", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -66,6 +66,15 @@ namespace LezzetKitabi.Forms.Controls
             {
                 MessageBox.Show("Lütfen geçerli bir fiyat giriniz.");
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private byte[] ConvertImageToBytes(string filePath)
+        {
+            return File.ReadAllBytes(filePath); // Dosyayı byte[] olarak oku
         }
     }
 }

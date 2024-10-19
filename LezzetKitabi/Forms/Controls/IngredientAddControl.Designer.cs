@@ -38,6 +38,7 @@
             btnAdd = new Button();
             label1 = new Label();
             cmbUnit = new ComboBox();
+            openFileDialog1 = new OpenFileDialog();
             SuspendLayout();
             // 
             // lblIngredientName
@@ -152,6 +153,10 @@
             cmbUnit.Size = new Size(233, 38);
             cmbUnit.TabIndex = 10;
             // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            // 
             // IngredientAddControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -186,5 +191,6 @@
         private System.Windows.Forms.Button btnAdd;
         private Label label1;
         private ComboBox cmbUnit;
+        private OpenFileDialog openFileDialog1;
     }
 }
