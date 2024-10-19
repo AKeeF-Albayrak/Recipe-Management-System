@@ -35,6 +35,8 @@
             panelPage = new Panel();
             panelItems = new Panel();
             panelDown = new Panel();
+            buttonNext = new Button();
+            buttonPrevius = new Button();
             panelPrevius = new Panel();
             panelSort = new Panel();
             comboBoxSort = new ComboBox();
@@ -60,8 +62,6 @@
             panelCurrentFilters = new Panel();
             panel9 = new Panel();
             button1 = new Button();
-            buttonPrevius = new Button();
-            buttonNext = new Button();
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
@@ -143,6 +143,33 @@
             panelDown.Name = "panelDown";
             panelDown.Size = new Size(1078, 28);
             panelDown.TabIndex = 2;
+            // 
+            // buttonNext
+            // 
+            buttonNext.BackColor = Color.Transparent;
+            buttonNext.FlatAppearance.BorderSize = 0;
+            buttonNext.FlatAppearance.MouseOverBackColor = Color.FromArgb(0, 192, 0);
+            buttonNext.FlatStyle = FlatStyle.Flat;
+            buttonNext.Location = new Point(625, 4);
+            buttonNext.Name = "buttonNext";
+            buttonNext.Size = new Size(75, 23);
+            buttonNext.TabIndex = 1;
+            buttonNext.Text = "-->";
+            buttonNext.UseVisualStyleBackColor = false;
+            buttonNext.Click += buttonNext_Click;
+            // 
+            // buttonPrevius
+            // 
+            buttonPrevius.BackColor = Color.Transparent;
+            buttonPrevius.FlatAppearance.BorderSize = 0;
+            buttonPrevius.FlatStyle = FlatStyle.Flat;
+            buttonPrevius.Location = new Point(273, 3);
+            buttonPrevius.Name = "buttonPrevius";
+            buttonPrevius.Size = new Size(75, 23);
+            buttonPrevius.TabIndex = 0;
+            buttonPrevius.Text = "<--";
+            buttonPrevius.UseVisualStyleBackColor = false;
+            buttonPrevius.Click += buttonPrevius_Click;
             // 
             // panelPrevius
             // 
@@ -391,26 +418,6 @@
             button1.Text = "Filtrele";
             button1.UseVisualStyleBackColor = true;
             button1.Click += buttonFilters_Click;
-            // 
-            // buttonPrevius
-            // 
-            buttonPrevius.Location = new Point(168, 1);
-            buttonPrevius.Name = "buttonPrevius";
-            buttonPrevius.Size = new Size(75, 23);
-            buttonPrevius.TabIndex = 0;
-            buttonPrevius.Text = "button3";
-            buttonPrevius.UseVisualStyleBackColor = true;
-            buttonPrevius.Click += buttonPrevius_Click;
-            // 
-            // buttonNext
-            // 
-            buttonNext.Location = new Point(625, 4);
-            buttonNext.Name = "buttonNext";
-            buttonNext.Size = new Size(75, 23);
-            buttonNext.TabIndex = 1;
-            buttonNext.Text = "button4";
-            buttonNext.UseVisualStyleBackColor = true;
-            buttonNext.Click += buttonNext_Click;
             // 
             // IngredientMainControl
             // 

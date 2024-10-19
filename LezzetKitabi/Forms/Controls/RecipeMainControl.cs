@@ -100,7 +100,7 @@ namespace LezzetKitabi.Forms.Controls
 
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = recipes[i];
-                mainPanel.BackColor = recipes[i].AvailabilityPercentage == 100 ? Color.Green : Color.DarkRed;
+                mainPanel.BackColor = recipes[i].AvailabilityPercentage == 100 ? Color.Green : Color.FromArgb(59, 10, 10);
                 mainPanel.Size = new Size(panelWidth, panelHeight);
                 int x = startX + col * (panelWidth + xPadding);
                 int y = startY + row * (panelHeight + yPadding);

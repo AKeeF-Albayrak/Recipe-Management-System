@@ -1,8 +1,10 @@
 ﻿using LezzetKitabi.Application.Services;
 using LezzetKitabi.Domain.Contracts;
+using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
+using LezzetKitabi.Services.Concrete;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -62,7 +64,7 @@ namespace LezzetKitabi.Forms.Controls
             textBoxSearch.AutoCompleteCustomSource = suggestions;
         }
 
-        private async Task InitializeCustomPanelsAsync()
+        public async Task InitializeCustomPanelsAsync()
         {
             int rows = 3;  // 3 rows
             int cols = 6;  // 6 columns
@@ -178,10 +180,12 @@ namespace LezzetKitabi.Forms.Controls
                 };
 
                 // Butonlar ve diğer elemanlar overlay paneline eklenebilir
-                Button button1 = new Button();
-                button1.Text = "Button 1";
-                button1.Size = new Size(80, 30);
-                button1.Location = new Point(10, 10);
+                Button buttonEdit = new Button();
+                buttonEdit.Text = "Button 1";
+                buttonEdit.Size = new Size(80, 30);
+                buttonEdit.Location = new Point(10, 10);
+                buttonEdit.Tag = ingredients[i];
+                buttonEdit.Click += ButtonEdit_Click;
 
                 Button buttonDelete = new Button();
                 buttonDelete.Text = "Delete";
@@ -190,7 +194,7 @@ namespace LezzetKitabi.Forms.Controls
                 buttonDelete.Tag = ingredients[i];
                 buttonDelete.Click += DeleteButton_Click;
 
-                overlayPanel.Controls.Add(button1);
+                overlayPanel.Controls.Add(buttonEdit);
                 overlayPanel.Controls.Add(buttonDelete);
 
                 // Ana paneli içerikleriyle birlikte ekleyin
@@ -203,6 +207,28 @@ namespace LezzetKitabi.Forms.Controls
                 // Ana paneli panelItems'a ekleyin
                 panelItems.Controls.Add(mainPanel);
             }
+        }
+
+        private void ButtonEdit_Click(object sender, EventArgs e)
+        {
+            Button editButton = sender as Button;
+
+            if (editButton != null)
+            {
+                Ingredient ingredient = editButton.Tag as Ingredient;
+
+                IngredientEditForm form = new IngredientEditForm(_ingredientService);
+                form.LoadIngredientDetails(ingredient);
+
+                form.IngredientUpdated += Form_IngredientUpdated;
+
+                form.ShowDialog();
+            }
+        }
+        private async void Form_IngredientUpdated(object sender, EventArgs e)
+        {
+            MessageBox.Show("Mia");
+            await InitializeCustomPanelsAsync();
         }
 
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
@@ -222,12 +248,6 @@ namespace LezzetKitabi.Forms.Controls
                 case 3:
                     _sortingType = IngredientSortingType.Expensive_to_Cheapest;
                     break;
-                /*case 4:
-                    _sortingType = IngredientSortingType.DescendingStock;
-                    break;
-                case 5:
-                    _sortingType = IngredientSortingType.AscendingStock;
-                    break;*/
                 default:
                     _sortingType = IngredientSortingType.A_from_Z;
                     break;

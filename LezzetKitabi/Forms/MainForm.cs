@@ -13,16 +13,14 @@ namespace LezzetKitabi.Forms
     public partial class MainForm : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        RecipeMainControl recipeMainForm;
         private bool isAnimating = false;
         public static string page;
         public MainForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            recipeMainForm = new RecipeMainControl(serviceProvider);
             InitializeComponent();
-            LoadForm(recipeMainForm);
-            page = "Search";
+            LoadForm(new RecipeMainControl(_serviceProvider));
+            page = "Recipes";
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -87,7 +85,7 @@ namespace LezzetKitabi.Forms
 
         private void btnRecipes_Click(object sender, EventArgs e)
         {
-            if (page != "Recipes") LoadForm(recipeMainForm);
+            if (page != "Recipes") LoadForm(new RecipeMainControl(_serviceProvider));
             page = "Recipes";
         }
 

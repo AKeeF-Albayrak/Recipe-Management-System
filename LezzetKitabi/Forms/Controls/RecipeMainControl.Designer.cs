@@ -31,7 +31,6 @@
             panelSearch = new Panel();
             label1 = new Label();
             buttonSearch = new Button();
-            buttonFilter = new Button();
             textBoxSearch = new TextBox();
             panelElements = new Panel();
             panelPage = new Panel();
@@ -77,7 +76,6 @@
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
             panelDown.SuspendLayout();
-            panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
             panel2.SuspendLayout();
             panel8.SuspendLayout();
@@ -92,9 +90,9 @@
             // panelSearch
             // 
             panelSearch.BackColor = Color.Transparent;
+            panelSearch.Controls.Add(comboBoxSort);
             panelSearch.Controls.Add(label1);
             panelSearch.Controls.Add(buttonSearch);
-            panelSearch.Controls.Add(buttonFilter);
             panelSearch.Controls.Add(textBoxSearch);
             panelSearch.Dock = DockStyle.Top;
             panelSearch.Location = new Point(0, 0);
@@ -121,15 +119,6 @@
             buttonSearch.Text = "Arama";
             buttonSearch.UseVisualStyleBackColor = true;
             buttonSearch.Click += buttonSearch_Click;
-            // 
-            // buttonFilter
-            // 
-            buttonFilter.Location = new Point(980, 22);
-            buttonFilter.Name = "buttonFilter";
-            buttonFilter.Size = new Size(68, 23);
-            buttonFilter.TabIndex = 1;
-            buttonFilter.Text = "Filtreleme";
-            buttonFilter.UseVisualStyleBackColor = true;
             // 
             // textBoxSearch
             // 
@@ -166,7 +155,7 @@
             panelItems.Dock = DockStyle.Left;
             panelItems.Location = new Point(48, 0);
             panelItems.Name = "panelItems";
-            panelItems.Size = new Size(1041, 662);
+            panelItems.Size = new Size(1041, 639);
             panelItems.TabIndex = 3;
             // 
             // panelDown
@@ -174,14 +163,17 @@
             panelDown.Controls.Add(button4);
             panelDown.Controls.Add(button3);
             panelDown.Dock = DockStyle.Bottom;
-            panelDown.Location = new Point(48, 662);
+            panelDown.Location = new Point(48, 639);
             panelDown.Name = "panelDown";
-            panelDown.Size = new Size(1078, 28);
+            panelDown.Size = new Size(1078, 51);
             panelDown.TabIndex = 2;
             // 
             // button4
             // 
-            button4.Location = new Point(714, 2);
+            button4.FlatAppearance.BorderSize = 0;
+            button4.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            button4.FlatStyle = FlatStyle.Flat;
+            button4.Location = new Point(815, 10);
             button4.Name = "button4";
             button4.Size = new Size(75, 23);
             button4.TabIndex = 1;
@@ -191,7 +183,9 @@
             // 
             // button3
             // 
-            button3.Location = new Point(163, 3);
+            button3.FlatAppearance.BorderSize = 0;
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Location = new Point(152, 10);
             button3.Name = "button3";
             button3.Size = new Size(75, 23);
             button3.TabIndex = 0;
@@ -211,17 +205,16 @@
             // panelSort
             // 
             panelSort.BackColor = Color.Transparent;
-            panelSort.Controls.Add(comboBoxSort);
             panelSort.Location = new Point(0, 0);
             panelSort.Name = "panelSort";
-            panelSort.Size = new Size(1126, 40);
+            panelSort.Size = new Size(1126, 43);
             panelSort.TabIndex = 1;
             // 
             // comboBoxSort
             // 
             comboBoxSort.FormattingEnabled = true;
             comboBoxSort.Items.AddRange(new object[] { "Artan Yuzde", "Azalan Yuzde", "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza", "Hizlidan Yavasa", "Yavasdan Hizliya", "Malzeme Sayisina Gore Artan", "Malzeme Sayisina Gore Azalan" });
-            comboBoxSort.Location = new Point(616, 11);
+            comboBoxSort.Location = new Point(875, 23);
             comboBoxSort.Name = "comboBoxSort";
             comboBoxSort.Size = new Size(192, 23);
             comboBoxSort.TabIndex = 0;
@@ -549,7 +542,6 @@
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
             panelDown.ResumeLayout(false);
-            panelSort.ResumeLayout(false);
             panelFilter.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel8.ResumeLayout(false);
@@ -571,7 +563,6 @@
 
         private Panel panelSearch;
         private Button buttonSearch;
-        private Button buttonFilter;
         private TextBox textBoxSearch;
         private Panel panelElements;
         private Panel panelPage;
