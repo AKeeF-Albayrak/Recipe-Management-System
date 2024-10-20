@@ -1,6 +1,7 @@
 ﻿using LezzetKitabi.Application.Services;
 using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Dtos.CrossTableDtos;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
@@ -21,13 +22,11 @@ namespace LezzetKitabi.Forms
 {
     public partial class RecipeEditForm : Form
     {
-        private RecipeViewGetDto _recipe;
+        private RecipeUpdateDto _recipe;
         private readonly IIngredientService _ingredientService;
         private readonly IRecipeService _recipeService;
-        private List<Ingredient> _ingredients;
-        public RecipeEditForm(RecipeViewGetDto recipe, IServiceProvider serviceProvider, List<Ingredient> ingredients)
+        public RecipeEditForm(RecipeUpdateDto recipe, IServiceProvider serviceProvider)
         {
-            _ingredients = ingredients;
             _recipe = recipe;
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
@@ -52,9 +51,9 @@ namespace LezzetKitabi.Forms
 
             if (comboBoxCatagory.Items.Count > 0)
             {
-                for (int i = 0; i < _ingredients.Count; i++)
+                for (int i = 0; i < _recipe.Ingredients.Count; i++)
                 {
-                    string ingredientText = $"{_ingredients[i].IngredientName} {_ingredients[i].TotalQuantity} {_ingredients[i].Unit}";
+                    string ingredientText = $"{_recipe.Ingredients[i].IngredientName} {_recipe.Ingredients[i].TotalQuantity} {_recipe.Ingredients[i].Unit}";
 
                     Label label = new Label
                     {
@@ -63,12 +62,11 @@ namespace LezzetKitabi.Forms
                         Location = new Point(startx, starty + (gap * i))
                     };
 
-                    // Çarpı butonunu oluştur
                     Button button = new Button
                     {
                         Text = "X",
                         Size = new Size(20, 20),
-                        Location = new Point(label.Right + 10, label.Top) // Label'in sağına yerleştir
+                        Location = new Point(label.Right + 10, label.Top)
                     };
 
                     panelIngredients.Controls.Add(label);
@@ -80,21 +78,17 @@ namespace LezzetKitabi.Forms
 
         public async void LoadInstructionsAsync(string instructions)
         {
-            // Null veya boş talimat kontrolü
             if (!string.IsNullOrEmpty(instructions))
             {
-                // Talimatları satırlara ayır
+
                 var instructionSteps = instructions.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-                // Talimatlar panelini temizle
                 panelInstructions.Controls.Clear();
 
-                // Talimatları göstermek için başlangıç noktaları
                 int startx = 10;
                 int starty = 10;
                 int gap = 30;
 
-                // Her talimat adımını bir label olarak ekle
                 for (int i = 0; i < instructionSteps.Length; i++)
                 {
                     string instructionText = instructionSteps[i].Trim();
@@ -107,12 +101,11 @@ namespace LezzetKitabi.Forms
                         Location = new Point(startx, starty + (gap * i))
                     };
 
-                    panelInstructions.Controls.Add(label); // Label'i panel'e ekle
+                    panelInstructions.Controls.Add(label);
                 }
             }
             else
             {
-                // Eğer talimatlar boşsa bir uyarı göster
                 MessageBox.Show("Tarif talimatları boş.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
@@ -125,19 +118,17 @@ namespace LezzetKitabi.Forms
 
         private async void button3_Click(object sender, EventArgs e)
         {
-            // Create the RecipeUpdateDto object with the updated values from the form
             var recipeUpdateDto = new RecipeUpdateDto
             {
                 Id = _recipe.Id,
                 RecipeName = textBoxName.Text,
                 PreparationTime = int.Parse(textBoxTime.Text),
                 Category = comboBoxCatagory.SelectedItem.ToString(),
-                //Instructions = GetInstructionsFromPanel(),
-                //Ingredients = GetUpdatedIngredients() ?? new List<RecipeIngredientUpdateDto>() // Initialize list if null
+                Instructions = GetInstructionsFromPanel(),
+                Ingredients = GetUpdatedIngredients()
             };
 
 
-            // Call the service to update the recipe
             try
             {
                 var result = await _recipeService.UpdateRecipe(recipeUpdateDto);
@@ -157,11 +148,10 @@ namespace LezzetKitabi.Forms
                 MessageBox.Show($"Hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private List<RecipeIngredientUpdateDto> GetUpdatedIngredients()
+        private List<IngredientGetDto> GetUpdatedIngredients()
         {
-            var updatedIngredients = new List<RecipeIngredientUpdateDto>();
+            var updatedIngredients = new List<IngredientGetDto>();
 
-            // Assuming panelIngredients contains labels and buttons for ingredients
             foreach (Control control in panelIngredients.Controls)
             {
                 if (control is Label label)
@@ -169,17 +159,16 @@ namespace LezzetKitabi.Forms
                     var ingredientData = label.Text.Split(' ');
                     string ingredientName = ingredientData[0];
                     decimal ingredientAmount = decimal.Parse(ingredientData[1]);
-                    // Assuming you have a method to get IngredientID by name
-                    var ingredientId = _ingredients.FirstOrDefault(i => i.IngredientName == ingredientName)?.Id;
+                    var ingredientId = _recipe.Ingredients.FirstOrDefault(i => i.IngredientName == ingredientName)?.Id;
 
-                    if (ingredientId.HasValue)
+                    /*if (ingredientId.HasValue)
                     {
                         updatedIngredients.Add(new RecipeIngredientUpdateDto
                         {
                             IngredientID = ingredientId.Value,
                             IngredientAmount = (float)ingredientAmount
                         });
-                    }
+                    }*/
                 }
             }
 
@@ -196,6 +185,11 @@ namespace LezzetKitabi.Forms
                 }
             }
             return instructions.ToString();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

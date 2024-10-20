@@ -17,23 +17,26 @@ namespace LezzetKitabi.Forms
 {
     public partial class RecipeDetailsForm : Form
     {
-        public RecipeDetailsForm()
+        private readonly RecipeUpdateDto _recipe;
+        public RecipeDetailsForm(RecipeUpdateDto recipeUpdateDto)
         {
+            _recipe = recipeUpdateDto;
             InitializeComponent();
+            LoadRecipeDetailsAsync();
         }
-        public async void LoadRecipeDetailsAsync(RecipeViewGetDto recipe, List<Ingredient> ingredients)
+        public async void LoadRecipeDetailsAsync()
         {
-            labelRecipeName.Text = recipe.RecipeName;
-            labelCategory.Text = recipe.Category;
-            labelPreparationTime.Text = $"{recipe.PreparationTime} dakika";
+            labelRecipeName.Text = _recipe.RecipeName;
+            labelCategory.Text = _recipe.Category;
+            labelPreparationTime.Text = $"{_recipe.PreparationTime} dakika";
             pictureBox1.Image = Properties.Resources.Screenshot_2024_10_09_121511;
             int startx = 10;
             int starty = 10;
             int gap = 20;
 
-            for (int i = 0; i < ingredients.Count; i++)
+            for (int i = 0; i < _recipe.Ingredients.Count; i++)
             {
-                string ingredientText = $"{ingredients[i].IngredientName} {ingredients[i].TotalQuantity} {ingredients[i].Unit}";
+                string ingredientText = $"{_recipe.Ingredients[i].IngredientName} {_recipe.Ingredients[i].TotalQuantity} {_recipe.Ingredients[i].Unit}";
 
                 Label label = new Label
                 {
@@ -44,25 +47,20 @@ namespace LezzetKitabi.Forms
 
                 panelIngredients.Controls.Add(label);
             }
-            LoadInstructionsAsync(recipe.Instructions);
+            LoadInstructionsAsync(_recipe.Instructions);
         }
         public async void LoadInstructionsAsync(string instructions)
         {
-            // Null veya boş talimat kontrolü
             if (!string.IsNullOrEmpty(instructions))
             {
-                // Talimatları satırlara ayır
                 var instructionSteps = instructions.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-                // Talimatlar panelini temizle
                 panelInstructions.Controls.Clear();
 
-                // Talimatları göstermek için başlangıç noktaları
                 int startx = 10;
                 int starty = 10;
                 int gap = 30;
 
-                // Her talimat adımını bir label olarak ekle
                 for (int i = 0; i < instructionSteps.Length; i++)
                 {
                     string instructionText = instructionSteps[i].Trim();
@@ -75,12 +73,11 @@ namespace LezzetKitabi.Forms
                         Location = new Point(startx, starty + (gap * i))
                     };
 
-                    panelInstructions.Controls.Add(label); // Label'i panel'e ekle
+                    panelInstructions.Controls.Add(label);
                 }
             }
             else
             {
-                // Eğer talimatlar boşsa bir uyarı göster
                 MessageBox.Show("Tarif talimatları boş.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }

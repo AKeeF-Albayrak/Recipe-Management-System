@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using LezzetKitabi.Domain.Dtos.CrossTableDtos;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 
 namespace LezzetKitabi.Data.Repositories.Concrete
 {
@@ -30,7 +31,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.ExecuteAsync(query, recipeIngredients);
             }
         }
-        public async Task<List<Ingredient>> GetIngredientsByRecipeIdAsync(Guid recipeId)
+        public async Task<List<IngredientGetDto>> GetIngredientsByRecipeIdAsync(Guid recipeId)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -40,12 +41,16 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             string sql = @"
-            SELECT i.Id, i.IngredientName, ri.IngredientAmount AS TotalQuantity, i.Unit, i.UnitPrice
-            FROM RecipeIngredients ri
-            INNER JOIN Ingredients i ON ri.IngredientID = i.Id
-            WHERE ri.RecipeID = @RecipeID";
+        SELECT i.Id AS Id, 
+               i.IngredientName, 
+               ri.IngredientAmount AS TotalQuantity, 
+               i.Unit, 
+               i.UnitPrice
+        FROM RecipeIngredients ri
+        INNER JOIN Ingredients i ON ri.IngredientID = i.Id
+        WHERE ri.RecipeID = @RecipeID";
 
-            var ingredients = await connection.QueryAsync<Ingredient>(sql, new { RecipeID = recipeId });
+            var ingredients = await connection.QueryAsync<IngredientGetDto>(sql, new { RecipeID = recipeId });
 
             return ingredients.ToList();
         }

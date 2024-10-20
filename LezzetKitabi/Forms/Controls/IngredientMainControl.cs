@@ -189,6 +189,7 @@ namespace LezzetKitabi.Forms.Controls
 
                 panelItems.Controls.Add(mainPanel);
             }
+            InitializeSearchTextBox();
         }
         private void ButtonEdit_Click(object sender, EventArgs e)
         {
@@ -372,7 +373,7 @@ namespace LezzetKitabi.Forms.Controls
             RemoveExistingFilter("Stok");
             if (minStock.HasValue || maxStock.HasValue)
             {
-                filterCriteriaList.Add(new FilterCriteria { FilterType = "Stok", Value = $"{minStock} - {maxStock}" });
+                filterCriteriaList.Add(new FilterCriteria { FilterType = "Stok", Value = $"{minStock} - {maxStock}"});
                 AddFilterToPanel($"Stok: {minStock} - {maxStock}", RemoveFilter);
             }
         }

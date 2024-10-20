@@ -43,28 +43,37 @@ namespace LezzetKitabi.Forms.Controls
                 Unit = cmbUnit.SelectedItem.ToString(),
             };
 
-            if (decimal.TryParse(txtUnitPrice.Text, out decimal unitPrice))
+            if (int.TryParse(txtTotalQuantity.Text, out int totalQuantity))
             {
-                ingredient.UnitPrice = unitPrice;
+                ingredient.TotalQuantity = totalQuantity.ToString();
 
-                bool isAdded = _ingredientService.AddIngredient(ingredient);
-                if (isAdded)
+                if (decimal.TryParse(txtUnitPrice.Text, out decimal unitPrice))
                 {
-                    MessageBox.Show("Malzeme Basariyla Kayit edildi!", "Basarili", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ingredient.UnitPrice = unitPrice;
+
+                    bool isAdded = _ingredientService.AddIngredient(ingredient);
+                    if (isAdded)
+                    {
+                        MessageBox.Show("Malzeme Başarıyla Kaydedildi!", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Böyle Bir Malzeme Zaten Kayıtlı!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    txtIngredientName.Clear();
+                    txtTotalQuantity.Clear();
+                    txtUnitPrice.Clear();
+                    cmbUnit.SelectedIndex = -1;
                 }
                 else
                 {
-                    MessageBox.Show("Boyle Bir Malzeme Kayitli!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Lütfen geçerli bir fiyat giriniz.");
                 }
-
-                txtIngredientName.Clear();
-                txtTotalQuantity.Clear();
-                txtUnitPrice.Clear();
-                cmbUnit.SelectedIndex = -1;
             }
             else
             {
-                MessageBox.Show("Lütfen geçerli bir fiyat giriniz.");
+                MessageBox.Show("Lütfen geçerli bir miktar giriniz.");
             }
         }
 
@@ -74,7 +83,15 @@ namespace LezzetKitabi.Forms.Controls
 
         private byte[] ConvertImageToBytes(string filePath)
         {
-            return File.ReadAllBytes(filePath); // Dosyayı byte[] olarak oku
+            return File.ReadAllBytes(filePath);
+        }
+
+        private void txtTotalQuantity_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true;
+            }
         }
     }
 }

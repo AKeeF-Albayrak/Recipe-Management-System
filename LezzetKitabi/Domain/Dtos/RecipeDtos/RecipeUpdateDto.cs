@@ -1,4 +1,5 @@
 ﻿using LezzetKitabi.Domain.Dtos.CrossTableDtos;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace LezzetKitabi.Domain.Dtos.RecipeDtos
         public string Category { get; set; }
         public int PreparationTime { get; set; }
         public string Instructions { get; set; }
-        public List<RecipeIngredientUpdateDto> Ingredients { get; set; } = new List<RecipeIngredientUpdateDto>(); // Initialize list
+        public List<IngredientGetDto> Ingredients { get; set; } = new List<IngredientGetDto>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Dtos.CrossTableDtos;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Services.Abstract;
 using System;
@@ -21,7 +22,7 @@ namespace LezzetKitabi.Services.Concrete
         {
             await _recipeIngredientRepository.AddRangeAsync(recipeIngredients);
         }
-        public async Task<List<Ingredient>> GetIngredientsByRecipeIdAsync(Guid recipeId)
+        public async Task<List<IngredientGetDto>> GetIngredientsByRecipeIdAsync(Guid recipeId)
         {
             return await _recipeIngredientRepository.GetIngredientsByRecipeIdAsync(recipeId);
         }

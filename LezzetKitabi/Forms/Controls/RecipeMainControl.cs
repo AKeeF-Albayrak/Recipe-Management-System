@@ -16,6 +16,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static LezzetKitabi.Forms.Controls.RecipeAddControl;
+using LezzetKitabi.Domain.Dtos.CrossTableDtos;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 
 namespace LezzetKitabi.Forms.Controls
 {
@@ -102,7 +104,8 @@ namespace LezzetKitabi.Forms.Controls
 
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = recipes[i];
-                mainPanel.BackColor = recipes[i].AvailabilityPercentage == 100 ? Color.Green : Color.FromArgb(59, 10, 10);
+                if (recipes[i].MissingCost == 0) mainPanel.BackColor = Color.Green;
+                else mainPanel.BackColor = Color.DarkRed;
                 mainPanel.Size = new Size(panelWidth, panelHeight);
                 int x = startX + col * (panelWidth + xPadding);
                 int y = startY + row * (panelHeight + yPadding);
@@ -229,15 +232,26 @@ namespace LezzetKitabi.Forms.Controls
 
                 panelItems.Controls.Add(mainPanel);
             }
+            InitializeSearchBar();
         }
         private async void DetailsIcon_Click(object sender, EventArgs e)
         {
             PictureBox DetailsIcon = sender as PictureBox;
             if (DetailsIcon?.Tag is RecipeViewGetDto selectedRecipe)
             {
-                RecipeDetailsForm detailsForm = new RecipeDetailsForm();
-                List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
-                detailsForm.LoadRecipeDetailsAsync(selectedRecipe, ingredients);
+                List<IngredientGetDto> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
+
+                RecipeUpdateDto recipeUpdateDto = new RecipeUpdateDto
+                {
+                    Id = selectedRecipe.Id,
+                    RecipeName = selectedRecipe.RecipeName,
+                    Category = selectedRecipe.Category,
+                    PreparationTime = selectedRecipe.PreparationTime,
+                    Instructions = selectedRecipe.Instructions,
+                    Ingredients = ingredients
+                };
+                RecipeDetailsForm detailsForm = new RecipeDetailsForm(recipeUpdateDto);
+
                 detailsForm.ShowDialog();
             }
         }
@@ -247,11 +261,19 @@ namespace LezzetKitabi.Forms.Controls
 
             if (EditIcon?.Tag is RecipeViewGetDto selectedRecipe)
             {
-                List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
-                RecipeEditForm editForm = new RecipeEditForm(selectedRecipe,_serviceProvider, ingredients);
-                //List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
-                //editForm.LoadRecipeDetailsAsync(selectedRecipe, ingredients);
+                List<IngredientGetDto> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
 
+                RecipeUpdateDto recipeUpdateDto = new RecipeUpdateDto
+                {
+                    Id = selectedRecipe.Id,
+                    RecipeName = selectedRecipe.RecipeName,
+                    Category = selectedRecipe.Category,
+                    PreparationTime = selectedRecipe.PreparationTime,
+                    Instructions = selectedRecipe.Instructions,
+                    Ingredients = ingredients
+                };
+
+                RecipeEditForm editForm = new RecipeEditForm(recipeUpdateDto, _serviceProvider);
                 editForm.ShowDialog();
             }
         }

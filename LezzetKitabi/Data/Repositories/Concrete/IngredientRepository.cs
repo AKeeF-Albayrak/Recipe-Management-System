@@ -104,12 +104,12 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 {
                     if (int.TryParse(stocks[0].Trim(), out int minStock))
                     {
-                        sql += " AND Stock >= @MinStock";
+                        sql += " AND TotalQuantity >= @MinStock";
                         parameters.Add("MinStock", minStock);
                     }
                     if (int.TryParse(stocks[1].Trim(), out int maxStock))
                     {
-                        sql += " AND Stock <= @MaxStock";
+                        sql += " AND TotalQuantity <= @MaxStock";
                         parameters.Add("MaxStock", maxStock);
                     }
                 }

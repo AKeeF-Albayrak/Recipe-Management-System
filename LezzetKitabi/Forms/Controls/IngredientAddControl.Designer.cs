@@ -82,6 +82,7 @@
             txtTotalQuantity.Name = "txtTotalQuantity";
             txtTotalQuantity.Size = new Size(233, 35);
             txtTotalQuantity.TabIndex = 3;
+            txtTotalQuantity.KeyPress += txtTotalQuantity_KeyPress;
             // 
             // lblUnit
             // 
@@ -115,6 +116,7 @@
             txtUnitPrice.Name = "txtUnitPrice";
             txtUnitPrice.Size = new Size(233, 35);
             txtUnitPrice.TabIndex = 7;
+            txtUnitPrice.KeyPress += txtTotalQuantity_KeyPress;
             // 
             // btnAdd
             // 

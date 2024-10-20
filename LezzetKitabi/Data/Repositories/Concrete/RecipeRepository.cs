@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Contracts;
+using LezzetKitabi.Domain.Dtos.CrossTableDtos;
 using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
@@ -261,10 +262,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             try
             {
                 string checkRecipeNameSql = @"
-                    SELECT COUNT(1) 
-                    FROM Recipes 
-                    WHERE RecipeName = @RecipeName 
-                    AND Id != @Id";
+            SELECT COUNT(1) 
+            FROM Recipes 
+            WHERE RecipeName = @RecipeName 
+            AND Id != @Id";
 
                 var isNameTaken = await connection.ExecuteScalarAsync<int>(checkRecipeNameSql, new
                 {
@@ -274,17 +275,17 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
                 if (isNameTaken > 0)
                 {
-                    MessageBox.Show("Ayni ada sahip bir tarif bulunmaktadir lutfen tekrar deneyiniz!","Basarisiz",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBox.Show("Aynı ada sahip bir tarif bulunmakta, lütfen tekrar deneyiniz!", "Başarısız", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
 
                 string updateRecipeSql = @"
-        UPDATE Recipes 
-        SET RecipeName = @RecipeName, 
-            Category = @Category, 
-            PreparationTime = @PreparationTime, 
-            Instructions = @Instructions 
-        WHERE Id = @Id";
+            UPDATE Recipes 
+            SET RecipeName = @RecipeName, 
+                Category = @Category, 
+                PreparationTime = @PreparationTime, 
+                Instructions = @Instructions 
+            WHERE Id = @Id";
 
                 var recipeUpdateResult = await connection.ExecuteAsync(updateRecipeSql, new
                 {
@@ -300,25 +301,74 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     return false;
                 }
 
-                // Tarifin malzemelerinin güncellenmesi
-                foreach (var ingredientUpdate in recipeUpdateDto.Ingredients)
+                string getExistingIngredientsSql = @"
+            SELECT IngredientID, IngredientAmount 
+            FROM RecipeIngredients 
+            WHERE RecipeID = @RecipeID";
+
+                var existingIngredients = await connection.QueryAsync<RecipeIngredientUpdateDto>(getExistingIngredientsSql, new
+                {
+                    RecipeID = recipeUpdateDto.Id
+                }, transaction);
+
+                var existingIngredientList = existingIngredients.ToList();
+
+                // Silinecek malzemeleri belirleme
+                var ingredientsToDelete = existingIngredientList
+                    .Where(ei => !recipeUpdateDto.Ingredients.Any(ri => ri.Id == ei.IngredientID)) // Güncellenmiş DTO'ya göre kontrol
+                    .ToList();
+
+                // Silme işlemi
+                foreach (var ingredientToDelete in ingredientsToDelete)
+                {
+                    string deleteIngredientSql = @"
+                DELETE FROM RecipeIngredients 
+                WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
+
+                    await connection.ExecuteAsync(deleteIngredientSql, new
+                    {
+                        RecipeID = recipeUpdateDto.Id,
+                        IngredientID = ingredientToDelete.IngredientID
+                    }, transaction);
+                }
+
+                // Yeni malzemeleri ekleme
+                var ingredientsToAdd = recipeUpdateDto.Ingredients
+                    .Where(ri => !existingIngredientList.Any(ei => ei.IngredientID == ri.Id)) // Güncellenmiş DTO'ya göre kontrol
+                    .ToList();
+
+                foreach (var ingredientToAdd in ingredientsToAdd)
+                {
+                    string insertIngredientSql = @"
+                INSERT INTO RecipeIngredients (RecipeID, IngredientID, IngredientAmount) 
+                VALUES (@RecipeID, @IngredientID, @IngredientAmount)";
+
+                    await connection.ExecuteAsync(insertIngredientSql, new
+                    {
+                        RecipeID = recipeUpdateDto.Id,
+                        IngredientID = ingredientToAdd.Id, // Güncellenmiş DTO'dan Id al
+                        IngredientAmount = ingredientToAdd.TotalQuantity // Güncellenmiş DTO'dan malzeme miktarını al
+                    }, transaction);
+                }
+
+                // Mevcut malzemeleri güncelleme
+                var ingredientsToUpdate = recipeUpdateDto.Ingredients
+                    .Where(ri => existingIngredientList.Any(ei => ei.IngredientID == ri.Id)) // Güncellenmiş DTO'ya göre kontrol
+                    .ToList();
+
+                foreach (var ingredientToUpdate in ingredientsToUpdate)
                 {
                     string updateIngredientSql = @"
-            UPDATE RecipeIngredients 
-            SET IngredientAmount = @IngredientAmount 
-            WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
+                UPDATE RecipeIngredients 
+                SET IngredientAmount = @IngredientAmount 
+                WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
 
-                    var ingredientUpdateResult = await connection.ExecuteAsync(updateIngredientSql, new
+                    await connection.ExecuteAsync(updateIngredientSql, new
                     {
-                        IngredientAmount = ingredientUpdate.IngredientAmount,
+                        IngredientAmount = ingredientToUpdate.TotalQuantity, // Güncellenmiş DTO'dan malzeme miktarını al
                         RecipeID = recipeUpdateDto.Id,
-                        IngredientID = ingredientUpdate.IngredientID
+                        IngredientID = ingredientToUpdate.Id // Güncellenmiş DTO'dan Id al
                     }, transaction);
-
-                    if (ingredientUpdateResult == 0)
-                    {
-                        return false;
-                    }
                 }
 
                 await transaction.CommitAsync();
@@ -330,6 +380,9 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 throw;
             }
         }
+
+
+
         public async Task<Recipe> GetRecipeByNameAsync(string name)
         {
             using var connection = new SqlConnection(_connectionString);

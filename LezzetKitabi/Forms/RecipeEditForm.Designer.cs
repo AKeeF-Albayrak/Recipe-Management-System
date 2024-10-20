@@ -177,6 +177,7 @@
             button4.TabIndex = 15;
             button4.Text = "Yonerge Ekle";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // panelInstructions
             // 
