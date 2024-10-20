@@ -260,13 +260,31 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             try
             {
+                string checkRecipeNameSql = @"
+                    SELECT COUNT(1) 
+                    FROM Recipes 
+                    WHERE RecipeName = @RecipeName 
+                    AND Id != @Id";
+
+                var isNameTaken = await connection.ExecuteScalarAsync<int>(checkRecipeNameSql, new
+                {
+                    RecipeName = recipeUpdateDto.RecipeName,
+                    Id = recipeUpdateDto.Id
+                }, transaction);
+
+                if (isNameTaken > 0)
+                {
+                    MessageBox.Show("Ayni ada sahip bir tarif bulunmaktadir lutfen tekrar deneyiniz!","Basarisiz",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    return false;
+                }
+
                 string updateRecipeSql = @"
-                UPDATE Recipes 
-                SET RecipeName = @RecipeName, 
-                    Category = @Category, 
-                    PreparationTime = @PreparationTime, 
-                    Instructions = @Instructions 
-                WHERE Id = @Id";
+        UPDATE Recipes 
+        SET RecipeName = @RecipeName, 
+            Category = @Category, 
+            PreparationTime = @PreparationTime, 
+            Instructions = @Instructions 
+        WHERE Id = @Id";
 
                 var recipeUpdateResult = await connection.ExecuteAsync(updateRecipeSql, new
                 {
@@ -281,12 +299,14 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 {
                     return false;
                 }
+
+                // Tarifin malzemelerinin güncellenmesi
                 foreach (var ingredientUpdate in recipeUpdateDto.Ingredients)
                 {
                     string updateIngredientSql = @"
-                    UPDATE RecipeIngredients 
-                    SET IngredientAmount = @IngredientAmount 
-                    WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
+            UPDATE RecipeIngredients 
+            SET IngredientAmount = @IngredientAmount 
+            WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
 
                     var ingredientUpdateResult = await connection.ExecuteAsync(updateIngredientSql, new
                     {
@@ -307,7 +327,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             catch
             {
                 await transaction.RollbackAsync();
-                throw; 
+                throw;
             }
         }
         public async Task<Recipe> GetRecipeByNameAsync(string name)

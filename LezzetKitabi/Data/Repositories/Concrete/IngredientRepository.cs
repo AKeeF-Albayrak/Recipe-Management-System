@@ -185,18 +185,34 @@ namespace LezzetKitabi.Data.Repositories.Concrete
         public async Task<bool> UpdateIngredientAsync(Ingredient ingredient)
         {
             using var connection = new SqlConnection(_connectionString);
-
             await connection.OpenAsync();
+            string checkSql = @"
+                    SELECT COUNT(1) 
+                    FROM Ingredients 
+                    WHERE IngredientName = @IngredientName 
+                    AND Id != @Id";
 
-            string sql = @"
-            UPDATE Ingredients 
-            SET IngredientName = @IngredientName, 
-                TotalQuantity = @TotalQuantity, 
-                Unit = @Unit, 
-                UnitPrice = @UnitPrice
-            WHERE Id = @Id";
+            var isNameTaken = await connection.ExecuteScalarAsync<int>(checkSql, new
+            {
+                IngredientName = ingredient.IngredientName,
+                Id = ingredient.Id
+            });
 
-            var affectedRows = await connection.ExecuteAsync(sql, new
+            if (isNameTaken > 0)
+            {
+                MessageBox.Show("Ayni ada sahip bir malzeme bulunmaktadir lutfen tekrar deneyiniz!","Basarisiz",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return false;
+            }
+
+            string updateSql = @"
+                        UPDATE Ingredients 
+                        SET IngredientName = @IngredientName, 
+                            TotalQuantity = @TotalQuantity, 
+                            Unit = @Unit, 
+                            UnitPrice = @UnitPrice
+                        WHERE Id = @Id";
+
+            var affectedRows = await connection.ExecuteAsync(updateSql, new
             {
                 IngredientName = ingredient.IngredientName,
                 TotalQuantity = ingredient.TotalQuantity,
@@ -204,6 +220,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 UnitPrice = ingredient.UnitPrice,
                 Id = ingredient.Id
             });
+
             return affectedRows > 0;
         }
     }

@@ -37,6 +37,7 @@ namespace LezzetKitabi.Forms
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+            IngredientUpdated?.Invoke(this, EventArgs.Empty);
         }
         private async void buttonEdit_Click(object sender, EventArgs e)
         {
@@ -48,11 +49,15 @@ namespace LezzetKitabi.Forms
                 UnitPrice = decimal.TryParse(textBoxUnitPrice.Text, out var unitPrice) ? unitPrice : 0,
                 Unit = comboBoxUnit.SelectedItem.ToString()
             };
-            await _ingredientService.UpdateIngredientAsync(updatedIngredient);
-            
-            MessageBox.Show("Malzeme Basariyla Duzenlendi!","Basarili",MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.Close();
-            IngredientUpdated?.Invoke(this, EventArgs.Empty);
+            bool isUpdated = await _ingredientService.UpdateIngredientAsync(updatedIngredient);
+            if (isUpdated)
+            {
+                MessageBox.Show("Malzeme Basariyla Duzenlendi!", "Basarili", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                LoadIngredientDetails(updatedIngredient);
+            }
         }
     }
 }

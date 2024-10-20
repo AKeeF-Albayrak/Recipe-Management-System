@@ -247,7 +247,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void BringToFront(Panel panel)
         {
-            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.Purple);
+            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.Gray);
             if (overlayPanel != null)
             {
                 overlayPanel.Visible = true;
