@@ -24,12 +24,14 @@ namespace LezzetKitabi.Forms.Controls
         private readonly IRecipeService _recipeService;
         private readonly IIngredientService _ingredientService;
         private readonly IRecipeIngredientService _recipeIngredientService;
+        private readonly IServiceProvider _serviceProvider;
         RecipeSortingType _sortingType = RecipeSortingType.Descending_Percentage;
         private int currentPage = 1;
         private int totalPages;
         private List<FilterCriteria> filterCriteriaList;
         public RecipeMainControl(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             filterCriteriaList = new List<FilterCriteria>();
             _recipeService = serviceProvider.GetRequiredService<IRecipeService>();
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
@@ -245,7 +247,8 @@ namespace LezzetKitabi.Forms.Controls
 
             if (EditIcon?.Tag is RecipeViewGetDto selectedRecipe)
             {
-                RecipeEditForm editForm = new RecipeEditForm();
+                List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
+                RecipeEditForm editForm = new RecipeEditForm(selectedRecipe,_serviceProvider, ingredients);
                 //List<Ingredient> ingredients = await _recipeIngredientService.GetIngredientsByRecipeIdAsync(selectedRecipe.Id);
                 //editForm.LoadRecipeDetailsAsync(selectedRecipe, ingredients);
 
