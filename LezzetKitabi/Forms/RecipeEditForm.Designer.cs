@@ -193,6 +193,7 @@
             button3.TabIndex = 18;
             button3.Text = "Kaydet";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // RecipeEditForm
             // 

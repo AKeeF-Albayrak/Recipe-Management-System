@@ -48,29 +48,43 @@ namespace LezzetKitabi.Forms
         }
         public async void LoadInstructionsAsync(string instructions)
         {
-            var instructionSteps = instructions.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-            int startx = 10;
-            int starty = 10;
-            int gap = 30;
-
-            panelInstructions.Controls.Clear();
-
-            for (int i = 0; i < instructionSteps.Length; i++)
+            // Null veya boş talimat kontrolü
+            if (!string.IsNullOrEmpty(instructions))
             {
-                string instructionText = $"{instructionSteps[i].Trim()}";
+                // Talimatları satırlara ayır
+                var instructionSteps = instructions.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-                Label label = new Label
+                // Talimatlar panelini temizle
+                panelInstructions.Controls.Clear();
+
+                // Talimatları göstermek için başlangıç noktaları
+                int startx = 10;
+                int starty = 10;
+                int gap = 30;
+
+                // Her talimat adımını bir label olarak ekle
+                for (int i = 0; i < instructionSteps.Length; i++)
                 {
-                    Text = instructionText,
-                    AutoSize = true,
-                    Font = new Font("Arial", 12, FontStyle.Bold),
-                    Location = new Point(startx, starty + (gap * i))
-                };
+                    string instructionText = instructionSteps[i].Trim();
 
-                panelInstructions.Controls.Add(label);
+                    Label label = new Label
+                    {
+                        Text = instructionText,
+                        AutoSize = true,
+                        Font = new Font("Arial", 12, FontStyle.Bold),
+                        Location = new Point(startx, starty + (gap * i))
+                    };
+
+                    panelInstructions.Controls.Add(label); // Label'i panel'e ekle
+                }
+            }
+            else
+            {
+                // Eğer talimatlar boşsa bir uyarı göster
+                MessageBox.Show("Tarif talimatları boş.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
