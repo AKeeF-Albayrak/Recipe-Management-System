@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LezzetKitabi.Domain.Dtos.CrossTableDtos;
+using System.Text.RegularExpressions;
 
 namespace LezzetKitabi.Forms.Controls
 {
@@ -165,7 +166,12 @@ namespace LezzetKitabi.Forms.Controls
                 return;
             }
 
-            var instructions = string.Join(Environment.NewLine, listBox1.Items.Cast<string>());
+            var instructions = string.Join(Environment.NewLine, listBox1.Items.Cast<string>()
+                    .Select(item =>
+                    {
+                        var parts = item.Split(new[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
+                        return parts.Length > 1 ? parts[1] : string.Empty;
+                    }).Where(part => !string.IsNullOrEmpty(part)));
 
             var recipeName = textBoxTitle.Text;
 

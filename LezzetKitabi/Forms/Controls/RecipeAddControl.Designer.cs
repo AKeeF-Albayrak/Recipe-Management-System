@@ -103,7 +103,7 @@
             label4.AutoSize = true;
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI Black", 48F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label4.Location = new Point(39, 28);
+            label4.Location = new Point(265, 45);
             label4.Name = "label4";
             label4.Size = new Size(547, 86);
             label4.TabIndex = 11;

@@ -8,6 +8,7 @@ using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Services.Abstract;
 using LezzetKitabi.Services.Concrete;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -161,14 +162,15 @@ namespace LezzetKitabi.Forms
                     decimal ingredientAmount = decimal.Parse(ingredientData[1]);
                     var ingredientId = _recipe.Ingredients.FirstOrDefault(i => i.IngredientName == ingredientName)?.Id;
 
-                    /*if (ingredientId.HasValue)
+                    if (ingredientId.HasValue)
                     {
-                        updatedIngredients.Add(new RecipeIngredientUpdateDto
+                        updatedIngredients.Add(new IngredientGetDto
                         {
-                            IngredientID = ingredientId.Value,
-                            IngredientAmount = (float)ingredientAmount
+                            Id = ingredientId.Value,
+                            IngredientName = ingredientName,
+                            TotalQuantity = ingredientAmount.ToString()
                         });
-                    }*/
+                    }
                 }
             }
 
@@ -187,9 +189,90 @@ namespace LezzetKitabi.Forms
             return instructions.ToString();
         }
 
+        private void buttonAddIngredient_Click(object sender, EventArgs e)
+        {
+            if (comboBoxIngredients.SelectedItem != null)
+            {
+                var selectedIngredient = (IngredientGetDto)comboBoxIngredients.SelectedItem;
+
+                // Yeni panel oluştur
+                Panel ingredientPanel = new Panel
+                {
+                    Size = new Size(panelIngredients.Width - 20, 30),
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Dock = DockStyle.Top
+                };
+
+                Label ingredientLabel = new Label
+                {
+                    Text = $"{selectedIngredient.IngredientName} {selectedIngredient.TotalQuantity} {selectedIngredient.Unit}",
+                    AutoSize = true,
+                    Location = new Point(10, 5)
+                };
+
+                Button deleteButton = new Button
+                {
+                    Text = "X",
+                    Size = new Size(20, 20),
+                    Location = new Point(ingredientPanel.Width - 30, 5)
+                };
+                deleteButton.Click += (s, args) =>
+                {
+                    panelIngredients.Controls.Remove(ingredientPanel);
+                };
+
+                ingredientPanel.Controls.Add(ingredientLabel);
+                ingredientPanel.Controls.Add(deleteButton);
+                panelIngredients.Controls.Add(ingredientPanel);
+            }
+            else
+            {
+                MessageBox.Show("Lütfen bir malzeme seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
         private void button4_Click(object sender, EventArgs e)
         {
+            string instructionText = textBoxInstrutions.Text.Trim(); // Talimatı TextBox'tan al
 
+            if (!string.IsNullOrEmpty(instructionText))
+            {
+                // Yeni panel oluştur
+                Panel instructionPanel = new Panel
+                {
+                    Size = new Size(panelInstructions.Width - 20, 30), // Panel boyutunu ayarlayın
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Dock = DockStyle.Top // Üstte sıralı görünüm için
+                };
+
+                Label instructionLabel = new Label
+                {
+                    Text = instructionText,
+                    AutoSize = true,
+                    Location = new Point(10, 5) // Label konumu
+                };
+
+                Button deleteButton = new Button
+                {
+                    Text = "X",
+                    Size = new Size(20, 20),
+                    Location = new Point(instructionPanel.Width - 30, 5) // Buton konumu
+                };
+                deleteButton.Click += (s, args) =>
+                {
+                    panelInstructions.Controls.Remove(instructionPanel); // Paneli sil
+                };
+
+                instructionPanel.Controls.Add(instructionLabel);
+                instructionPanel.Controls.Add(deleteButton);
+                panelInstructions.Controls.Add(instructionPanel); // Paneli ana panelin içine ekle
+
+                textBoxInstrutions.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Talimat boş olamaz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

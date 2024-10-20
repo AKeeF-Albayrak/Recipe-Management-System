@@ -126,6 +126,7 @@
             button2.TabIndex = 8;
             button2.Text = "Malzeme Ekle";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += buttonAddIngredient_Click;
             // 
             // comboBoxIngredients
             // 
@@ -149,7 +150,7 @@
             // 
             panelIngredients.Location = new Point(392, 165);
             panelIngredients.Name = "panelIngredients";
-            panelIngredients.Size = new Size(262, 515);
+            panelIngredients.Size = new Size(294, 515);
             panelIngredients.TabIndex = 12;
             // 
             // label5
