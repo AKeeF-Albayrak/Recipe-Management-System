@@ -38,7 +38,9 @@
             btnAdd = new Button();
             label1 = new Label();
             cmbUnit = new ComboBox();
-            openFileDialog1 = new OpenFileDialog();
+            pictureBox1 = new PictureBox();
+            button1 = new Button();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // lblIngredientName
@@ -155,15 +157,32 @@
             cmbUnit.Size = new Size(233, 38);
             cmbUnit.TabIndex = 10;
             // 
-            // openFileDialog1
+            // pictureBox1
             // 
-            openFileDialog1.FileName = "openFileDialog1";
+            pictureBox1.BackColor = SystemColors.Info;
+            pictureBox1.Location = new Point(60, 82);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(514, 469);
+            pictureBox1.TabIndex = 11;
+            pictureBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(60, 569);
+            button1.Name = "button1";
+            button1.Size = new Size(514, 36);
+            button1.TabIndex = 12;
+            button1.Text = "Resim Yükle";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
             // 
             // IngredientAddControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
+            Controls.Add(button1);
+            Controls.Add(pictureBox1);
             Controls.Add(cmbUnit);
             Controls.Add(label1);
             Controls.Add(btnAdd);
@@ -177,6 +196,7 @@
             Margin = new Padding(4, 3, 4, 3);
             Name = "IngredientAddControl";
             Size = new Size(1323, 796);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -193,6 +213,7 @@
         private System.Windows.Forms.Button btnAdd;
         private Label label1;
         private ComboBox cmbUnit;
-        private OpenFileDialog openFileDialog1;
+        private PictureBox pictureBox1;
+        private Button button1;
     }
 }

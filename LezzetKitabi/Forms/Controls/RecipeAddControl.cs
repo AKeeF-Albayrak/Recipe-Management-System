@@ -20,6 +20,8 @@ namespace LezzetKitabi.Forms.Controls
         private readonly IRecipeIngredientService _recipeIngredientService;
         private readonly IServiceProvider _serviceProvider;
         private bool isChanging = false;
+        private byte[] _recipeImage;
+
         public RecipeAddControl(IServiceProvider serviceProvider)
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
@@ -37,7 +39,6 @@ namespace LezzetKitabi.Forms.Controls
         private void SetUpCategoryComboBox()
         {
             comboBoxCategory.Items.Clear();
-
             foreach (var category in Enum.GetValues(typeof(Category)))
             {
                 comboBoxCategory.Items.Add(category);
@@ -188,7 +189,8 @@ namespace LezzetKitabi.Forms.Controls
                 RecipeName = textBoxTitle.Text,
                 Category = comboBoxCategory.SelectedItem.ToString(),
                 PreparationTime = (int)(numericUpDownHours.Value * 60) + (int)numericUpDownMinutes.Value,
-                Instructions = instructions
+                Instructions = instructions,
+                Image = _recipeImage
             };
 
             Guid id = _recipeService.AddRecipe(recipeAddDto);
@@ -218,6 +220,8 @@ namespace LezzetKitabi.Forms.Controls
             textBoxAmount.Clear();
             textBoxTitle.Clear();
             comboBoxCategory.SelectedItem = null;
+            pictureBoxRecipe.Image = null;
+            _recipeImage = null;
             textBox3.Clear();
             listBox1.Items.Clear();
             listBoxIngredients.Items.Clear();
@@ -303,6 +307,22 @@ namespace LezzetKitabi.Forms.Controls
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
             {
                 e.Handled = true;
+            }
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp"
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string imagePath = openFileDialog.FileName;
+                pictureBoxRecipe.Image = Image.FromFile(imagePath);
+                pictureBoxRecipe.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                _recipeImage = File.ReadAllBytes(imagePath);
             }
         }
     }

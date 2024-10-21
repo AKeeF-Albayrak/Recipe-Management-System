@@ -40,8 +40,8 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 return false;
             }
             string sql = """
-            INSERT INTO Ingredients (Id, IngredientName, TotalQuantity, Unit, UnitPrice)
-            VALUES (@Id, @IngredientName, @TotalQuantity, @Unit, @UnitPrice);
+            INSERT INTO Ingredients (Id, IngredientName, TotalQuantity, Unit, UnitPrice, Image)
+            VALUES (@Id, @IngredientName, @TotalQuantity, @Unit, @UnitPrice, @Image);
             """;
 
             connection.Execute(sql, new
@@ -50,7 +50,8 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 IngredientName = entity.IngredientName,
                 TotalQuantity = entity.TotalQuantity,
                 Unit = entity.Unit,
-                UnitPrice = entity.UnitPrice
+                UnitPrice = entity.UnitPrice,
+                Image = entity.Image ?? (object)DBNull.Value  // Resim verisini ekleyin
             });
 
             return true;

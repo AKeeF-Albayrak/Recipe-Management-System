@@ -18,11 +18,14 @@ namespace LezzetKitabi.Forms.Controls
     public partial class IngredientAddControl : UserControl
     {
         private readonly IIngredientService _ingredientService;
+        private string _selectedImagePath;
+
         public IngredientAddControl(IServiceProvider serviceProvider)
         {
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
             cmbUnit.DataSource = Enum.GetValues(typeof(UnitType));
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // Resmin PictureBox'ta stretch modda gösterilmesi
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -41,6 +44,7 @@ namespace LezzetKitabi.Forms.Controls
                 IngredientName = txtIngredientName.Text,
                 TotalQuantity = txtTotalQuantity.Text,
                 Unit = cmbUnit.SelectedItem.ToString(),
+                Image = _selectedImagePath != null ? ConvertImageToBytes(_selectedImagePath) : null // Resim byte dizisi olarak ekleniyor
             };
 
             if (int.TryParse(txtTotalQuantity.Text, out int totalQuantity))
@@ -65,6 +69,8 @@ namespace LezzetKitabi.Forms.Controls
                     txtTotalQuantity.Clear();
                     txtUnitPrice.Clear();
                     cmbUnit.SelectedIndex = -1;
+                    pictureBox1.Image = null; // PictureBox temizleniyor
+                    _selectedImagePath = null;
                 }
                 else
                 {
@@ -77,10 +83,6 @@ namespace LezzetKitabi.Forms.Controls
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
-
         private byte[] ConvertImageToBytes(string filePath)
         {
             return File.ReadAllBytes(filePath);
@@ -91,6 +93,17 @@ namespace LezzetKitabi.Forms.Controls
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
             {
                 e.Handled = true;
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                _selectedImagePath = openFileDialog.FileName;
+                pictureBox1.Image = Image.FromFile(_selectedImagePath);
             }
         }
     }

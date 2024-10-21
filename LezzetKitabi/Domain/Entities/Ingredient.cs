@@ -12,5 +12,6 @@ namespace LezzetKitabi.Domain.Entities
         public string TotalQuantity { get; set; }
         public string Unit { get; set; }
         public decimal UnitPrice { get; set; }
+        public byte[] Image { get; set; }
     }
 }

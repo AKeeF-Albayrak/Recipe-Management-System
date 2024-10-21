@@ -13,5 +13,6 @@ namespace LezzetKitabi.Domain.Dtos.RecipeDtos
         public string Category { get; set; }
         public int PreparationTime { get; set; }
         public string Instructions { get; set; }
+
     }
 }

@@ -24,6 +24,7 @@ namespace LezzetKitabi.Application.Services
                 TotalQuantity = ingredientAddDto.TotalQuantity,
                 Unit = ingredientAddDto.Unit,
                 UnitPrice = ingredientAddDto.UnitPrice,
+                Image = ingredientAddDto.Image
             };
 
             return _ingredientRepository.AddEntity(ingredient);

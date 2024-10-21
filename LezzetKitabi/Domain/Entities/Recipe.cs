@@ -12,5 +12,6 @@ namespace LezzetKitabi.Domain.Entities
         public string Category { get; set; }
         public int PreparationTime { get; set; }
         public string Instructions { get; set; }
+        public byte[] Image { get; set; }
     }
 }

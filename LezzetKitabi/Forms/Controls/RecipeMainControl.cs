@@ -196,6 +196,7 @@ namespace LezzetKitabi.Forms.Controls
                 recipeImageBox.Location = new Point((panelWidth - recipeImageBox.Width) / 2, 50); 
                 recipeImageBox.Image = Properties.Resources.Screenshot_2024_10_09_121511;
                 recipeImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                /*Üst kısım Tariflerin resimler için*/
 
                 Label label = new Label();
                 label.AutoSize = true;
@@ -651,5 +652,23 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Son sayfaya ulaştınız, daha ileri gidemiyorsunuz.","Hata",MessageBoxButtons.OK,MessageBoxIcon.Warning);
             }
         }
+
+        /*public async Task DisplayRecipeImageByName(string name)
+        {
+            var recipeDto = await _recipeService.GetRecipeImageByNameAsync(name);
+
+            if (recipeDto != null && recipeDto.RecipeImage != null)
+            {
+                // Byte[]'dan Image'a dönüştürme
+                using (MemoryStream ms = new MemoryStream(recipeDto.RecipeImage))
+                {
+                    pictureBoxRecipeImage.Image = Image.FromStream(ms);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Resim bulunamadı.");
+            }
+        }*/ 
     }
 }

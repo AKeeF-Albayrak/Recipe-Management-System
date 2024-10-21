@@ -53,8 +53,12 @@
             label8 = new Label();
             label9 = new Label();
             comboBoxCategory = new ComboBox();
+            pictureBoxRecipe = new PictureBox();
+            button4 = new Button();
+            openFileDialog1 = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)numericUpDownHours).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMinutes).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxRecipe).BeginInit();
             SuspendLayout();
             // 
             // textBoxTitle
@@ -103,7 +107,7 @@
             label4.AutoSize = true;
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Segoe UI Black", 48F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label4.Location = new Point(265, 45);
+            label4.Location = new Point(739, 28);
             label4.Name = "label4";
             label4.Size = new Size(547, 86);
             label4.TabIndex = 11;
@@ -229,7 +233,7 @@
             listBoxIngredients.ItemHeight = 25;
             listBoxIngredients.Location = new Point(631, 201);
             listBoxIngredients.Name = "listBoxIngredients";
-            listBoxIngredients.Size = new Size(305, 502);
+            listBoxIngredients.Size = new Size(655, 202);
             listBoxIngredients.TabIndex = 25;
             listBoxIngredients.SelectedIndexChanged += listBoxIngredients_SelectedIndexChanged;
             // 
@@ -264,9 +268,9 @@
             listBox1.Font = new Font("Segoe UI", 14.25F);
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 25;
-            listBox1.Location = new Point(981, 201);
+            listBox1.Location = new Point(631, 476);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(305, 502);
+            listBox1.Size = new Size(655, 227);
             listBox1.TabIndex = 28;
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
@@ -332,7 +336,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label9.Location = new Point(981, 148);
+            label9.Location = new Point(631, 429);
             label9.Name = "label9";
             label9.Size = new Size(163, 37);
             label9.TabIndex = 34;
@@ -349,12 +353,36 @@
             comboBoxCategory.Size = new Size(278, 33);
             comboBoxCategory.TabIndex = 37;
             // 
+            // pictureBoxRecipe
+            // 
+            pictureBoxRecipe.Location = new Point(193, 28);
+            pictureBoxRecipe.Name = "pictureBoxRecipe";
+            pictureBoxRecipe.Size = new Size(123, 118);
+            pictureBoxRecipe.TabIndex = 38;
+            pictureBoxRecipe.TabStop = false;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(355, 113);
+            button4.Name = "button4";
+            button4.Size = new Size(90, 33);
+            button4.TabIndex = 39;
+            button4.Text = "Resim Ekle";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            // 
             // RecipeAddControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.InactiveCaption;
             BackgroundImageLayout = ImageLayout.Stretch;
+            Controls.Add(button4);
+            Controls.Add(pictureBoxRecipe);
             Controls.Add(comboBoxCategory);
             Controls.Add(label9);
             Controls.Add(label8);
@@ -384,6 +412,7 @@
             Size = new Size(1323, 796);
             ((System.ComponentModel.ISupportInitialize)numericUpDownHours).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMinutes).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxRecipe).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -414,5 +443,8 @@
         private Label label8;
         private Label label9;
         private ComboBox comboBoxCategory;
+        private PictureBox pictureBoxRecipe;
+        private Button button4;
+        private OpenFileDialog openFileDialog1;
     }
 }

@@ -32,10 +32,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             string sql = $"""
-                    INSERT INTO Recipes  (Id ,RecipeName , Category , PreparationTime , Instructions)
-                    VALUES ('{entity.Id}', '{entity.RecipeName}', '{entity.Category}', '{entity.PreparationTime}',
-                    '{entity.Instructions}');
-                """;
+            INSERT INTO Recipes (Id, RecipeName, Category, PreparationTime, Instructions, Image)
+            VALUES ('{entity.Id}', '{entity.RecipeName}', '{entity.Category}', '{entity.PreparationTime}',
+                    '{entity.Instructions}', @Image);
+            """;
 
             connection.Query(sql);
 
@@ -380,9 +380,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 throw;
             }
         }
-
-
-
         public async Task<Recipe> GetRecipeByNameAsync(string name)
         {
             using var connection = new SqlConnection(_connectionString);

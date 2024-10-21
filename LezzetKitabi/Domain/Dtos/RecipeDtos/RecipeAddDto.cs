@@ -14,5 +14,6 @@ namespace LezzetKitabi.Domain.Dtos.RecipeDtos
         public int PreparationTime { get; set; }
         public string Instructions { get; set; }
         public List<AddRecipeIngredientDto> Ingredients { get; set; }
+        public byte[] Image { get; set; }
     }
 }

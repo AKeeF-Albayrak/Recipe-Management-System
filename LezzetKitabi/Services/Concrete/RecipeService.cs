@@ -28,6 +28,7 @@ namespace LezzetKitabi.Services.Concrete
                 Category = recipeAddDto.Category,
                 PreparationTime = recipeAddDto.PreparationTime,
                 Instructions = recipeAddDto.Instructions,
+                Image = recipeAddDto.Image
             };
 
             _recipeRepository.AddEntity(recipe);
