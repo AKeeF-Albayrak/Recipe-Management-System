@@ -24,22 +24,28 @@ namespace LezzetKitabi.Data.Repositories.Concrete
         }
         public bool AddEntity(Recipe entity)
         {
-            var connection = new SqlConnection(_connectionString);
+            using var connection = new SqlConnection(_connectionString);
 
             if (connection.State == System.Data.ConnectionState.Closed)
             {
                 connection.Open();
             }
 
-            string sql = $"""
+            string sql = @"
             INSERT INTO Recipes (Id, RecipeName, Category, PreparationTime, Instructions, Image)
-            VALUES ('{entity.Id}', '{entity.RecipeName}', '{entity.Category}', '{entity.PreparationTime}',
-                    '{entity.Instructions}', @Image);
-            """;
+            VALUES (@Id, @RecipeName, @Category, @PreparationTime, @Instructions, @Image);";
 
-            connection.Query(sql);
+            var parameters = new
+            {
+                Id = entity.Id,
+                RecipeName = entity.RecipeName,
+                Category = entity.Category,
+                PreparationTime = entity.PreparationTime,
+                Instructions = entity.Instructions,
+                Image = entity.Image
+            };
 
-            connection.Close();
+            connection.Execute(sql, parameters);
 
             return true;
         }
@@ -67,34 +73,33 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.OpenAsync();
             }
 
-            string sql = @"
-            WITH RecipeIngredientCount AS (
-                SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
-                FROM Recipes r
-                LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
-                GROUP BY r.Id
-            )
-            SELECT r.Id, 
-                   r.RecipeName, 
-                   r.Category,       -- Kategori ekleniyor
-                   r.Instructions,   -- Instructions ekleniyor
-                   SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
-                   SUM(CASE 
-                         WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
-                           (CASE 
-                             WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
-                             ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
-                           END)
-                         ELSE 0 
-                       END) AS AvailabilityPercentage,
-                   SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
-                        THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
-                        ELSE 0 END) AS MissingCost,
-                   r.PreparationTime -- Hazırlama Süresi ekleniyor
-            FROM Recipes r 
-            LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
-            LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
-            LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
+            string sql = @"WITH RecipeIngredientCount AS (
+                        SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
+                        FROM Recipes r
+                        LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
+                        GROUP BY r.Id)
+                    SELECT r.Id, 
+                           r.RecipeName, 
+                           r.Category,       
+                           r.Instructions,   
+                           r.Image,          -- Image kolonu ekleniyor
+                           SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
+                           SUM(CASE 
+                                 WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
+                                   (CASE 
+                                     WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
+                                     ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
+                                   END)
+                                 ELSE 0 
+                               END) AS AvailabilityPercentage,
+                           SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
+                                    THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
+                                    ELSE 0 END) AS MissingCost,
+                           r.PreparationTime 
+                    FROM Recipes r 
+                    LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
+                    LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
+                    LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
 
             filterCriteriaList ??= new List<FilterCriteria>();
 
@@ -127,17 +132,17 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     if (!string.IsNullOrEmpty(minCount))
                     {
                         filters.Add($@"
-                    (SELECT COUNT(*) 
-                     FROM RecipeIngredients ri 
-                     WHERE ri.RecipeID = r.Id) >= {minCount}");
+            (SELECT COUNT(*) 
+             FROM RecipeIngredients ri 
+             WHERE ri.RecipeID = r.Id) >= {minCount}");
                     }
 
                     if (!string.IsNullOrEmpty(maxCount))
                     {
                         filters.Add($@"
-                    (SELECT COUNT(*) 
-                     FROM RecipeIngredients ri 
-                     WHERE ri.RecipeID = r.Id) <= {maxCount}");
+            (SELECT COUNT(*) 
+             FROM RecipeIngredients ri 
+             WHERE ri.RecipeID = r.Id) <= {maxCount}");
                     }
                 }
             }
@@ -175,11 +180,11 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             {
                 string name = nameFilter.Value;
                 filters.Add($@"
-                  (r.RecipeName LIKE '%{name}%' OR 
-                  r.Id IN (SELECT ri.RecipeID 
-                  FROM RecipeIngredients ri 
-                  JOIN Ingredients i ON ri.IngredientID = i.Id 
-                  WHERE i.IngredientName LIKE '%{name}%'))");
+          (r.RecipeName LIKE '%{name}%' OR 
+          r.Id IN (SELECT ri.RecipeID 
+          FROM RecipeIngredients ri 
+          JOIN Ingredients i ON ri.IngredientID = i.Id 
+          WHERE i.IngredientName LIKE '%{name}%'))");
             }
 
             if (filters.Count > 0)
@@ -187,8 +192,9 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 sql += " WHERE " + string.Join(" AND ", filters);
             }
 
-            sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.PreparationTime";
+            sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.Image, r.PreparationTime";
 
+            // Sıralama
             switch (sortingType)
             {
                 case RecipeSortingType.A_from_Z:
@@ -217,17 +223,17 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     break;
                 case RecipeSortingType.Increasing_Ingredients:
                     sql += @"
-                    ORDER BY 
-                    (SELECT COUNT(*) 
-                     FROM RecipeIngredients ri 
-                     WHERE ri.RecipeID = r.Id) ASC;";
+            ORDER BY 
+            (SELECT COUNT(*) 
+             FROM RecipeIngredients ri 
+             WHERE ri.RecipeID = r.Id) ASC;";
                     break;
                 case RecipeSortingType.Decrising_Ingredients:
                     sql += @"
-                    ORDER BY 
-                    (SELECT COUNT(*) 
-                     FROM RecipeIngredients ri 
-                     WHERE ri.RecipeID = r.Id) DESC;";
+            ORDER BY 
+            (SELECT COUNT(*) 
+             FROM RecipeIngredients ri 
+             WHERE ri.RecipeID = r.Id) DESC;";
                     break;
                 default:
                     sql += ";";
@@ -284,7 +290,8 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             SET RecipeName = @RecipeName, 
                 Category = @Category, 
                 PreparationTime = @PreparationTime, 
-                Instructions = @Instructions 
+                Instructions = @Instructions,
+                Image = @Image  -- Resim alanı güncelleniyor
             WHERE Id = @Id";
 
                 var recipeUpdateResult = await connection.ExecuteAsync(updateRecipeSql, new
@@ -293,6 +300,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     Category = recipeUpdateDto.Category,
                     PreparationTime = recipeUpdateDto.PreparationTime,
                     Instructions = recipeUpdateDto.Instructions,
+                    Image = recipeUpdateDto.Image,
                     Id = recipeUpdateDto.Id
                 }, transaction);
 
@@ -302,23 +310,22 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 }
 
                 string getExistingIngredientsSql = @"
-            SELECT IngredientID, IngredientAmount 
-            FROM RecipeIngredients 
-            WHERE RecipeID = @RecipeID";
+            SELECT i.Id, i.IngredientName, i.TotalQuantity, i.Unit, i.UnitPrice, i.Image, ri.IngredientAmount
+            FROM RecipeIngredients ri
+            JOIN Ingredients i ON i.Id = ri.IngredientID
+            WHERE ri.RecipeID = @RecipeID";
 
-                var existingIngredients = await connection.QueryAsync<RecipeIngredientUpdateDto>(getExistingIngredientsSql, new
+                var existingIngredients = await connection.QueryAsync<Ingredient>(getExistingIngredientsSql, new
                 {
                     RecipeID = recipeUpdateDto.Id
                 }, transaction);
 
                 var existingIngredientList = existingIngredients.ToList();
 
-                // Silinecek malzemeleri belirleme
                 var ingredientsToDelete = existingIngredientList
-                    .Where(ei => !recipeUpdateDto.Ingredients.Any(ri => ri.Id == ei.IngredientID)) // Güncellenmiş DTO'ya göre kontrol
+                    .Where(ei => !recipeUpdateDto.Ingredients.Any(ri => ri.Id == ei.Id))
                     .ToList();
 
-                // Silme işlemi
                 foreach (var ingredientToDelete in ingredientsToDelete)
                 {
                     string deleteIngredientSql = @"
@@ -328,13 +335,12 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     await connection.ExecuteAsync(deleteIngredientSql, new
                     {
                         RecipeID = recipeUpdateDto.Id,
-                        IngredientID = ingredientToDelete.IngredientID
+                        IngredientID = ingredientToDelete.Id
                     }, transaction);
                 }
 
-                // Yeni malzemeleri ekleme
                 var ingredientsToAdd = recipeUpdateDto.Ingredients
-                    .Where(ri => !existingIngredientList.Any(ei => ei.IngredientID == ri.Id)) // Güncellenmiş DTO'ya göre kontrol
+                    .Where(ri => !existingIngredientList.Any(ei => ei.Id == ri.Id))
                     .ToList();
 
                 foreach (var ingredientToAdd in ingredientsToAdd)
@@ -346,14 +352,14 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     await connection.ExecuteAsync(insertIngredientSql, new
                     {
                         RecipeID = recipeUpdateDto.Id,
-                        IngredientID = ingredientToAdd.Id, // Güncellenmiş DTO'dan Id al
-                        IngredientAmount = ingredientToAdd.TotalQuantity // Güncellenmiş DTO'dan malzeme miktarını al
+                        IngredientID = ingredientToAdd.Id,
+                        IngredientAmount = ingredientToAdd.TotalQuantity
                     }, transaction);
                 }
 
                 // Mevcut malzemeleri güncelleme
                 var ingredientsToUpdate = recipeUpdateDto.Ingredients
-                    .Where(ri => existingIngredientList.Any(ei => ei.IngredientID == ri.Id)) // Güncellenmiş DTO'ya göre kontrol
+                    .Where(ri => existingIngredientList.Any(ei => ei.Id == ri.Id))
                     .ToList();
 
                 foreach (var ingredientToUpdate in ingredientsToUpdate)
@@ -365,9 +371,9 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
                     await connection.ExecuteAsync(updateIngredientSql, new
                     {
-                        IngredientAmount = ingredientToUpdate.TotalQuantity, // Güncellenmiş DTO'dan malzeme miktarını al
+                        IngredientAmount = ingredientToUpdate.TotalQuantity,
                         RecipeID = recipeUpdateDto.Id,
-                        IngredientID = ingredientToUpdate.Id // Güncellenmiş DTO'dan Id al
+                        IngredientID = ingredientToUpdate.Id
                     }, transaction);
                 }
 

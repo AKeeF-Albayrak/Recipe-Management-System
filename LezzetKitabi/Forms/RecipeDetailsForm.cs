@@ -29,7 +29,13 @@ namespace LezzetKitabi.Forms
             labelRecipeName.Text = _recipe.RecipeName;
             labelCategory.Text = _recipe.Category;
             labelPreparationTime.Text = $"{_recipe.PreparationTime} dakika";
-            pictureBox1.Image = Properties.Resources.Screenshot_2024_10_09_121511;
+            using (MemoryStream ms = new MemoryStream(_recipe.Image))
+            {
+                Image img = Image.FromStream(ms);
+
+                pictureBox1.Image = img;
+            }
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             int startx = 10;
             int starty = 10;
             int gap = 20;

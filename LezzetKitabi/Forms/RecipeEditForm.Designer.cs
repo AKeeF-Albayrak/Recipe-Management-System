@@ -36,15 +36,18 @@
             comboBoxCatagory = new ComboBox();
             textBoxTime = new TextBox();
             label3 = new Label();
-            button2 = new Button();
+            buttonIngredientAdd = new Button();
             comboBoxIngredients = new ComboBox();
             label4 = new Label();
-            panelIngredients = new Panel();
             label5 = new Label();
-            textBoxInstrutions = new TextBox();
-            button4 = new Button();
-            panelInstructions = new Panel();
+            textBoxInstructions = new TextBox();
+            buttonInstructionAdd = new Button();
             button3 = new Button();
+            listBoxIngredients = new ListBox();
+            listBoxInstructions = new ListBox();
+            buttonIngredientDelete = new Button();
+            buttonInstructuionDelete = new Button();
+            textBoxAmount = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -118,20 +121,20 @@
             label3.TabIndex = 7;
             label3.Text = "Sure:";
             // 
-            // button2
+            // buttonIngredientAdd
             // 
-            button2.Location = new Point(462, 121);
-            button2.Name = "button2";
-            button2.Size = new Size(107, 23);
-            button2.TabIndex = 8;
-            button2.Text = "Malzeme Ekle";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += buttonAddIngredient_Click;
+            buttonIngredientAdd.Location = new Point(407, 138);
+            buttonIngredientAdd.Name = "buttonIngredientAdd";
+            buttonIngredientAdd.Size = new Size(107, 23);
+            buttonIngredientAdd.TabIndex = 8;
+            buttonIngredientAdd.Text = "Malzeme Ekle";
+            buttonIngredientAdd.UseVisualStyleBackColor = true;
+            buttonIngredientAdd.Click += buttonAddIngredient_Click;
             // 
             // comboBoxIngredients
             // 
             comboBoxIngredients.FormattingEnabled = true;
-            comboBoxIngredients.Location = new Point(407, 82);
+            comboBoxIngredients.Location = new Point(409, 68);
             comboBoxIngredients.Name = "comboBoxIngredients";
             comboBoxIngredients.Size = new Size(218, 23);
             comboBoxIngredients.TabIndex = 9;
@@ -140,52 +143,38 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label4.Location = new Point(407, 39);
+            label4.Location = new Point(407, 30);
             label4.Name = "label4";
             label4.Size = new Size(115, 25);
             label4.TabIndex = 10;
             label4.Text = "Malzemeler:";
             // 
-            // panelIngredients
-            // 
-            panelIngredients.Location = new Point(392, 165);
-            panelIngredients.Name = "panelIngredients";
-            panelIngredients.Size = new Size(294, 515);
-            panelIngredients.TabIndex = 12;
-            // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label5.Location = new Point(781, 39);
+            label5.Location = new Point(788, 30);
             label5.Name = "label5";
             label5.Size = new Size(107, 25);
             label5.TabIndex = 13;
             label5.Text = "Yonergeler:";
             // 
-            // textBoxInstrutions
+            // textBoxInstructions
             // 
-            textBoxInstrutions.Location = new Point(788, 82);
-            textBoxInstrutions.Name = "textBoxInstrutions";
-            textBoxInstrutions.Size = new Size(319, 23);
-            textBoxInstrutions.TabIndex = 14;
+            textBoxInstructions.Location = new Point(788, 82);
+            textBoxInstructions.Name = "textBoxInstructions";
+            textBoxInstructions.Size = new Size(319, 23);
+            textBoxInstructions.TabIndex = 14;
             // 
-            // button4
+            // buttonInstructionAdd
             // 
-            button4.Location = new Point(916, 121);
-            button4.Name = "button4";
-            button4.Size = new Size(100, 23);
-            button4.TabIndex = 15;
-            button4.Text = "Yonerge Ekle";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
-            // 
-            // panelInstructions
-            // 
-            panelInstructions.Location = new Point(788, 165);
-            panelInstructions.Name = "panelInstructions";
-            panelInstructions.Size = new Size(319, 515);
-            panelInstructions.TabIndex = 17;
+            buttonInstructionAdd.Location = new Point(788, 121);
+            buttonInstructionAdd.Name = "buttonInstructionAdd";
+            buttonInstructionAdd.Size = new Size(165, 23);
+            buttonInstructionAdd.TabIndex = 15;
+            buttonInstructionAdd.Text = "Yonerge Ekle";
+            buttonInstructionAdd.UseVisualStyleBackColor = true;
+            buttonInstructionAdd.Click += button4_Click;
             // 
             // button3
             // 
@@ -197,20 +186,68 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
+            // listBoxIngredients
+            // 
+            listBoxIngredients.FormattingEnabled = true;
+            listBoxIngredients.ItemHeight = 15;
+            listBoxIngredients.Location = new Point(409, 167);
+            listBoxIngredients.Name = "listBoxIngredients";
+            listBoxIngredients.Size = new Size(218, 484);
+            listBoxIngredients.TabIndex = 19;
+            // 
+            // listBoxInstructions
+            // 
+            listBoxInstructions.FormattingEnabled = true;
+            listBoxInstructions.ItemHeight = 15;
+            listBoxInstructions.Location = new Point(788, 167);
+            listBoxInstructions.Name = "listBoxInstructions";
+            listBoxInstructions.Size = new Size(319, 484);
+            listBoxInstructions.TabIndex = 20;
+            // 
+            // buttonIngredientDelete
+            // 
+            buttonIngredientDelete.Location = new Point(520, 138);
+            buttonIngredientDelete.Name = "buttonIngredientDelete";
+            buttonIngredientDelete.Size = new Size(107, 23);
+            buttonIngredientDelete.TabIndex = 21;
+            buttonIngredientDelete.Text = "Malzeme Sil";
+            buttonIngredientDelete.UseVisualStyleBackColor = true;
+            buttonIngredientDelete.Click += buttonIngredientDelete_Click;
+            // 
+            // buttonInstructuionDelete
+            // 
+            buttonInstructuionDelete.Location = new Point(959, 121);
+            buttonInstructuionDelete.Name = "buttonInstructuionDelete";
+            buttonInstructuionDelete.Size = new Size(148, 23);
+            buttonInstructuionDelete.TabIndex = 22;
+            buttonInstructuionDelete.Text = "Yonerge Sil";
+            buttonInstructuionDelete.UseVisualStyleBackColor = true;
+            buttonInstructuionDelete.Click += buttonInstructuionDelete_Click;
+            // 
+            // textBoxAmount
+            // 
+            textBoxAmount.Location = new Point(409, 97);
+            textBoxAmount.Name = "textBoxAmount";
+            textBoxAmount.Size = new Size(218, 23);
+            textBoxAmount.TabIndex = 23;
+            // 
             // RecipeEditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1229, 753);
+            Controls.Add(textBoxAmount);
+            Controls.Add(buttonInstructuionDelete);
+            Controls.Add(buttonIngredientDelete);
+            Controls.Add(listBoxInstructions);
+            Controls.Add(listBoxIngredients);
             Controls.Add(button3);
-            Controls.Add(panelInstructions);
-            Controls.Add(button4);
-            Controls.Add(textBoxInstrutions);
+            Controls.Add(buttonInstructionAdd);
+            Controls.Add(textBoxInstructions);
             Controls.Add(label5);
-            Controls.Add(panelIngredients);
             Controls.Add(label4);
             Controls.Add(comboBoxIngredients);
-            Controls.Add(button2);
+            Controls.Add(buttonIngredientAdd);
             Controls.Add(label3);
             Controls.Add(textBoxTime);
             Controls.Add(comboBoxCatagory);
@@ -236,14 +273,17 @@
         private ComboBox comboBoxCatagory;
         private TextBox textBoxTime;
         private Label label3;
-        private Button button2;
+        private Button buttonIngredientAdd;
         private ComboBox comboBoxIngredients;
         private Label label4;
-        private Panel panelIngredients;
         private Label label5;
-        private TextBox textBoxInstrutions;
-        private Button button4;
-        private Panel panelInstructions;
+        private TextBox textBoxInstructions;
+        private Button buttonInstructionAdd;
         private Button button3;
+        private ListBox listBoxIngredients;
+        private ListBox listBoxInstructions;
+        private Button buttonIngredientDelete;
+        private Button buttonInstructuionDelete;
+        private TextBox textBoxAmount;
     }
 }

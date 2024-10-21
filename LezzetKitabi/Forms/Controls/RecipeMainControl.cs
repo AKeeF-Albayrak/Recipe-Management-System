@@ -193,10 +193,14 @@ namespace LezzetKitabi.Forms.Controls
 
                 PictureBox recipeImageBox = new PictureBox();
                 recipeImageBox.Size = new Size(120, 120);
-                recipeImageBox.Location = new Point((panelWidth - recipeImageBox.Width) / 2, 50); 
-                recipeImageBox.Image = Properties.Resources.Screenshot_2024_10_09_121511;
+                recipeImageBox.Location = new Point((panelWidth - recipeImageBox.Width) / 2, 50);
+                using (MemoryStream ms = new MemoryStream(recipes[i].Image))
+                {
+                    Image img = Image.FromStream(ms);
+
+                    recipeImageBox.Image = img;
+                }
                 recipeImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                /*Üst kısım Tariflerin resimler için*/
 
                 Label label = new Label();
                 label.AutoSize = true;
@@ -249,6 +253,7 @@ namespace LezzetKitabi.Forms.Controls
                     Category = selectedRecipe.Category,
                     PreparationTime = selectedRecipe.PreparationTime,
                     Instructions = selectedRecipe.Instructions,
+                    Image = selectedRecipe.Image,
                     Ingredients = ingredients
                 };
                 RecipeDetailsForm detailsForm = new RecipeDetailsForm(recipeUpdateDto);
@@ -271,6 +276,7 @@ namespace LezzetKitabi.Forms.Controls
                     Category = selectedRecipe.Category,
                     PreparationTime = selectedRecipe.PreparationTime,
                     Instructions = selectedRecipe.Instructions,
+                    Image = selectedRecipe.Image,
                     Ingredients = ingredients
                 };
 

@@ -18,6 +18,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static LezzetKitabi.Forms.Controls.RecipeAddControl;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LezzetKitabi.Forms
 {
@@ -39,76 +41,41 @@ namespace LezzetKitabi.Forms
         {
             textBoxName.Text = _recipe.RecipeName;
             textBoxTime.Text = _recipe.PreparationTime.ToString();
+
             var ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
             comboBoxIngredients.DataSource = ingredients;
             comboBoxIngredients.DisplayMember = "IngredientName";
             comboBoxIngredients.ValueMember = "Id";
+
             comboBoxCatagory.Items.AddRange(Enum.GetNames(typeof(Category)));
             comboBoxCatagory.SelectedIndex = comboBoxCatagory.Items.IndexOf(_recipe.Category);
 
-            int startx = 10;
-            int starty = 10;
-            int gap = 20;
-
-            if (comboBoxCatagory.Items.Count > 0)
+            
+            using (MemoryStream ms = new MemoryStream(_recipe.Image))
             {
-                for (int i = 0; i < _recipe.Ingredients.Count; i++)
-                {
-                    string ingredientText = $"{_recipe.Ingredients[i].IngredientName} {_recipe.Ingredients[i].TotalQuantity} {_recipe.Ingredients[i].Unit}";
-
-                    Label label = new Label
-                    {
-                        Text = ingredientText,
-                        AutoSize = true,
-                        Location = new Point(startx, starty + (gap * i))
-                    };
-
-                    Button button = new Button
-                    {
-                        Text = "X",
-                        Size = new Size(20, 20),
-                        Location = new Point(label.Right + 10, label.Top)
-                    };
-
-                    panelIngredients.Controls.Add(label);
-                    panelIngredients.Controls.Add(button);
-                }
+                Image img = Image.FromStream(ms);
+                pictureBox1.Image = img;
             }
-            LoadInstructionsAsync(_recipe.Instructions);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            string[] instructions = _recipe.Instructions.Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            listBoxInstructions.Items.Clear();
+            listBoxInstructions.Items.AddRange(instructions);
+
+            listBoxIngredients.Items.Clear();
+            foreach (var ingredient in _recipe.Ingredients)
+            {
+                string displayText = $"{ingredient.IngredientName} - {ingredient.TotalQuantity} - {ingredient.Unit}";
+                listBoxIngredients.Items.Add(displayText);
+            }
         }
+
+
+
 
         public async void LoadInstructionsAsync(string instructions)
         {
-            if (!string.IsNullOrEmpty(instructions))
-            {
 
-                var instructionSteps = instructions.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-                panelInstructions.Controls.Clear();
-
-                int startx = 10;
-                int starty = 10;
-                int gap = 30;
-
-                for (int i = 0; i < instructionSteps.Length; i++)
-                {
-                    string instructionText = instructionSteps[i].Trim();
-
-                    Label label = new Label
-                    {
-                        Text = instructionText,
-                        AutoSize = true,
-                        Font = new Font("Arial", 12, FontStyle.Bold),
-                        Location = new Point(startx, starty + (gap * i))
-                    };
-
-                    panelInstructions.Controls.Add(label);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Tarif talimatları boş.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
         }
 
 
@@ -119,160 +86,103 @@ namespace LezzetKitabi.Forms
 
         private async void button3_Click(object sender, EventArgs e)
         {
+            // Güncelleme için gerekli olan verileri al
             var recipeUpdateDto = new RecipeUpdateDto
             {
-                Id = _recipe.Id,
+                Id = _recipe.Id, // Mevcut tarifin ID'si
                 RecipeName = textBoxName.Text,
-                PreparationTime = int.Parse(textBoxTime.Text),
-                Category = comboBoxCatagory.SelectedItem.ToString(),
-                Instructions = GetInstructionsFromPanel(),
-                Ingredients = GetUpdatedIngredients()
+                Category = comboBoxCatagory.SelectedItem.ToString(), // Kategoriyi al
+                PreparationTime = int.Parse(textBoxTime.Text), // Hazırlama süresini al
+                Instructions = string.Join("\n", listBoxInstructions.Items.Cast<string>()), // Talimatları al
+                                                                                            // Eğer resim eklemek istiyorsanız, aşağıdaki satırı kullanabilirsiniz
+                                                                                            // Image = ConvertImageToByteArray(pictureBox1.Image), // Resmi byte dizisine çevir
+
+                Ingredients = listBoxIngredients.Items.Cast<string>().Select(item =>
+                {
+                    var parts = item.Split(" - ");
+                    return new IngredientGetDto
+                    {
+                        IngredientName = parts[0], // Malzeme adını al
+                        TotalQuantity = parts[1], // Miktarı al
+                        Unit = parts[2], // Birimi al
+                                         // UnitPrice, kullanıcıdan alınmadığı için burada atanmadı, gerekirse eklenebilir
+                                         // UnitPrice = GetUnitPrice(parts[0]) // Örneğin, malzeme adından birim fiyatı alabilirsiniz
+                    };
+                }).ToList()
             };
 
+            // Tarifi güncelle
+            bool result = await _recipeService.UpdateRecipe(recipeUpdateDto);
 
-            try
+            if (result)
             {
-                var result = await _recipeService.UpdateRecipe(recipeUpdateDto);
-
-                if (result)
-                {
-                    MessageBox.Show("Tarif başarıyla güncellendi!", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Tarif güncellenemedi. Lütfen tekrar deneyiniz.", "Başarısız", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("Tarif başarıyla güncellendi.", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Hata oluştu: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Tarif güncellenirken bir hata oluştu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private List<IngredientGetDto> GetUpdatedIngredients()
-        {
-            var updatedIngredients = new List<IngredientGetDto>();
 
-            foreach (Control control in panelIngredients.Controls)
-            {
-                if (control is Label label)
-                {
-                    var ingredientData = label.Text.Split(' ');
-                    string ingredientName = ingredientData[0];
-                    decimal ingredientAmount = decimal.Parse(ingredientData[1]);
-                    var ingredientId = _recipe.Ingredients.FirstOrDefault(i => i.IngredientName == ingredientName)?.Id;
-
-                    if (ingredientId.HasValue)
-                    {
-                        updatedIngredients.Add(new IngredientGetDto
-                        {
-                            Id = ingredientId.Value,
-                            IngredientName = ingredientName,
-                            TotalQuantity = ingredientAmount.ToString()
-                        });
-                    }
-                }
-            }
-
-            return updatedIngredients;
-        }
-        private string GetInstructionsFromPanel()
-        {
-            StringBuilder instructions = new StringBuilder();
-            foreach (Control control in panelInstructions.Controls)
-            {
-                if (control is Label label)
-                {
-                    instructions.AppendLine(label.Text);
-                }
-            }
-            return instructions.ToString();
-        }
 
         private void buttonAddIngredient_Click(object sender, EventArgs e)
         {
-            if (comboBoxIngredients.SelectedItem != null)
+            // ComboBox'tan seçilen malzeme bilgisini al
+            var selectedIngredient = comboBoxIngredients.SelectedItem;
+
+            if (selectedIngredient != null)
             {
-                var selectedIngredient = (IngredientGetDto)comboBoxIngredients.SelectedItem;
+                string ingredientName = ((Ingredient)selectedIngredient).IngredientName;
+                Guid ingredientId = ((Ingredient)selectedIngredient).Id;
 
-                // Yeni panel oluştur
-                Panel ingredientPanel = new Panel
+                if (int.TryParse(textBoxAmount.Text, out int amount))
                 {
-                    Size = new Size(panelIngredients.Width - 20, 30),
-                    BorderStyle = BorderStyle.FixedSingle,
-                    Dock = DockStyle.Top
-                };
+                    string displayText = $"{ingredientName} - {amount} - {((Ingredient)selectedIngredient).Unit}";
 
-                Label ingredientLabel = new Label
-                {
-                    Text = $"{selectedIngredient.IngredientName} {selectedIngredient.TotalQuantity} {selectedIngredient.Unit}",
-                    AutoSize = true,
-                    Location = new Point(10, 5)
-                };
+                    listBoxIngredients.Items.Add(displayText);
 
-                Button deleteButton = new Button
+                }
+                else
                 {
-                    Text = "X",
-                    Size = new Size(20, 20),
-                    Location = new Point(ingredientPanel.Width - 30, 5)
-                };
-                deleteButton.Click += (s, args) =>
-                {
-                    panelIngredients.Controls.Remove(ingredientPanel);
-                };
-
-                ingredientPanel.Controls.Add(ingredientLabel);
-                ingredientPanel.Controls.Add(deleteButton);
-                panelIngredients.Controls.Add(ingredientPanel);
+                    MessageBox.Show("Lütfen geçerli bir miktar girin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             else
             {
-                MessageBox.Show("Lütfen bir malzeme seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Lütfen bir malzeme seçin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
+
+
         private void button4_Click(object sender, EventArgs e)
         {
-            string instructionText = textBoxInstrutions.Text.Trim(); // Talimatı TextBox'tan al
+            // TextBox'tan talimatı al
+            string instruction = textBoxInstructions.Text.Trim();
 
-            if (!string.IsNullOrEmpty(instructionText))
+            // Eğer talimat boş değilse
+            if (!string.IsNullOrEmpty(instruction))
             {
-                // Yeni panel oluştur
-                Panel instructionPanel = new Panel
-                {
-                    Size = new Size(panelInstructions.Width - 20, 30), // Panel boyutunu ayarlayın
-                    BorderStyle = BorderStyle.FixedSingle,
-                    Dock = DockStyle.Top // Üstte sıralı görünüm için
-                };
+                // ListBox'a ekle
+                listBoxInstructions.Items.Add(instruction);
 
-                Label instructionLabel = new Label
-                {
-                    Text = instructionText,
-                    AutoSize = true,
-                    Location = new Point(10, 5) // Label konumu
-                };
-
-                Button deleteButton = new Button
-                {
-                    Text = "X",
-                    Size = new Size(20, 20),
-                    Location = new Point(instructionPanel.Width - 30, 5) // Buton konumu
-                };
-                deleteButton.Click += (s, args) =>
-                {
-                    panelInstructions.Controls.Remove(instructionPanel); // Paneli sil
-                };
-
-                instructionPanel.Controls.Add(instructionLabel);
-                instructionPanel.Controls.Add(deleteButton);
-                panelInstructions.Controls.Add(instructionPanel); // Paneli ana panelin içine ekle
-
-                textBoxInstrutions.Clear();
+                // TextBox'ı temizle (isteğe bağlı)
+                textBoxInstructions.Clear();
             }
             else
             {
-                MessageBox.Show("Talimat boş olamaz.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Lütfen geçerli bir talimat girin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+
+        private void buttonIngredientDelete_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void buttonInstructuionDelete_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

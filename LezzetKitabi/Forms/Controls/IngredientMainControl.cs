@@ -114,13 +114,11 @@ namespace LezzetKitabi.Forms.Controls
                 mainPanel.MouseLeave += (s, e) => CheckMouseLeave(mainPanel);
 
                 PictureBox pictureBox = new PictureBox();
-                if (i == 1)
+                using (MemoryStream ms = new MemoryStream(ingredients[i].Image))
                 {
-                    pictureBox.Image = Properties.Resources.domates;
-                }
-                else
-                {
-                    pictureBox.Image = Properties.Resources.Screenshot_2024_10_09_121511;
+                    Image img = Image.FromStream(ms);
+
+                    pictureBox.Image = img;
                 }
                 pictureBox.Size = new Size(115, 94);
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
