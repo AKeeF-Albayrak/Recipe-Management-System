@@ -257,7 +257,6 @@ namespace LezzetKitabi.Forms.Controls
                     Ingredients = ingredients
                 };
                 RecipeDetailsForm detailsForm = new RecipeDetailsForm(recipeUpdateDto);
-
                 detailsForm.ShowDialog();
             }
         }
@@ -281,8 +280,14 @@ namespace LezzetKitabi.Forms.Controls
                 };
 
                 RecipeEditForm editForm = new RecipeEditForm(recipeUpdateDto, _serviceProvider);
+                editForm.RecipeUpdated += Form_RecipeUpdated;
                 editForm.ShowDialog();
             }
+        }
+
+        private async void Form_RecipeUpdated(object sender, EventArgs e)
+        {
+            await RefreshPanelsAsync();
         }
         private async void DeleteIcon_Click(object sender, EventArgs e)
         {

@@ -194,6 +194,7 @@
             listBoxIngredients.Name = "listBoxIngredients";
             listBoxIngredients.Size = new Size(218, 484);
             listBoxIngredients.TabIndex = 19;
+            listBoxIngredients.SelectedIndexChanged += listBoxIngredients_SelectedIndexChanged;
             // 
             // listBoxInstructions
             // 
@@ -203,6 +204,7 @@
             listBoxInstructions.Name = "listBoxInstructions";
             listBoxInstructions.Size = new Size(319, 484);
             listBoxInstructions.TabIndex = 20;
+            listBoxInstructions.SelectedIndexChanged += listBoxInstructions_SelectedIndexChanged;
             // 
             // buttonIngredientDelete
             // 

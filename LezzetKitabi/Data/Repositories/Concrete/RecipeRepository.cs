@@ -268,10 +268,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             try
             {
                 string checkRecipeNameSql = @"
-            SELECT COUNT(1) 
-            FROM Recipes 
-            WHERE RecipeName = @RecipeName 
-            AND Id != @Id";
+        SELECT COUNT(1) 
+        FROM Recipes 
+        WHERE RecipeName = @RecipeName 
+        AND Id != @Id";
 
                 var isNameTaken = await connection.ExecuteScalarAsync<int>(checkRecipeNameSql, new
                 {
@@ -286,13 +286,13 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 }
 
                 string updateRecipeSql = @"
-            UPDATE Recipes 
-            SET RecipeName = @RecipeName, 
-                Category = @Category, 
-                PreparationTime = @PreparationTime, 
-                Instructions = @Instructions,
-                Image = @Image  -- Resim alanı güncelleniyor
-            WHERE Id = @Id";
+        UPDATE Recipes 
+        SET RecipeName = @RecipeName, 
+            Category = @Category, 
+            PreparationTime = @PreparationTime, 
+            Instructions = @Instructions,
+            Image = @Image
+        WHERE Id = @Id";
 
                 var recipeUpdateResult = await connection.ExecuteAsync(updateRecipeSql, new
                 {
@@ -310,10 +310,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 }
 
                 string getExistingIngredientsSql = @"
-            SELECT i.Id, i.IngredientName, i.TotalQuantity, i.Unit, i.UnitPrice, i.Image, ri.IngredientAmount
-            FROM RecipeIngredients ri
-            JOIN Ingredients i ON i.Id = ri.IngredientID
-            WHERE ri.RecipeID = @RecipeID";
+        SELECT i.Id, i.IngredientName, i.TotalQuantity, i.Unit, i.UnitPrice, i.Image, ri.IngredientAmount
+        FROM RecipeIngredients ri
+        JOIN Ingredients i ON i.Id = ri.IngredientID
+        WHERE ri.RecipeID = @RecipeID";
 
                 var existingIngredients = await connection.QueryAsync<Ingredient>(getExistingIngredientsSql, new
                 {
@@ -322,6 +322,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
                 var existingIngredientList = existingIngredients.ToList();
 
+                // Malzemeleri silme
                 var ingredientsToDelete = existingIngredientList
                     .Where(ei => !recipeUpdateDto.Ingredients.Any(ri => ri.Id == ei.Id))
                     .ToList();
@@ -329,8 +330,8 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 foreach (var ingredientToDelete in ingredientsToDelete)
                 {
                     string deleteIngredientSql = @"
-                DELETE FROM RecipeIngredients 
-                WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
+            DELETE FROM RecipeIngredients 
+            WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
 
                     await connection.ExecuteAsync(deleteIngredientSql, new
                     {
@@ -346,8 +347,8 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 foreach (var ingredientToAdd in ingredientsToAdd)
                 {
                     string insertIngredientSql = @"
-                INSERT INTO RecipeIngredients (RecipeID, IngredientID, IngredientAmount) 
-                VALUES (@RecipeID, @IngredientID, @IngredientAmount)";
+                    INSERT INTO RecipeIngredients (RecipeID, IngredientID, IngredientAmount) 
+                    VALUES (@RecipeID, @IngredientID, @IngredientAmount)";
 
                     await connection.ExecuteAsync(insertIngredientSql, new
                     {
@@ -357,7 +358,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     }, transaction);
                 }
 
-                // Mevcut malzemeleri güncelleme
+                // Malzemeleri güncelleme
                 var ingredientsToUpdate = recipeUpdateDto.Ingredients
                     .Where(ri => existingIngredientList.Any(ei => ei.Id == ri.Id))
                     .ToList();
@@ -365,9 +366,9 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 foreach (var ingredientToUpdate in ingredientsToUpdate)
                 {
                     string updateIngredientSql = @"
-                UPDATE RecipeIngredients 
-                SET IngredientAmount = @IngredientAmount 
-                WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
+            UPDATE RecipeIngredients 
+            SET IngredientAmount = @IngredientAmount 
+            WHERE RecipeID = @RecipeID AND IngredientID = @IngredientID";
 
                     await connection.ExecuteAsync(updateIngredientSql, new
                     {
@@ -380,10 +381,12 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await transaction.CommitAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                throw;
+                // Hata mesajını göster
+                MessageBox.Show($"Hata: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw; // Hatanın dışarıya iletilmesini sağlıyoruz
             }
         }
         public async Task<Recipe> GetRecipeByNameAsync(string name)
