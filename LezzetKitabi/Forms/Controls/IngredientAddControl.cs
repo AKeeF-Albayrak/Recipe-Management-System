@@ -25,7 +25,7 @@ namespace LezzetKitabi.Forms.Controls
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
             cmbUnit.DataSource = Enum.GetValues(typeof(UnitType));
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage; // Resmin PictureBox'ta stretch modda gösterilmesi
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace LezzetKitabi.Forms.Controls
                 IngredientName = txtIngredientName.Text,
                 TotalQuantity = txtTotalQuantity.Text,
                 Unit = cmbUnit.SelectedItem.ToString(),
-                Image = _selectedImagePath != null ? ConvertImageToBytes(_selectedImagePath) : null // Resim byte dizisi olarak ekleniyor
+                Image = _selectedImagePath != null ? ConvertImageToBytes(_selectedImagePath) : null
             };
 
             if (int.TryParse(txtTotalQuantity.Text, out int totalQuantity))
@@ -69,7 +69,7 @@ namespace LezzetKitabi.Forms.Controls
                     txtTotalQuantity.Clear();
                     txtUnitPrice.Clear();
                     cmbUnit.SelectedIndex = -1;
-                    pictureBox1.Image = null; // PictureBox temizleniyor
+                    pictureBox1.Image = null;
                     _selectedImagePath = null;
                 }
                 else

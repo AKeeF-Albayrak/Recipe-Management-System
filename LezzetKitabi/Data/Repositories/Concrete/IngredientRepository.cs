@@ -51,7 +51,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 TotalQuantity = entity.TotalQuantity,
                 Unit = entity.Unit,
                 UnitPrice = entity.UnitPrice,
-                Image = entity.Image ?? (object)DBNull.Value  // Resim verisini ekleyin
+                Image = entity.Image ?? (object)DBNull.Value
             });
 
             return true;

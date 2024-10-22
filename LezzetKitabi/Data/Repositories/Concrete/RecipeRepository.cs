@@ -322,7 +322,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
                 var existingIngredientList = existingIngredients.ToList();
 
-                // Malzemeleri silme
                 var ingredientsToDelete = existingIngredientList
                     .Where(ei => !recipeUpdateDto.Ingredients.Any(ri => ri.Id == ei.Id))
                     .ToList();
@@ -358,7 +357,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     }, transaction);
                 }
 
-                // Malzemeleri güncelleme
                 var ingredientsToUpdate = recipeUpdateDto.Ingredients
                     .Where(ri => existingIngredientList.Any(ei => ei.Id == ri.Id))
                     .ToList();
@@ -384,9 +382,8 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                // Hata mesajını göster
                 MessageBox.Show($"Hata: {ex.Message}", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw; // Hatanın dışarıya iletilmesini sağlıyoruz
+                throw;
             }
         }
         public async Task<Recipe> GetRecipeByNameAsync(string name)
