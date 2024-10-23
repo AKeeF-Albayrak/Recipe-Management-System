@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panelSearch = new Panel();
+            comboBoxSort = new ComboBox();
             label1 = new Label();
             buttonSearch = new Button();
             textBoxSearch = new TextBox();
@@ -40,7 +41,6 @@
             button3 = new Button();
             panelPrevius = new Panel();
             panelSort = new Panel();
-            comboBoxSort = new ComboBox();
             panelFilter = new Panel();
             panel2 = new Panel();
             panel8 = new Panel();
@@ -100,6 +100,16 @@
             panelSearch.Size = new Size(1323, 65);
             panelSearch.TabIndex = 0;
             // 
+            // comboBoxSort
+            // 
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Items.AddRange(new object[] { "Artan Yuzde", "Azalan Yuzde", "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza", "Hizlidan Yavasa", "Yavasdan Hizliya", "Malzeme Sayisina Gore Artan", "Malzeme Sayisina Gore Azalan" });
+            comboBoxSort.Location = new Point(875, 23);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(192, 23);
+            comboBoxSort.TabIndex = 0;
+            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
+            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -152,6 +162,8 @@
             // 
             // panelItems
             // 
+            panelItems.BackColor = Color.White;
+            panelItems.BackgroundImage = Properties.Resources.coverImage;
             panelItems.Dock = DockStyle.Left;
             panelItems.Location = new Point(48, 0);
             panelItems.Name = "panelItems";
@@ -209,16 +221,6 @@
             panelSort.Name = "panelSort";
             panelSort.Size = new Size(1126, 43);
             panelSort.TabIndex = 1;
-            // 
-            // comboBoxSort
-            // 
-            comboBoxSort.FormattingEnabled = true;
-            comboBoxSort.Items.AddRange(new object[] { "Artan Yuzde", "Azalan Yuzde", "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza", "Hizlidan Yavasa", "Yavasdan Hizliya", "Malzeme Sayisina Gore Artan", "Malzeme Sayisina Gore Azalan" });
-            comboBoxSort.Location = new Point(875, 23);
-            comboBoxSort.Name = "comboBoxSort";
-            comboBoxSort.Size = new Size(192, 23);
-            comboBoxSort.TabIndex = 0;
-            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
             // 
             // panelFilter
             // 

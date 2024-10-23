@@ -39,7 +39,7 @@ namespace LezzetKitabi.Forms.Controls
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             _recipeIngredientService = serviceProvider.GetRequiredService<IRecipeIngredientService>();
             InitializeComponent();
-            InitializeGradientPanel(panelElements);
+            //InitializeGradientPanel(panelElements);
             InitializeCustomPanelsAsync();
 
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
