@@ -40,6 +40,7 @@ namespace LezzetKitabi
             //Saving Forms
             services.AddScoped<MainForm>();
             services.AddScoped<RecipeDetailsForm>();
+            services.AddScoped<IntroForm>();
 
 
             //Adding Controls
@@ -54,7 +55,7 @@ namespace LezzetKitabi
             var serviceProvider = services.BuildServiceProvider();
 
             // MainForm'u IServiceProvider olarak ge�iyoruz
-            System.Windows.Forms.Application.Run(serviceProvider.GetService<MainForm>());
+            System.Windows.Forms.Application.Run(serviceProvider.GetService<IntroForm>());
         }
     }
 }
