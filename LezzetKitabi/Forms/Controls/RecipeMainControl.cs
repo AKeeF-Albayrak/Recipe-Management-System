@@ -663,23 +663,5 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Son sayfaya ulaştınız, daha ileri gidemiyorsunuz.","Hata",MessageBoxButtons.OK,MessageBoxIcon.Warning);
             }
         }
-
-        /*public async Task DisplayRecipeImageByName(string name)
-        {
-            var recipeDto = await _recipeService.GetRecipeImageByNameAsync(name);
-
-            if (recipeDto != null && recipeDto.RecipeImage != null)
-            {
-                // Byte[]'dan Image'a dönüştürme
-                using (MemoryStream ms = new MemoryStream(recipeDto.RecipeImage))
-                {
-                    pictureBoxRecipeImage.Image = Image.FromStream(ms);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Resim bulunamadı.");
-            }
-        }*/ 
     }
 }

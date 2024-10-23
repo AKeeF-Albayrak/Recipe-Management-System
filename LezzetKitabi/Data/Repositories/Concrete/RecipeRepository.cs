@@ -74,32 +74,36 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             string sql = @"WITH RecipeIngredientCount AS (
-                        SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
-                        FROM Recipes r
-                        LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
-                        GROUP BY r.Id)
-                    SELECT r.Id, 
-                           r.RecipeName, 
-                           r.Category,       
-                           r.Instructions,   
-                           r.Image,          -- Image kolonu ekleniyor
-                           SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
-                           SUM(CASE 
-                                 WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
-                                   (CASE 
-                                     WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
-                                     ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
-                                   END)
-                                 ELSE 0 
-                               END) AS AvailabilityPercentage,
-                           SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
-                                    THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
-                                    ELSE 0 END) AS MissingCost,
-                           r.PreparationTime 
-                    FROM Recipes r 
-                    LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
-                    LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
-                    LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id";
+    SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
+    FROM Recipes r
+    LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
+    GROUP BY r.Id
+)
+SELECT r.Id, 
+       r.RecipeName, 
+       r.Category,       
+       r.Instructions,   
+       r.Image,
+       SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
+       SUM(CASE 
+             WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
+               (CASE 
+                 WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
+                 ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
+               END)
+             ELSE 0 
+           END) AS AvailabilityPercentage,
+       SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
+                THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
+                ELSE 0 END) AS MissingCost,
+       r.PreparationTime 
+FROM Recipes r 
+LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
+LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
+LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id
+WHERE 1 = 1
+
+";
 
             filterCriteriaList ??= new List<FilterCriteria>();
 
@@ -170,10 +174,14 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             var ingredientFilters = filterCriteriaList
-                .Where(f => f.FilterType == "Malzeme")
-                .Select(f => $"(ri.IngredientID IN (SELECT Id FROM Ingredients WHERE IngredientName = '{f.Value}'))");
+    .Where(f => f.FilterType == "Malzeme")
+    .Select(f => $"i.IngredientName = '{f.Value}'");
 
-            filters.AddRange(ingredientFilters);
+            if (ingredientFilters.Any())
+            {
+                sql += " AND r.Id IN (SELECT ri.RecipeID FROM RecipeIngredients ri JOIN Ingredients i ON ri.IngredientID = i.Id WHERE " + string.Join(" OR ", ingredientFilters) + ")";
+            }
+
 
             var nameFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Tarif Adi");
             if (nameFilter != null)
