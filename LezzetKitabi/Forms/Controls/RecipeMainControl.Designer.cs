@@ -163,7 +163,6 @@
             // panelItems
             // 
             panelItems.BackColor = Color.White;
-            panelItems.BackgroundImage = Properties.Resources.coverImage;
             panelItems.Dock = DockStyle.Left;
             panelItems.Location = new Point(48, 0);
             panelItems.Name = "panelItems";
@@ -534,9 +533,11 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
+            BackgroundImage = Properties.Resources.bgTest;
             Controls.Add(panelFilter);
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
+            DoubleBuffered = true;
             Name = "RecipeMainControl";
             Size = new Size(1323, 796);
             panelSearch.ResumeLayout(false);

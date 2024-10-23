@@ -63,6 +63,16 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bgTest {
+            get {
+                object obj = ResourceManager.GetObject("bgTest", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap coverImage {
             get {
                 object obj = ResourceManager.GetObject("coverImage", resourceCulture);
