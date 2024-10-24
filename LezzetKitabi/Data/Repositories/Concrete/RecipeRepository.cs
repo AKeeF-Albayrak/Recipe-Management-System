@@ -247,7 +247,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             var recipes = await connection.QueryAsync<RecipeViewGetDto>(sql);
-
+            //
             return recipes.ToList();
         }
         public async Task<Recipe> GetEntityById(Guid id)
