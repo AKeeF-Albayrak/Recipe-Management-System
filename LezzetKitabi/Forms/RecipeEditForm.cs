@@ -59,13 +59,17 @@ namespace LezzetKitabi.Forms
             textBoxTime.Text = _recipe.PreparationTime.ToString();
 
             var ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
-            comboBoxIngredients.DataSource = ingredients;
+
+            var availableIngredients = ingredients
+                .Where(i => !_recipe.Ingredients.Any(recipeIngredient => recipeIngredient.Id == i.Id))
+                .ToList();
+
+            comboBoxIngredients.DataSource = availableIngredients;
             comboBoxIngredients.DisplayMember = "IngredientName";
             comboBoxIngredients.ValueMember = "Id";
 
             comboBoxCatagory.Items.AddRange(Enum.GetNames(typeof(Category)));
             comboBoxCatagory.SelectedIndex = comboBoxCatagory.Items.IndexOf(_recipe.Category);
-
 
             using (MemoryStream ms = new MemoryStream(_recipe.Image))
             {
@@ -79,7 +83,6 @@ namespace LezzetKitabi.Forms
             listBoxInstructions.Items.AddRange(instructions);
 
             listBoxIngredients.Items.Clear();
-
             foreach (var ingredient in _recipe.Ingredients)
             {
                 var listBoxItem = new ListBoxIngredient
@@ -94,6 +97,7 @@ namespace LezzetKitabi.Forms
                 listBoxIngredients.Items.Add(listBoxItem);
             }
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -161,6 +165,16 @@ namespace LezzetKitabi.Forms
                     };
 
                     listBoxIngredients.Items.Add(listBoxItem);
+
+                    var ingredientList = comboBoxIngredients.DataSource as List<Ingredient>;
+                    if (ingredientList != null)
+                    {
+                        ingredientList.Remove(selectedIngredient);
+
+                        comboBoxIngredients.DataSource = null;
+                        comboBoxIngredients.DataSource = ingredientList;
+                        comboBoxIngredients.DisplayMember = "IngredientName";
+                    }
                 }
                 else
                 {
@@ -172,6 +186,39 @@ namespace LezzetKitabi.Forms
                 MessageBox.Show("Lütfen bir malzeme seçin.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+
+
+        private void buttonIngredientDelete_Click(object sender, EventArgs e)
+        {
+            if (listBoxIngredients.SelectedItem is ListBoxIngredient selectedItem)
+            {
+                var ingredientToRestore = new Ingredient
+                {
+                    Id = selectedItem.IngredientId,
+                    IngredientName = selectedItem.IngredientName,
+                    Unit = selectedItem.Unit,
+                    UnitPrice = decimal.Parse(selectedItem.UnitPrice)
+                };
+
+                var ingredientList = comboBoxIngredients.DataSource as List<Ingredient>;
+                if (ingredientList != null)
+                {
+                    ingredientList.Add(ingredientToRestore);
+
+                    comboBoxIngredients.DataSource = null;
+                    comboBoxIngredients.DataSource = ingredientList;
+                    comboBoxIngredients.DisplayMember = "IngredientName";
+                }
+
+                listBoxIngredients.Items.Remove(selectedItem);
+            }
+            else
+            {
+                MessageBox.Show("Lütfen silmek istediğiniz malzemeyi seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
 
 
 
@@ -192,17 +239,7 @@ namespace LezzetKitabi.Forms
         }
 
 
-        private void buttonIngredientDelete_Click(object sender, EventArgs e)
-        {
-            if (listBoxIngredients.SelectedItem is ListBoxIngredient selectedItem)
-            {
-                listBoxIngredients.Items.Remove(selectedItem);
-            }
-            else
-            {
-                MessageBox.Show("Lütfen silmek istediğiniz malzemeyi seçin.", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
+        
 
         private void buttonInstructuionDelete_Click(object sender, EventArgs e)
         {
