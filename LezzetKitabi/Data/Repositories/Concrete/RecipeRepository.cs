@@ -64,6 +64,20 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return rowsAffected > 0;
         }
+        public async Task<Recipe> GetEntityById(Guid id)
+        {
+            using var connection = new SqlConnection(ConstVariables.ConnectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = "SELECT * FROM Recipes WHERE Id = @Id";
+            var recipe = await connection.QueryFirstOrDefaultAsync<Recipe>(sql, new { Id = id });
+
+            return recipe;
+        }
         public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType sortingType, List<FilterCriteria> filterCriteriaList)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -195,12 +209,11 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             if (filters.Count > 0)
             {
-                sql += " WHERE " + string.Join(" AND ", filters);
+                sql += " AND " + string.Join(" AND ", filters);
             }
 
             sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.Image, r.PreparationTime";
 
-            // Sıralama
             switch (sortingType)
             {
                 case RecipeSortingType.A_from_Z:
@@ -249,20 +262,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             var recipes = await connection.QueryAsync<RecipeViewGetDto>(sql);
             //
             return recipes.ToList();
-        }
-        public async Task<Recipe> GetEntityById(Guid id)
-        {
-            using var connection = new SqlConnection(ConstVariables.ConnectionString);
-
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                await connection.OpenAsync();
-            }
-
-            string sql = "SELECT * FROM Recipes WHERE Id = @Id";
-            var recipe = await connection.QueryFirstOrDefaultAsync<Recipe>(sql, new { Id = id });
-
-            return recipe;
         }
         public async Task<bool> UpdateRecipeAsync(RecipeUpdateDto recipeUpdateDto)
         {

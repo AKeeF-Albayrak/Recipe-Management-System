@@ -243,5 +243,13 @@ namespace LezzetKitabi.Forms
                 isChanging = false;
             }
         }
+
+        private void textBoxAmount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

@@ -232,6 +232,7 @@
             textBoxAmount.Name = "textBoxAmount";
             textBoxAmount.Size = new Size(218, 23);
             textBoxAmount.TabIndex = 23;
+            textBoxAmount.KeyPress += textBoxAmount_KeyPress;
             // 
             // RecipeEditForm
             // 

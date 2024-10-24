@@ -31,7 +31,7 @@ namespace LezzetKitabi.Forms
 
             mainForm.Hide();
 
-            await Task.Delay(6000);
+            await Task.Delay(1500);//6000
 
             mainForm.Show();
 

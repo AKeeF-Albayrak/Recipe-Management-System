@@ -39,22 +39,38 @@ namespace LezzetKitabi.Forms.Controls
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             _recipeIngredientService = serviceProvider.GetRequiredService<IRecipeIngredientService>();
             InitializeComponent();
-            //InitializeGradientPanel(panelElements);
             InitializeCustomPanelsAsync();
 
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            Color panelBackground = Color.FromArgb(50, Color.DarkRed);
-            panelItems.BackColor = panelBackground;
+            
             panelFilter.BackColor = Color.White;
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
             comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Category)));
             SetUpCombobox();
             InitializeSearchBar();
+
+            panelItems.Paint += (s, e) =>
+            {
+                Graphics g = e.Graphics;
+                Rectangle rect = panelItems.ClientRectangle;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                using (GraphicsPath path = CreateRoundedRectanglePath(rect, 20))
+                {
+                    using (Brush brush = new SolidBrush(Color.FromArgb(225, 243, 244, 246)))
+                    {
+                        g.FillPath(brush, path);
+                    }
+
+                    panelItems.Region = new Region(path);
+                }
+            };
         }
         public async void InitializeSearchBar()
         {
             List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType);
+            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
             textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
             AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
@@ -62,6 +78,11 @@ namespace LezzetKitabi.Forms.Controls
             foreach (var recipe in recipes)
             {
                 suggestions.Add(recipe.RecipeName);
+            }
+
+            foreach (var ingredient in ingredients)
+            {
+                suggestions.Add(ingredient.IngredientName);
             }
 
             textBoxSearch.AutoCompleteCustomSource = suggestions;
@@ -104,12 +125,24 @@ namespace LezzetKitabi.Forms.Controls
 
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = recipes[i];
-                if (recipes[i].MissingCost == 0) mainPanel.BackColor = Color.Green;
-                else mainPanel.BackColor = Color.DarkRed;
+
+                Color labelColor;
+                if (recipes[i].MissingCost == 0)
+                {
+                    mainPanel.BackColor = Color.FromArgb(187, 247, 208);
+                    labelColor = Color.FromArgb(21, 128, 61); // Label rengi yeşil
+                }
+                else
+                {
+                    mainPanel.BackColor = Color.FromArgb(254, 202, 202);
+                    labelColor = Color.FromArgb(185, 28, 28); // Label rengi kırmızı
+                }
+
                 mainPanel.Size = new Size(panelWidth, panelHeight);
                 int x = startX + col * (panelWidth + xPadding);
                 int y = startY + row * (panelHeight + yPadding);
-                mainPanel.Location = new Point(x, y );
+                mainPanel.Location = new Point(x, y);
+
 
                 mainPanel.Paint += (s, e) =>
                 {
@@ -153,6 +186,8 @@ namespace LezzetKitabi.Forms.Controls
                         overlayPanel.Region = new Region(path);
                     }
                 };
+
+
 
                 int iconSize = 75;
                 int horizontalSpacing = 30;
@@ -202,30 +237,36 @@ namespace LezzetKitabi.Forms.Controls
                 }
                 recipeImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
+                // Label setup
                 Label label = new Label();
                 label.AutoSize = true;
                 label.Text = recipes[i].RecipeName;
                 label.Location = new Point((panelWidth - label.Width) / 2, 12);
+                label.ForeColor = labelColor; // Label rengini ayarlama
 
                 Label percentageLabel = new Label();
                 percentageLabel.AutoSize = true;
-                percentageLabel.Text = "Yüzde: " + (recipes[i].AvailabilityPercentage).ToString("0.##") + "%";
+                percentageLabel.Text = "Yüzde: " + recipes[i].AvailabilityPercentage.ToString("0.##") + "%";
                 percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2, 180);
+                percentageLabel.ForeColor = labelColor; // Label rengini ayarlama
 
                 Label costLabel = new Label();
                 costLabel.AutoSize = true;
                 costLabel.Text = "Maliyet: ₺" + recipes[i].TotalCost.ToString("0.00");
                 costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 200);
+                costLabel.ForeColor = labelColor; // Label rengini ayarlama
 
                 Label missingCostLabel = new Label();
                 missingCostLabel.AutoSize = true;
                 missingCostLabel.Text = "Eksik Maliyet: ₺" + recipes[i].MissingCost.ToString("0.00");
                 missingCostLabel.Location = new Point((panelWidth - missingCostLabel.Width) / 2, 220);
+                missingCostLabel.ForeColor = labelColor; // Label rengini ayarlama
 
                 Label timeLabel = new Label();
                 timeLabel.AutoSize = true;
                 timeLabel.Text = "Tarif Süresi: " + recipes[i].PreparationTime + " dk";
                 timeLabel.Location = new Point((panelWidth - timeLabel.Width) / 2, 240);
+                timeLabel.ForeColor = labelColor; // Label rengini ayarlama
 
                 mainPanel.Controls.Add(label);
                 mainPanel.Controls.Add(recipeImageBox);
@@ -284,11 +325,6 @@ namespace LezzetKitabi.Forms.Controls
                 editForm.ShowDialog();
             }
         }
-
-        private async void Form_RecipeUpdated(object sender, EventArgs e)
-        {
-            await RefreshPanelsAsync();
-        }
         private async void DeleteIcon_Click(object sender, EventArgs e)
         {
             PictureBox deleteIcon = sender as PictureBox;
@@ -318,16 +354,19 @@ namespace LezzetKitabi.Forms.Controls
                 }
             }
         }
+        private async void Form_RecipeUpdated(object sender, EventArgs e)
+        {
+            await RefreshPanelsAsync();
+        }
         private GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int cornerRadius)
         {
             GraphicsPath path = new GraphicsPath();
             int arcDiameter = cornerRadius * 2;
-
-            path.AddArc(rect.X, rect.Y, arcDiameter, arcDiameter, 180, 90);
-            path.AddArc(rect.Right - arcDiameter, rect.Y, arcDiameter, arcDiameter, 270, 90);
-            path.AddArc(rect.Right - arcDiameter, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 0, 90);
-            path.AddArc(rect.X, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 90, 90);
-
+            Size arcSize = new Size(arcDiameter, arcDiameter);
+            path.AddArc(new Rectangle(rect.Location, arcSize), 180, 90);
+            path.AddArc(new Rectangle(new Point(rect.Right - arcDiameter, rect.Top), arcSize), 270, 90);
+            path.AddArc(new Rectangle(new Point(rect.Right - arcDiameter, rect.Bottom - arcDiameter), arcSize), 0, 90);
+            path.AddArc(new Rectangle(new Point(rect.Left, rect.Bottom - arcDiameter), arcSize), 90, 90);
             path.CloseFigure();
             return path;
         }
@@ -364,19 +403,6 @@ namespace LezzetKitabi.Forms.Controls
                     overlayPanel.Visible = false;
                 }
             }
-        }
-        private void InitializeGradientPanel(Panel panel)
-        {
-            panel.Paint += (s, e) =>
-            {
-                Color startColor = Color.FromArgb(200, 255, 165, 0);
-                Color endColor = Color.FromArgb(255, 255, 99, 71);
-
-                using (LinearGradientBrush brush = new LinearGradientBrush(panel.ClientRectangle, startColor, endColor, 45f))
-                {
-                    e.Graphics.FillRectangle(brush, panel.ClientRectangle);
-                }
-            };
         }
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {

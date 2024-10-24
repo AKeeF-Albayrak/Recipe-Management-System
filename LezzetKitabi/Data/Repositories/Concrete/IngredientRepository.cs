@@ -56,7 +56,85 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return true;
         }
-        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType,List<FilterCriteria> filterCriteriaList = null)
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string checkSql = "SELECT COUNT(*) FROM RecipeIngredients WHERE IngredientID = @Id";
+
+            int ingredientUsageCount = await connection.ExecuteScalarAsync<int>(checkSql, new { Id = id });
+
+            if (ingredientUsageCount > 0)
+            {
+                return false;
+            }
+            string deleteSql = "DELETE FROM Ingredients WHERE Id = @Id";
+
+            int rowsAffected = await connection.ExecuteAsync(deleteSql, new { Id = id });
+
+            return rowsAffected > 0;
+        }
+        public async Task<Ingredient> GetEntityById(Guid id)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            if (connection.State == System.Data.ConnectionState.Closed)
+            {
+                await connection.OpenAsync();
+            }
+
+            string sql = "SELECT * FROM Ingredients WHERE Id = @Id";
+            var ingredient = await connection.QueryFirstOrDefaultAsync<Ingredient>(sql, new { Id = id });
+
+            return ingredient;
+        }
+        public async Task<bool> UpdateIngredientAsync(Ingredient ingredient)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+            string checkSql = @"
+                    SELECT COUNT(1) 
+                    FROM Ingredients 
+                    WHERE IngredientName = @IngredientName 
+                    AND Id != @Id";
+
+            var isNameTaken = await connection.ExecuteScalarAsync<int>(checkSql, new
+            {
+                IngredientName = ingredient.IngredientName,
+                Id = ingredient.Id
+            });
+
+            if (isNameTaken > 0)
+            {
+                MessageBox.Show("Ayni ada sahip bir malzeme bulunmaktadir lutfen tekrar deneyiniz!","Basarisiz",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return false;
+            }
+
+            string updateSql = @"
+                        UPDATE Ingredients 
+                        SET IngredientName = @IngredientName, 
+                            TotalQuantity = @TotalQuantity, 
+                            Unit = @Unit, 
+                            UnitPrice = @UnitPrice
+                        WHERE Id = @Id";
+
+            var affectedRows = await connection.ExecuteAsync(updateSql, new
+            {
+                IngredientName = ingredient.IngredientName,
+                TotalQuantity = ingredient.TotalQuantity,
+                Unit = ingredient.Unit,
+                UnitPrice = ingredient.UnitPrice,
+                Id = ingredient.Id
+            });
+
+            return affectedRows > 0;
+        }
+        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType, List<FilterCriteria> filterCriteriaList = null)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -145,84 +223,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             List<Ingredient> ingredients = (await connection.QueryAsync<Ingredient>(sql, parameters)).ToList();
 
             return ingredients;
-        }
-        public async Task<bool> DeleteAsync(Guid id)
-        {
-            using var connection = new SqlConnection(_connectionString);
-
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                await connection.OpenAsync();
-            }
-
-            string checkSql = "SELECT COUNT(*) FROM RecipeIngredients WHERE IngredientID = @Id";
-
-            int ingredientUsageCount = await connection.ExecuteScalarAsync<int>(checkSql, new { Id = id });
-
-            if (ingredientUsageCount > 0)
-            {
-                return false;
-            }
-            string deleteSql = "DELETE FROM Ingredients WHERE Id = @Id";
-
-            int rowsAffected = await connection.ExecuteAsync(deleteSql, new { Id = id });
-
-            return rowsAffected > 0;
-        }
-        public async Task<Ingredient> GetEntityById(Guid id)
-        {
-            using var connection = new SqlConnection(_connectionString);
-
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                await connection.OpenAsync();
-            }
-
-            string sql = "SELECT * FROM Ingredients WHERE Id = @Id";
-            var ingredient = await connection.QueryFirstOrDefaultAsync<Ingredient>(sql, new { Id = id });
-
-            return ingredient;
-        }
-        public async Task<bool> UpdateIngredientAsync(Ingredient ingredient)
-        {
-            using var connection = new SqlConnection(_connectionString);
-            await connection.OpenAsync();
-            string checkSql = @"
-                    SELECT COUNT(1) 
-                    FROM Ingredients 
-                    WHERE IngredientName = @IngredientName 
-                    AND Id != @Id";
-
-            var isNameTaken = await connection.ExecuteScalarAsync<int>(checkSql, new
-            {
-                IngredientName = ingredient.IngredientName,
-                Id = ingredient.Id
-            });
-
-            if (isNameTaken > 0)
-            {
-                MessageBox.Show("Ayni ada sahip bir malzeme bulunmaktadir lutfen tekrar deneyiniz!","Basarisiz",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                return false;
-            }
-
-            string updateSql = @"
-                        UPDATE Ingredients 
-                        SET IngredientName = @IngredientName, 
-                            TotalQuantity = @TotalQuantity, 
-                            Unit = @Unit, 
-                            UnitPrice = @UnitPrice
-                        WHERE Id = @Id";
-
-            var affectedRows = await connection.ExecuteAsync(updateSql, new
-            {
-                IngredientName = ingredient.IngredientName,
-                TotalQuantity = ingredient.TotalQuantity,
-                Unit = ingredient.Unit,
-                UnitPrice = ingredient.UnitPrice,
-                Id = ingredient.Id
-            });
-
-            return affectedRows > 0;
         }
     }
 }
