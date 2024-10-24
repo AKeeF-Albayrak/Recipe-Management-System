@@ -258,7 +258,9 @@
             Controls.Add(label1);
             Controls.Add(button1);
             Controls.Add(pictureBox1);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "RecipeEditForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "RecipeEditForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
