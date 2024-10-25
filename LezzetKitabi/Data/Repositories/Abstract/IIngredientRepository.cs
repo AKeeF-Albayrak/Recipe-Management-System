@@ -11,6 +11,6 @@ namespace LezzetKitabi.Data.Repositories.Abstract
     public interface IIngredientRepository : IBaseRepository<Ingredient>
     {
         Task<bool> UpdateIngredientAsync(Ingredient ingredient);
-        Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType, List<FilterCriteria> filterCriteriaList);
+        Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType, List<FilterCriteria> filterCriteriaList, int page);
     }
 }

@@ -16,7 +16,7 @@ namespace LezzetKitabi.Services.Abstract
         bool DeleteIngredient(Guid id);
         Task<IngredientGetDto?> GetIngredientByIdAsync(Guid id);
         Task<bool> UpdateIngredientAsync(Ingredient ingredient);
-        Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType, List<FilterCriteria> filterCriteriaList = null);
+        Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType, List<FilterCriteria> filterCriteriaList = null, int page = -1);
 
 
     }

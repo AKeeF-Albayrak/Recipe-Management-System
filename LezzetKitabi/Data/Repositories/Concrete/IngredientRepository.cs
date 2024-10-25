@@ -135,7 +135,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return affectedRows > 0;
         }
-        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType, List<FilterCriteria> filterCriteriaList = null)
+        public async Task<List<Ingredient>> GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType sortingType, List<FilterCriteria> filterCriteriaList = null, int page = -1)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -219,6 +219,15 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 default:
                     sql += " ORDER BY IngredientName ASC";
                     break;
+            }
+            if(page > 0)
+            {
+                int pageSize = 18;
+                int offset = (page - 1) * pageSize;
+
+                sql += $" OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+                parameters.Add("Offset", offset);
+                parameters.Add("PageSize", pageSize);
             }
 
             List<Ingredient> ingredients = (await connection.QueryAsync<Ingredient>(sql, parameters)).ToList();

@@ -54,6 +54,7 @@ namespace LezzetKitabi.Forms.Controls
             {
                 suggestions.Add(ingredient.IngredientName);
             }
+            totalPages = (int)Math.Ceiling((double)ingredients.Count / 18);
 
             textBoxSearch.AutoCompleteCustomSource = suggestions;
         }
@@ -69,7 +70,7 @@ namespace LezzetKitabi.Forms.Controls
             int startY = 10;
             int cornerRadius = 20;
 
-            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList);
+            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList, currentPage);
 
             if (ingredients == null || ingredients.Count == 0)
             {
@@ -77,16 +78,10 @@ namespace LezzetKitabi.Forms.Controls
                 return;
             }
 
-            totalPages = (int)Math.Ceiling((double)ingredients.Count / 18);
-
-
-            int startIndex = (currentPage - 1) * 18;
-            int endIndex = Math.Min(startIndex + 18, ingredients.Count);
-
-            for (int i = startIndex; i < endIndex; i++)
+            for (int i = 0; i < ingredients.Count; i++)
             {
-                int row = (i - startIndex) / cols;
-                int col = (i - startIndex) % cols;
+                int row = i / rows;
+                int col = i % cols;
 
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = ingredients[i];
