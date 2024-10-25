@@ -88,34 +88,34 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             }
 
             string sql = @"WITH RecipeIngredientCount AS (
-                SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
-                FROM Recipes r
-                LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
-                GROUP BY r.Id
-            )
-            SELECT r.Id, 
-                   r.RecipeName, 
-                   r.Category,       
-                   r.Instructions,   
-                   r.Image,
-                   SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
-                   SUM(CASE 
-                         WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
-                           (CASE 
-                             WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
-                             ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
-                           END)
-                         ELSE 0 
-                       END) AS AvailabilityPercentage,
-                   SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
-                            THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
-                            ELSE 0 END) AS MissingCost,
-                   r.PreparationTime 
-            FROM Recipes r 
-            LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
-            LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
-            LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id
-            WHERE 1 = 1";
+        SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
+        FROM Recipes r
+        LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
+        GROUP BY r.Id
+    )
+    SELECT r.Id, 
+           r.RecipeName, 
+           r.Category,       
+           r.Instructions,   
+           r.Image,
+           SUM(ri.IngredientAmount * i.UnitPrice) AS TotalCost,
+           SUM(CASE 
+                 WHEN i.TotalQuantity IS NOT NULL AND i.TotalQuantity > 0 THEN
+                   (CASE 
+                     WHEN i.TotalQuantity >= ri.IngredientAmount THEN 100.0 / ric.IngredientCount
+                     ELSE (i.TotalQuantity / ri.IngredientAmount) * (100.0 / ric.IngredientCount)
+                   END)
+                 ELSE 0 
+               END) AS AvailabilityPercentage,
+           SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
+                    THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
+                    ELSE 0 END) AS MissingCost,
+           r.PreparationTime 
+    FROM Recipes r 
+    LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
+    LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
+    LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id
+    WHERE 1 = 1";
 
             filterCriteriaList ??= new List<FilterCriteria>();
 
@@ -130,9 +130,9 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     string minPrice = prices[0].Trim();
                     string maxPrice = prices[1].Trim();
                     if (!string.IsNullOrEmpty(minPrice))
-                        filters.Add($"(i.UnitPrice >= {minPrice})");
+                        filters.Add($"(SUM(ri.IngredientAmount * i.UnitPrice) >= {minPrice})");
                     if (!string.IsNullOrEmpty(maxPrice))
-                        filters.Add($"(i.UnitPrice <= {maxPrice})");
+                        filters.Add($"(SUM(ri.IngredientAmount * i.UnitPrice) <= {maxPrice})");
                 }
             }
 
@@ -207,12 +207,13 @@ namespace LezzetKitabi.Data.Repositories.Concrete
           WHERE i.IngredientName LIKE '%{name}%'))");
             }
 
+            sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.Image, r.PreparationTime";
+
+            // Eğer filtreler varsa, HAVING ifadesi ekle
             if (filters.Count > 0)
             {
-                sql += " AND " + string.Join(" AND ", filters);
+                sql += " HAVING " + string.Join(" AND ", filters);
             }
-
-            sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.Image, r.PreparationTime";
 
             switch (sortingType)
             {
