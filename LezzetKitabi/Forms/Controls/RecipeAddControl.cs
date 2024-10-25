@@ -29,6 +29,7 @@ namespace LezzetKitabi.Forms.Controls
             _recipeIngredientService = serviceProvider.GetRequiredService<IRecipeIngredientService>();
             _serviceProvider = serviceProvider;
             InitializeComponent();
+            labelUnit.Text = "";
             SetUpCombobox();
             SetUpCategoryComboBox();
             numericUpDownHours.Minimum = 0;
@@ -73,6 +74,7 @@ namespace LezzetKitabi.Forms.Controls
 
                     textBoxAmount.Clear();
                     comboBoxIngredients.SelectedItem = null;
+                    labelUnit.Text = "";
                 }
                 else
                 {
@@ -323,6 +325,20 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxRecipe.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 _recipeImage = File.ReadAllBytes(imagePath);
+            }
+        }
+
+        private void comboBoxIngredients_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var selectedItem = comboBoxIngredients.SelectedItem as ComboBoxItem;
+
+            if (selectedItem != null) {
+                labelUnit.Text = selectedItem.Unit.ToString();
+                labelUnit.Visible = true;   
+            }
+            else
+            {
+                labelUnit.Text = "";
             }
         }
     }

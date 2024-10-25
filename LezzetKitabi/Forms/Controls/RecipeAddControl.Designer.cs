@@ -56,6 +56,7 @@
             pictureBoxRecipe = new PictureBox();
             button4 = new Button();
             openFileDialog1 = new OpenFileDialog();
+            labelUnit = new Label();
             ((System.ComponentModel.ISupportInitialize)numericUpDownHours).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownMinutes).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRecipe).BeginInit();
@@ -199,6 +200,7 @@
             comboBoxIngredients.Name = "comboBoxIngredients";
             comboBoxIngredients.Size = new Size(407, 33);
             comboBoxIngredients.TabIndex = 21;
+            comboBoxIngredients.SelectedValueChanged += comboBoxIngredients_SelectedValueChanged;
             // 
             // buttonAddIngredient
             // 
@@ -221,7 +223,7 @@
             textBoxAmount.Location = new Point(38, 484);
             textBoxAmount.Name = "textBoxAmount";
             textBoxAmount.PlaceholderText = "Ingredient Amount";
-            textBoxAmount.Size = new Size(407, 33);
+            textBoxAmount.Size = new Size(353, 33);
             textBoxAmount.TabIndex = 24;
             textBoxAmount.KeyPress += textBoxAmount_KeyPress;
             // 
@@ -375,12 +377,22 @@
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // labelUnit
+            // 
+            labelUnit.AutoSize = true;
+            labelUnit.Location = new Point(402, 496);
+            labelUnit.Name = "labelUnit";
+            labelUnit.Size = new Size(44, 15);
+            labelUnit.TabIndex = 40;
+            labelUnit.Text = "label12";
+            // 
             // RecipeAddControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.InactiveCaption;
             BackgroundImageLayout = ImageLayout.Stretch;
+            Controls.Add(labelUnit);
             Controls.Add(button4);
             Controls.Add(pictureBoxRecipe);
             Controls.Add(comboBoxCategory);
@@ -446,5 +458,6 @@
         private PictureBox pictureBoxRecipe;
         private Button button4;
         private OpenFileDialog openFileDialog1;
+        private Label labelUnit;
     }
 }
