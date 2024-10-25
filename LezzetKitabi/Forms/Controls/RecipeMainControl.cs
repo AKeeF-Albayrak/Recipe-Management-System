@@ -166,6 +166,7 @@ namespace LezzetKitabi.Forms.Controls
                         using (Brush brush = new SolidBrush(Color.SandyBrown))
                         {
                             g.FillPath(brush, path);
+
                         }
 
                         overlayPanel.Region = new Region(path);

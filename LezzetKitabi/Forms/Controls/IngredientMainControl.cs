@@ -129,16 +129,19 @@ namespace LezzetKitabi.Forms.Controls
                 label.AutoSize = true;
                 label.Text = ingredients[i].IngredientName;
                 label.Location = new Point((panelWidth - label.Width) / 2, 12);
+                label.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Label labelMiktar = new Label();
                 labelMiktar.AutoSize = true;
                 labelMiktar.Text = $"{ingredients[i].TotalQuantity} {ingredients[i].Unit}";
                 labelMiktar.Location = new Point((panelWidth - labelMiktar.Width) / 2, pictureBox.Bottom + 5);
+                labelMiktar.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Label labelBirimFiyati = new Label();
                 labelBirimFiyati.AutoSize = true;
                 labelBirimFiyati.Text = $"₺{ingredients[i].UnitPrice:0.00}";
                 labelBirimFiyati.Location = new Point((panelWidth - labelBirimFiyati.Width) / 2, labelMiktar.Bottom + 5);
+                labelBirimFiyati.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Panel overlayPanel = new Panel();
                 overlayPanel.BackColor = Color.Gray;
@@ -154,7 +157,7 @@ namespace LezzetKitabi.Forms.Controls
 
                     using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
                     {
-                        using (Brush brush = new SolidBrush(Color.SandyBrown))
+                        using (Brush brush = new SolidBrush(Color.FromArgb(186, 230, 253)))
                         {
                             g.FillPath(brush, path);
                         }
@@ -163,22 +166,33 @@ namespace LezzetKitabi.Forms.Controls
                     }
                 };
 
-                Button buttonEdit = new Button();
-                buttonEdit.Text = "Button 1";
-                buttonEdit.Size = new Size(80, 30);
-                buttonEdit.Location = new Point(10, 10);
-                buttonEdit.Tag = ingredients[i];
-                buttonEdit.Click += ButtonEdit_Click;
+                int iconSize = 50; // İconların boyutunu biraz küçült
+                int verticalSpacing = 10; // İconlar arasındaki dikey boşluk
 
-                Button buttonDelete = new Button();
-                buttonDelete.Text = "Delete";
-                buttonDelete.Size = new Size(80, 30);
-                buttonDelete.Location = new Point(100, 10);
-                buttonDelete.Tag = ingredients[i];
-                buttonDelete.Click += DeleteButton_Click;
+                // Edit ikonunu oluşturma ve ortalama
+                PictureBox pictureBoxEdit = new PictureBox();
+                pictureBoxEdit.Size = new Size(iconSize, iconSize);
+                pictureBoxEdit.Location = new Point((panelWidth - pictureBoxEdit.Width) / 2, (panelHeight - (iconSize * 2 + verticalSpacing)) / 2);
+                pictureBoxEdit.Image = Properties.Resources.EditIcon;
+                pictureBoxEdit.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBoxEdit.Cursor = Cursors.Hand;
+                pictureBoxEdit.Tag = ingredients[i];
+                pictureBoxEdit.Click += EditIcon_Click;
 
-                overlayPanel.Controls.Add(buttonEdit);
-                overlayPanel.Controls.Add(buttonDelete);
+                // Delete ikonunu oluşturma ve Edit ikonunun altında konumlandırma
+                PictureBox pictureBoxDelete = new PictureBox();
+                // Delete PictureBox konumu
+                pictureBoxDelete.Size = new Size(iconSize, iconSize);
+                pictureBoxDelete.Location = new Point((panelWidth - pictureBoxDelete.Width) / 2, pictureBoxEdit.Bottom + verticalSpacing);
+                pictureBoxDelete.Image = Properties.Resources.DeleteIcon;
+                pictureBoxDelete.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBoxDelete.Cursor = Cursors.Hand;
+                pictureBoxDelete.Tag = ingredients[i];
+                pictureBoxDelete.Click += DeleteIcon_Click;
+
+                // İkonları overlayPanel’e ekleme
+                overlayPanel.Controls.Add(pictureBoxEdit);
+                overlayPanel.Controls.Add(pictureBoxDelete);
 
                 mainPanel.Controls.Add(label);
                 mainPanel.Controls.Add(pictureBox);
@@ -190,20 +204,62 @@ namespace LezzetKitabi.Forms.Controls
             }
             InitializeSearchTextBox();
         }
-        private void ButtonEdit_Click(object sender, EventArgs e)
+        private void EditIcon_Click(object sender, EventArgs e)
         {
-            Button editButton = sender as Button;
+            // Tetikleyici olarak PictureBox kullan
+            PictureBox editPictureBox = sender as PictureBox;
 
-            if (editButton != null)
+            if (editPictureBox != null)
             {
-                Ingredient ingredient = editButton.Tag as Ingredient;
+                // PictureBox'ın Tag özelliğinden Ingredient nesnesini al
+                Ingredient ingredient = editPictureBox.Tag as Ingredient;
 
-                IngredientEditForm form = new IngredientEditForm(_ingredientService);
-                form.LoadIngredientDetails(ingredient);
+                if (ingredient != null)
+                {
+                    IngredientEditForm form = new IngredientEditForm(_ingredientService);
+                    form.LoadIngredientDetails(ingredient);
 
-                form.IngredientUpdated += Form_IngredientUpdated;
+                    // Güncellemeyi dinlemek için event ekle
+                    form.IngredientUpdated += Form_IngredientUpdated;
 
-                form.ShowDialog();
+                    form.ShowDialog();
+                }
+            }
+        }
+        private async void DeleteIcon_Click(object sender, EventArgs e)
+        {
+            // Tetikleyici olarak PictureBox kullan
+            PictureBox deletePictureBox = sender as PictureBox;
+
+            if (deletePictureBox != null)
+            {
+                // PictureBox'ın Tag özelliğinden Ingredient nesnesini al
+                Ingredient ingredientToDelete = deletePictureBox.Tag as Ingredient;
+
+                if (ingredientToDelete != null)
+                {
+                    // Silme onayı
+                    DialogResult dialogResult = MessageBox.Show(
+                        $"{ingredientToDelete.IngredientName} Malzemesini Silmek İstediğinize Emin Misiniz?",
+                        "Emin Misiniz",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        bool isDeleted = await Task.Run(() => _ingredientService.DeleteIngredient(ingredientToDelete.Id));
+
+                        if (isDeleted)
+                        {
+                            MessageBox.Show("Malzeme Başarıyla Silindi!", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            await RefreshPanelsAsync();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Malzeme Silinemedi. Lütfen Tekrar Deneyiniz.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
             }
         }
         private async void Form_IngredientUpdated(object sender, EventArgs e)
@@ -296,39 +352,6 @@ namespace LezzetKitabi.Forms.Controls
 
                 overlayPanel.MouseEnter += (s, e) => mouseLeaveTimer.Stop();
                 overlayPanel.MouseLeave += (s, e) => mouseLeaveTimer.Start();
-            }
-        }
-        private async void DeleteButton_Click(object sender, EventArgs e)
-        {
-            Button deleteButton = sender as Button;
-
-            if (deleteButton != null)
-            {
-                Ingredient ingredientToDelete = deleteButton.Tag as Ingredient;
-
-                if (ingredientToDelete != null)
-                {
-                    DialogResult dialogResult = MessageBox.Show(
-                        $"{ingredientToDelete.IngredientName} Malzemesini Silmek Istediginize Emin Misiniz?",
-                        "Emin Misiniz",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning);
-
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        bool isDeleted = await Task.Run(() => _ingredientService.DeleteIngredient(ingredientToDelete.Id));
-
-                        if (isDeleted)
-                        {
-                            MessageBox.Show("Malzeme Basariyla Silindi!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            await RefreshPanelsAsync();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Malzeme Silinemedi Lutfen Tekrar Deneyiniz.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
             }
         }
         public async Task RefreshPanelsAsync()
