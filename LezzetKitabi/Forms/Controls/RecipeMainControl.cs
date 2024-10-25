@@ -89,7 +89,7 @@ namespace LezzetKitabi.Forms.Controls
             int startY = 10;
             int cornerRadius = 20;
 
-            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType, filterCriteriaList);
+            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType, filterCriteriaList, currentPage);
 
             if (recipes == null || recipes.Count == 0)
             {
@@ -115,12 +115,12 @@ namespace LezzetKitabi.Forms.Controls
                 if (recipes[i].MissingCost == 0)
                 {
                     mainPanel.BackColor = Color.FromArgb(187, 247, 208);
-                    labelColor = Color.FromArgb(21, 128, 61); // Label rengi yeşil
+                    labelColor = Color.FromArgb(21, 128, 61);
                 }
                 else
                 {
                     mainPanel.BackColor = Color.FromArgb(254, 202, 202);
-                    labelColor = Color.FromArgb(185, 28, 28); // Label rengi kırmızı
+                    labelColor = Color.FromArgb(185, 28, 28);
                 }
 
                 mainPanel.Size = new Size(panelWidth, panelHeight);
@@ -174,7 +174,6 @@ namespace LezzetKitabi.Forms.Controls
                 };
 
 
-
                 int iconSize = 75;
                 int horizontalSpacing = 30;
                 int startYTop = 30;
@@ -223,36 +222,41 @@ namespace LezzetKitabi.Forms.Controls
                 }
                 recipeImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
-                // Label setup
                 Label label = new Label();
                 label.AutoSize = true;
                 label.Text = recipes[i].RecipeName;
                 label.Location = new Point((panelWidth - label.Width) / 2, 12);
-                label.ForeColor = labelColor; // Label rengini ayarlama
+                label.ForeColor = labelColor;
 
                 Label percentageLabel = new Label();
                 percentageLabel.AutoSize = true;
                 percentageLabel.Text = "Yüzde: " + recipes[i].AvailabilityPercentage.ToString("0.##") + "%";
                 percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2, 180);
-                percentageLabel.ForeColor = labelColor; // Label rengini ayarlama
+                percentageLabel.ForeColor = labelColor;
 
                 Label costLabel = new Label();
                 costLabel.AutoSize = true;
                 costLabel.Text = "Maliyet: ₺" + recipes[i].TotalCost.ToString("0.00");
                 costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 200);
-                costLabel.ForeColor = labelColor; // Label rengini ayarlama
+                costLabel.ForeColor = labelColor;
 
                 Label missingCostLabel = new Label();
                 missingCostLabel.AutoSize = true;
                 missingCostLabel.Text = "Eksik Maliyet: ₺" + recipes[i].MissingCost.ToString("0.00");
                 missingCostLabel.Location = new Point((panelWidth - missingCostLabel.Width) / 2, 220);
-                missingCostLabel.ForeColor = labelColor; // Label rengini ayarlama
+                missingCostLabel.ForeColor = labelColor;
 
                 Label timeLabel = new Label();
                 timeLabel.AutoSize = true;
                 timeLabel.Text = "Tarif Süresi: " + recipes[i].PreparationTime + " dk";
                 timeLabel.Location = new Point((panelWidth - timeLabel.Width) / 2, 240);
-                timeLabel.ForeColor = labelColor; // Label rengini ayarlama
+                timeLabel.ForeColor = labelColor;
+
+                Label MatchingpercentageLabel = new Label();
+                MatchingpercentageLabel.AutoSize = true;
+                MatchingpercentageLabel.Text = "Yüzde: " + recipes[i].MatchingPercentage.ToString("0.##") + "%";
+                MatchingpercentageLabel.Location = new Point((panelWidth - MatchingpercentageLabel.Width) / 2, 260);
+                MatchingpercentageLabel.ForeColor = labelColor;
 
                 mainPanel.Controls.Add(label);
                 mainPanel.Controls.Add(recipeImageBox);
@@ -260,6 +264,7 @@ namespace LezzetKitabi.Forms.Controls
                 mainPanel.Controls.Add(costLabel);
                 mainPanel.Controls.Add(missingCostLabel);
                 mainPanel.Controls.Add(timeLabel);
+                if (recipes[i].MatchingPercentage != -1) mainPanel.Controls.Add(MatchingpercentageLabel);
                 mainPanel.Controls.Add(overlayPanel);
 
                 panelItems.Controls.Add(mainPanel);

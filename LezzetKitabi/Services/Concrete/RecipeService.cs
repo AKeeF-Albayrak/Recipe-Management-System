@@ -34,20 +34,16 @@ namespace LezzetKitabi.Services.Concrete
             _recipeRepository.AddEntity(recipe);
             return recipe.Id;
         }
-        public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList = null)
+        public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList = null, int page = 0)
         {
-            var recipes = await _recipeRepository.GetAllRecipesByOrderAsync(_type, filterCriteriaList);
-
-            foreach (var recipe in recipes)
+            var recipes = await _recipeRepository.GetAllRecipesByOrderAsync(_type, filterCriteriaList, page);
+            if (!recipes.Any())
             {
-                if (recipe.AvailabilityPercentage > 100)
-                {
-                    recipe.AvailabilityPercentage = 100;
-                }
+                throw new Exception("No recipes found for the given criteria.");
             }
-
             return recipes;
         }
+        
         public bool DeleteRecipe(Guid id)
         {
             bool isDeleted = _recipeRepository.DeleteAsync(id).Result;

@@ -78,7 +78,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return recipe;
         }
-        public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType sortingType, List<FilterCriteria> filterCriteriaList)
+        public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType sortingType, List<FilterCriteria> filterCriteriaList, int page)
         {
             using var connection = new SqlConnection(_connectionString);
 
@@ -87,11 +87,32 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 await connection.OpenAsync();
             }
 
+            filterCriteriaList ??= new List<FilterCriteria>();
+            var ingredientFilters = filterCriteriaList
+                .Where(f => f.FilterType == "Malzeme")
+                .Select(f => $"i.IngredientName = '{f.Value}'");
+
+            int totalFilterIngredients = ingredientFilters.Count();
+
             string sql = @"WITH RecipeIngredientCount AS (
         SELECT r.Id, COUNT(ri.IngredientID) AS IngredientCount
         FROM Recipes r
         LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
         GROUP BY r.Id
+    ),
+    MatchingIngredients AS (
+        SELECT r.Id, COUNT(i.Id) AS MatchingIngredientCount
+        FROM Recipes r
+        LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID
+        LEFT JOIN Ingredients i ON ri.IngredientID = i.Id
+        WHERE 1 = 1";
+
+            if (ingredientFilters.Any())
+            {
+                sql += " AND (" + string.Join(" OR ", ingredientFilters) + ")";
+            }
+
+            sql += @" GROUP BY r.Id
     )
     SELECT r.Id, 
            r.RecipeName, 
@@ -110,14 +131,24 @@ namespace LezzetKitabi.Data.Repositories.Concrete
            SUM(CASE WHEN i.TotalQuantity < ri.IngredientAmount 
                     THEN (ri.IngredientAmount - i.TotalQuantity) * i.UnitPrice
                     ELSE 0 END) AS MissingCost,
-           r.PreparationTime 
+           r.PreparationTime,
+           CASE 
+               WHEN @TotalFilterIngredients = 0 THEN -1
+               ELSE 
+                   (100.0 * (SELECT MatchingIngredientCount FROM MatchingIngredients WHERE MatchingIngredients.Id = r.Id) 
+                    / @TotalFilterIngredients)
+           END AS MatchingPercentage
     FROM Recipes r 
     LEFT JOIN RecipeIngredients ri ON r.Id = ri.RecipeID 
     LEFT JOIN Ingredients i ON ri.IngredientID = i.Id 
     LEFT JOIN RecipeIngredientCount ric ON r.Id = ric.Id
+    LEFT JOIN MatchingIngredients mi ON r.Id = mi.Id
     WHERE 1 = 1";
 
-            filterCriteriaList ??= new List<FilterCriteria>();
+            if (ingredientFilters.Any())
+            {
+                sql += " AND mi.MatchingIngredientCount > 0";
+            }
 
             List<string> filters = new List<string>();
 
@@ -148,17 +179,17 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     if (!string.IsNullOrEmpty(minCount))
                     {
                         filters.Add($@"
-            (SELECT COUNT(*) 
-             FROM RecipeIngredients ri 
-             WHERE ri.RecipeID = r.Id) >= {minCount}");
+                    (SELECT COUNT(*) 
+                    FROM RecipeIngredients ri 
+                    WHERE ri.RecipeID = r.Id) >= {minCount}");
                     }
 
                     if (!string.IsNullOrEmpty(maxCount))
                     {
                         filters.Add($@"
-            (SELECT COUNT(*) 
-             FROM RecipeIngredients ri 
-             WHERE ri.RecipeID = r.Id) <= {maxCount}");
+                    (SELECT COUNT(*) 
+                    FROM RecipeIngredients ri 
+                    WHERE ri.RecipeID = r.Id) <= {maxCount}");
                     }
                 }
             }
@@ -185,85 +216,89 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 filters.Add($"(r.Category = '{category}')");
             }
 
-            var ingredientFilters = filterCriteriaList
-    .Where(f => f.FilterType == "Malzeme")
-    .Select(f => $"i.IngredientName = '{f.Value}'");
-
-            if (ingredientFilters.Any())
-            {
-                sql += " AND r.Id IN (SELECT ri.RecipeID FROM RecipeIngredients ri JOIN Ingredients i ON ri.IngredientID = i.Id WHERE " + string.Join(" OR ", ingredientFilters) + ")";
-            }
-
-
             var nameFilter = filterCriteriaList.FirstOrDefault(f => f.FilterType == "Tarif Adi");
             if (nameFilter != null)
             {
                 string name = nameFilter.Value;
                 filters.Add($@"
-          (r.RecipeName LIKE '%{name}%' OR 
-          r.Id IN (SELECT ri.RecipeID 
-          FROM RecipeIngredients ri 
-          JOIN Ingredients i ON ri.IngredientID = i.Id 
-          WHERE i.IngredientName LIKE '%{name}%'))");
+            (r.RecipeName LIKE '%{name}%' OR 
+            r.Id IN (SELECT ri.RecipeID 
+            FROM RecipeIngredients ri 
+            JOIN Ingredients i ON ri.IngredientID = i.Id 
+            WHERE i.IngredientName LIKE '%{name}%'))");
             }
 
             sql += " GROUP BY r.Id, r.RecipeName, r.Category, r.Instructions, r.Image, r.PreparationTime";
 
-            // Eğer filtreler varsa, HAVING ifadesi ekle
             if (filters.Count > 0)
             {
                 sql += " HAVING " + string.Join(" AND ", filters);
             }
-
-            switch (sortingType)
+            if (totalFilterIngredients != 0)
             {
-                case RecipeSortingType.A_from_Z:
-                    sql += " ORDER BY r.RecipeName ASC;";
-                    break;
-                case RecipeSortingType.Z_from_A:
-                    sql += " ORDER BY r.RecipeName DESC;";
-                    break;
-                case RecipeSortingType.Fastest_to_Slowest:
-                    sql += " ORDER BY r.PreparationTime ASC;";
-                    break;
-                case RecipeSortingType.Slowest_to_Fastest:
-                    sql += " ORDER BY r.PreparationTime DESC;";
-                    break;
-                case RecipeSortingType.Cheapest_to_Expensive:
-                    sql += " ORDER BY TotalCost ASC;";
-                    break;
-                case RecipeSortingType.Expensive_to_Cheapest:
-                    sql += " ORDER BY TotalCost DESC;";
-                    break;
-                case RecipeSortingType.Ascending_Percentage:
-                    sql += " ORDER BY AvailabilityPercentage ASC;";
-                    break;
-                case RecipeSortingType.Descending_Percentage:
-                    sql += " ORDER BY AvailabilityPercentage DESC;";
-                    break;
-                case RecipeSortingType.Increasing_Ingredients:
-                    sql += @"
-            ORDER BY 
-            (SELECT COUNT(*) 
-             FROM RecipeIngredients ri 
-             WHERE ri.RecipeID = r.Id) ASC;";
-                    break;
-                case RecipeSortingType.Decrising_Ingredients:
-                    sql += @"
-            ORDER BY 
-            (SELECT COUNT(*) 
-             FROM RecipeIngredients ri 
-             WHERE ri.RecipeID = r.Id) DESC;";
-                    break;
-                default:
-                    sql += ";";
-                    break;
+                sql += " ORDER BY MatchingPercentage DESC;";
             }
+            else
+            {
+                switch (sortingType)
+                {
+                    case RecipeSortingType.A_from_Z:
+                        sql += " ORDER BY r.RecipeName ASC;";
+                        break;
+                    case RecipeSortingType.Z_from_A:
+                        sql += " ORDER BY r.RecipeName DESC;";
+                        break;
+                    case RecipeSortingType.Fastest_to_Slowest:
+                        sql += " ORDER BY r.PreparationTime ASC;";
+                        break;
+                    case RecipeSortingType.Slowest_to_Fastest:
+                        sql += " ORDER BY r.PreparationTime DESC;";
+                        break;
+                    case RecipeSortingType.Cheapest_to_Expensive:
+                        sql += " ORDER BY TotalCost ASC;";
+                        break;
+                    case RecipeSortingType.Expensive_to_Cheapest:
+                        sql += " ORDER BY TotalCost DESC;";
+                        break;
+                    case RecipeSortingType.Ascending_Percentage:
+                        sql += " ORDER BY AvailabilityPercentage ASC;";
+                        break;
+                    case RecipeSortingType.Descending_Percentage:
+                        sql += " ORDER BY AvailabilityPercentage DESC;";
+                        break;
+                    case RecipeSortingType.Increasing_Ingredients:
+                        sql += @"
+                ORDER BY 
+                (SELECT COUNT(*) 
+                FROM RecipeIngredients ri 
+                WHERE ri.RecipeID = r.Id) ASC;";
+                        break;
+                    case RecipeSortingType.Decrising_Ingredients:
+                        sql += @"
+                ORDER BY 
+                (SELECT COUNT(*) 
+                FROM RecipeIngredients ri 
+                WHERE ri.RecipeID = r.Id) DESC;";
+                        break;
+                    default:
+                        sql += ";";
+                        break;
+                }
+            }
+            /*
+            if (page >= 1)
+            {
+                int pageSize = 8;
+                int offset = (page - 1) * pageSize;
+                sql += $" OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY;";
+            }*/
 
-            var recipes = await connection.QueryAsync<RecipeViewGetDto>(sql);
-            //
+            var parameters = new { TotalFilterIngredients = totalFilterIngredients };
+
+            var recipes = await connection.QueryAsync<RecipeViewGetDto>(sql, parameters);
             return recipes.ToList();
         }
+
         public async Task<bool> UpdateRecipeAsync(RecipeUpdateDto recipeUpdateDto)
         {
             using var connection = new SqlConnection(ConstVariables.ConnectionString);

@@ -26,12 +26,10 @@ namespace LezzetKitabi.Forms
         }
         public async void LoadRecipeDetailsAsync()
         {
-            // Tarif bilgileri
             labelRecipeName.Text = _recipe.RecipeName;
             labelCategory.Text = _recipe.Category;
             labelPreparationTime.Text = $"{_recipe.PreparationTime} dakika";
 
-            // Resmi yükleme
             using (MemoryStream ms = new MemoryStream(_recipe.Image))
             {
                 Image img = Image.FromStream(ms);
@@ -39,13 +37,12 @@ namespace LezzetKitabi.Forms
             }
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            // Malzemeler kısmı
-            panelIngredients.Controls.Clear(); // Paneli temizle
-            panelIngredients.AutoScroll = true; // Kaydırma çubuğunu aktif et
+            panelIngredients.Controls.Clear();
+            panelIngredients.AutoScroll = true;
 
             int startx = 10;
             int starty = 10;
-            int gap = 10; // Sabit boşluk
+            int gap = 10;
 
             for (int i = 0; i < _recipe.Ingredients.Count; i++)
             {
@@ -53,23 +50,21 @@ namespace LezzetKitabi.Forms
 
                 Label label = new Label
                 {
-                    Text = ingredientText, // Malzemeyi numaralandır
+                    Text = ingredientText,
                     AutoSize = false,
-                    MaximumSize = new Size(672, 0), // Genişlik sabit, yükseklik dinamik
+                    MaximumSize = new Size(672, 0),
                     Font = new Font("Arial", 12, FontStyle.Bold),
                     Location = new Point(startx, starty),
                     TextAlign = ContentAlignment.TopLeft
                 };
 
-                label.Size = new Size(672, label.PreferredHeight); // Yüksekliği metne göre ayarla
+                label.Size = new Size(672, label.PreferredHeight);
 
                 panelIngredients.Controls.Add(label);
 
-                // Bir sonraki etiketin konumu
-                starty += label.Height + gap; // Yükseklik + sabit boşluk
+                starty += label.Height + gap;
             }
 
-            // Yönergeleri yükle
             LoadInstructionsAsync(_recipe.Instructions);
         }
         public async void LoadInstructionsAsync(string instructions)
@@ -79,11 +74,11 @@ namespace LezzetKitabi.Forms
                 var instructionSteps = instructions.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                 panelInstructions.Controls.Clear();
-                panelInstructions.AutoScroll = true; // Kaydırma çubuğunu etkinleştir
+                panelInstructions.AutoScroll = true;
 
                 int startx = 10;
                 int starty = 10;
-                int gap = 10; // Sabit boşluk (gap)
+                int gap = 10;
 
                 for (int i = 0; i < instructionSteps.Length; i++)
                 {
@@ -91,20 +86,19 @@ namespace LezzetKitabi.Forms
 
                     Label label = new Label
                     {
-                        Text = $"{i + 1}. {instructionText}", // Madde numarası ekleniyor
+                        Text = $"{i + 1}. {instructionText}",
                         AutoSize = false,
-                        MaximumSize = new Size(672, 0), // Genişliği sabit tut, yükseklik ayarlanacak
+                        MaximumSize = new Size(672, 0),
                         Font = new Font("Arial", 12, FontStyle.Bold),
                         Location = new Point(startx, starty),
                         TextAlign = ContentAlignment.TopLeft
                     };
 
-                    label.Size = new Size(672, label.PreferredHeight); // Metne göre yükseklik ayarlanıyor
+                    label.Size = new Size(672, label.PreferredHeight);
 
                     panelInstructions.Controls.Add(label);
 
-                    // Bir sonraki etiket için starty'yi güncelle
-                    starty += label.Height + gap; // Etiketin yüksekliği kadar ilerlet ve sabit boşluk ekle
+                    starty += label.Height + gap;
                 }
             }
             else

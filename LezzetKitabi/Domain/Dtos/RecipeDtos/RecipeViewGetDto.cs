@@ -13,6 +13,7 @@ namespace LezzetKitabi.Domain.Dtos.RecipeDtos
         public string Category { get; set; }
         public int PreparationTime { get; set; }
         public string Instructions { get; set; }
+        public decimal MatchingPercentage { get; set; } = -1;
         public decimal TotalCost { get; set; }
         public decimal AvailabilityPercentage { get; set; }
         public decimal MissingCost { get; set; }
