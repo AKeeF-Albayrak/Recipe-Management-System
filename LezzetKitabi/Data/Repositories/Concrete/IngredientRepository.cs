@@ -229,6 +229,10 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 parameters.Add("Offset", offset);
                 parameters.Add("PageSize", pageSize);
             }
+            else
+            {
+                sql += ";";
+            }
 
             List<Ingredient> ingredients = (await connection.QueryAsync<Ingredient>(sql, parameters)).ToList();
 

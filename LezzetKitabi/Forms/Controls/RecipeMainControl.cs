@@ -101,11 +101,13 @@ namespace LezzetKitabi.Forms.Controls
                 return;
             }
 
+            int startIndex = (currentPage - 1) * 8;
+            int endIndex = Math.Min(startIndex + 8, recipes.Count);
 
-            for (int i = 0; i < recipes.Count; i++)
+            for (int i = startIndex; i < endIndex; i++)
             {
-                int row = i / 4;
-                int col = i % 4;
+                int row = (i - startIndex) / cols;
+                int col = (i - startIndex) % cols;
 
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = recipes[i];
@@ -369,7 +371,7 @@ namespace LezzetKitabi.Forms.Controls
                 overlayPanel.BringToFront();
 
                 System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
-                mouseLeaveTimer.Interval = 500; // 500 ms gecikme
+                mouseLeaveTimer.Interval = 500;
                 mouseLeaveTimer.Tick += (s, e) =>
                 {
                     if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
@@ -383,12 +385,12 @@ namespace LezzetKitabi.Forms.Controls
                 overlayPanel.MouseEnter += (s, e) =>
                 {
                     overlayPanel.Visible = true;
-                    mouseLeaveTimer.Stop(); // Mouse tekrar girerse timer durur
+                    mouseLeaveTimer.Stop();
                 };
 
                 overlayPanel.MouseLeave += (s, e) =>
                 {
-                    mouseLeaveTimer.Start(); // Mouse çıkınca gecikme başlar
+                    mouseLeaveTimer.Start();
                 };
             }
         }
@@ -398,7 +400,7 @@ namespace LezzetKitabi.Forms.Controls
             if (overlayPanel != null && overlayPanel.Visible)
             {
                 System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
-                mouseLeaveTimer.Interval = 200; // 500 ms gecikme
+                mouseLeaveTimer.Interval = 200;
 
                 mouseLeaveTimer.Tick += (s, e) =>
                 {

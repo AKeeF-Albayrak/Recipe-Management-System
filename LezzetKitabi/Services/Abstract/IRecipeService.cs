@@ -14,7 +14,7 @@ namespace LezzetKitabi.Services.Abstract
     {
         Guid AddRecipe(RecipeAddDto recipeAddDto);
         bool DeleteRecipe(Guid id);
-        Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList = null, int page = 0);
+        Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList = null, int page = -1);
         Task<RecipeGetDto?> GetRecipeByNameAsync(string name);
         Task<bool> UpdateRecipeAsync(RecipeUpdateDto recipeUpdateDto);
     }

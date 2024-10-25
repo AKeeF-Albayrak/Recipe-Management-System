@@ -27,23 +27,19 @@ namespace LezzetKitabi
         {
             var services = new ServiceCollection();
 
-            //Saving Services
             services.AddScoped<IIngredientService, IngredientService>();
             services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<IRecipeIngredientService, RecipeIngredientService>();
 
-            //Saving Repos
             services.AddScoped<IIngredientRepository, IngredientRepository>();
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
 
-            //Saving Forms
             services.AddScoped<MainForm>();
             services.AddScoped<RecipeDetailsForm>();
             services.AddScoped<IntroForm>();
 
 
-            //Adding Controls
             services.AddScoped<IngredientAddControl>();
             services.AddScoped<RecipeAddControl>();
             services.AddScoped<RecipeMainControl>();
@@ -54,7 +50,6 @@ namespace LezzetKitabi
 
             var serviceProvider = services.BuildServiceProvider();
 
-            // MainForm'u IServiceProvider olarak ge�iyoruz
             System.Windows.Forms.Application.Run(serviceProvider.GetService<IntroForm>());
         }
     }

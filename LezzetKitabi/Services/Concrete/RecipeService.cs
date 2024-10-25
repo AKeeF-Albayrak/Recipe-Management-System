@@ -34,13 +34,9 @@ namespace LezzetKitabi.Services.Concrete
             _recipeRepository.AddEntity(recipe);
             return recipe.Id;
         }
-        public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList = null, int page = 0)
+        public async Task<List<RecipeViewGetDto>> GetAllRecipesByOrderAsync(RecipeSortingType _type, List<FilterCriteria> filterCriteriaList = null, int page = -1)
         {
             var recipes = await _recipeRepository.GetAllRecipesByOrderAsync(_type, filterCriteriaList, page);
-            if (!recipes.Any())
-            {
-                throw new Exception("No recipes found for the given criteria.");
-            }
             return recipes;
         }
         

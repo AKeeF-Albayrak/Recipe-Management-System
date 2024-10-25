@@ -80,7 +80,7 @@ namespace LezzetKitabi.Forms.Controls
 
             for (int i = 0; i < ingredients.Count; i++)
             {
-                int row = i / rows;
+                int row = i / cols;
                 int col = i % cols;
 
                 Panel mainPanel = new Panel();
@@ -161,10 +161,9 @@ namespace LezzetKitabi.Forms.Controls
                     }
                 };
 
-                int iconSize = 50; // İconların boyutunu biraz küçült
-                int verticalSpacing = 10; // İconlar arasındaki dikey boşluk
+                int iconSize = 50;
+                int verticalSpacing = 10;
 
-                // Edit ikonunu oluşturma ve ortalama
                 PictureBox pictureBoxEdit = new PictureBox();
                 pictureBoxEdit.Size = new Size(iconSize, iconSize);
                 pictureBoxEdit.Location = new Point((panelWidth - pictureBoxEdit.Width) / 2, (panelHeight - (iconSize * 2 + verticalSpacing)) / 2);
@@ -174,9 +173,7 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxEdit.Tag = ingredients[i];
                 pictureBoxEdit.Click += EditIcon_Click;
 
-                // Delete ikonunu oluşturma ve Edit ikonunun altında konumlandırma
                 PictureBox pictureBoxDelete = new PictureBox();
-                // Delete PictureBox konumu
                 pictureBoxDelete.Size = new Size(iconSize, iconSize);
                 pictureBoxDelete.Location = new Point((panelWidth - pictureBoxDelete.Width) / 2, pictureBoxEdit.Bottom + verticalSpacing);
                 pictureBoxDelete.Image = Properties.Resources.DeleteIcon;
@@ -185,7 +182,6 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBoxDelete.Tag = ingredients[i];
                 pictureBoxDelete.Click += DeleteIcon_Click;
 
-                // İkonları overlayPanel’e ekleme
                 overlayPanel.Controls.Add(pictureBoxEdit);
                 overlayPanel.Controls.Add(pictureBoxDelete);
 
@@ -201,12 +197,10 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void EditIcon_Click(object sender, EventArgs e)
         {
-            // Tetikleyici olarak PictureBox kullan
             PictureBox editPictureBox = sender as PictureBox;
 
             if (editPictureBox != null)
             {
-                // PictureBox'ın Tag özelliğinden Ingredient nesnesini al
                 Ingredient ingredient = editPictureBox.Tag as Ingredient;
 
                 if (ingredient != null)
@@ -214,7 +208,6 @@ namespace LezzetKitabi.Forms.Controls
                     IngredientEditForm form = new IngredientEditForm(_ingredientService);
                     form.LoadIngredientDetails(ingredient);
 
-                    // Güncellemeyi dinlemek için event ekle
                     form.IngredientUpdated += Form_IngredientUpdated;
 
                     form.ShowDialog();
@@ -223,17 +216,14 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async void DeleteIcon_Click(object sender, EventArgs e)
         {
-            // Tetikleyici olarak PictureBox kullan
             PictureBox deletePictureBox = sender as PictureBox;
 
             if (deletePictureBox != null)
             {
-                // PictureBox'ın Tag özelliğinden Ingredient nesnesini al
                 Ingredient ingredientToDelete = deletePictureBox.Tag as Ingredient;
 
                 if (ingredientToDelete != null)
                 {
-                    // Silme onayı
                     DialogResult dialogResult = MessageBox.Show(
                         $"{ingredientToDelete.IngredientName} Malzemesini Silmek İstediğinize Emin Misiniz?",
                         "Emin Misiniz",
@@ -304,7 +294,7 @@ namespace LezzetKitabi.Forms.Controls
                 overlayPanel.BringToFront();
 
                 System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
-                mouseLeaveTimer.Interval = 500; // 500 ms gecikme
+                mouseLeaveTimer.Interval = 500;
                 mouseLeaveTimer.Tick += (s, e) =>
                 {
                     if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
@@ -318,12 +308,12 @@ namespace LezzetKitabi.Forms.Controls
                 overlayPanel.MouseEnter += (s, e) =>
                 {
                     overlayPanel.Visible = true;
-                    mouseLeaveTimer.Stop(); // Mouse tekrar girerse timer durur
+                    mouseLeaveTimer.Stop();
                 };
 
                 overlayPanel.MouseLeave += (s, e) =>
                 {
-                    mouseLeaveTimer.Start(); // Mouse çıkınca gecikme başlar
+                    mouseLeaveTimer.Start();
                 };
             }
         }
@@ -333,7 +323,7 @@ namespace LezzetKitabi.Forms.Controls
             if (overlayPanel != null && overlayPanel.Visible)
             {
                 System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
-                mouseLeaveTimer.Interval = 200; // 500 ms gecikme
+                mouseLeaveTimer.Interval = 200;
 
                 mouseLeaveTimer.Tick += (s, e) =>
                 {

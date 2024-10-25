@@ -281,20 +281,12 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 WHERE ri.RecipeID = r.Id) DESC;";
                         break;
                     default:
-                        sql += ";";
+                        sql += "";
                         break;
                 }
             }
-            /*
-            if (page >= 1)
-            {
-                int pageSize = 8;
-                int offset = (page - 1) * pageSize;
-                sql += $" OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY;";
-            }*/
 
             var parameters = new { TotalFilterIngredients = totalFilterIngredients };
-
             var recipes = await connection.QueryAsync<RecipeViewGetDto>(sql, parameters);
             return recipes.ToList();
         }
