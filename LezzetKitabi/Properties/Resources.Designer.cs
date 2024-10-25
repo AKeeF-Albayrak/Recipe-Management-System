@@ -173,6 +173,16 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap seamless_pattern_background_doodle_kitchen_tools_cute_drawing_43503_28 {
+            get {
+                object obj = ResourceManager.GetObject("seamless-pattern-background-doodle-kitchen-tools-cute-drawing_43503-28", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap seamless_pattern_with_hand_drawn_cooking_ingredients_654192_292 {
             get {
                 object obj = ResourceManager.GetObject("seamless-pattern-with-hand-drawn-cooking-ingredients_654192-292", resourceCulture);

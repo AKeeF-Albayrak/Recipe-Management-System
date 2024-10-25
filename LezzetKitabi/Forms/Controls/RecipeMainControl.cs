@@ -50,7 +50,7 @@ namespace LezzetKitabi.Forms.Controls
             SetUpCombobox();
             InitializeSearchBar();
 
-            panelItems.Paint += (s, e) =>
+            /*panelItems.Paint += (s, e) =>
             {
                 Graphics g = e.Graphics;
                 Rectangle rect = panelItems.ClientRectangle;
@@ -65,7 +65,7 @@ namespace LezzetKitabi.Forms.Controls
 
                     panelItems.Region = new Region(path);
                 }
-            };
+            };*/
         }
         public async void InitializeSearchBar()
         {
@@ -107,13 +107,15 @@ namespace LezzetKitabi.Forms.Controls
             int cornerRadius = 20;
 
             List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType, filterCriteriaList);
-            totalPages = recipes.Count/8;
 
             if (recipes == null || recipes.Count == 0)
             {
                 MessageBox.Show("No recipes found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            totalPages = (int)Math.Ceiling((double)recipes.Count / 8);
+
 
             int startIndex = (currentPage - 1) * 8;
             int endIndex = Math.Min(startIndex + 8, recipes.Count);
@@ -378,30 +380,50 @@ namespace LezzetKitabi.Forms.Controls
                 overlayPanel.Visible = true;
                 overlayPanel.BringToFront();
 
+                System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
+                mouseLeaveTimer.Interval = 500; // 500 ms gecikme
+                mouseLeaveTimer.Tick += (s, e) =>
+                {
+                    if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
+                    {
+                        overlayPanel.Visible = false;
+                        mouseLeaveTimer.Stop();
+                        mouseLeaveTimer.Dispose();
+                    }
+                };
+
                 overlayPanel.MouseEnter += (s, e) =>
                 {
                     overlayPanel.Visible = true;
+                    mouseLeaveTimer.Stop(); // Mouse tekrar girerse timer durur
                 };
-                overlayPanel.MouseLeave += (s, e) => CheckMouseLeave(panel);
 
-                panel.MouseEnter += (s, e) =>
+                overlayPanel.MouseLeave += (s, e) =>
                 {
-                    overlayPanel.Visible = true;
+                    mouseLeaveTimer.Start(); // Mouse çıkınca gecikme başlar
                 };
-                panel.MouseLeave += (s, e) => CheckMouseLeave(panel);
             }
         }
         private void CheckMouseLeave(Panel panel)
         {
             Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
-
-            if (overlayPanel != null)
+            if (overlayPanel != null && overlayPanel.Visible)
             {
-                if (!panel.ClientRectangle.Contains(panel.PointToClient(MousePosition)) &&
-                    !overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
+                System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
+                mouseLeaveTimer.Interval = 200; // 500 ms gecikme
+
+                mouseLeaveTimer.Tick += (s, e) =>
                 {
-                    overlayPanel.Visible = false;
-                }
+                    if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
+                    {
+                        overlayPanel.Visible = false;
+                        mouseLeaveTimer.Stop();
+                        mouseLeaveTimer.Dispose();
+                    }
+                };
+
+                overlayPanel.MouseEnter += (s, e) => mouseLeaveTimer.Stop();
+                overlayPanel.MouseLeave += (s, e) => mouseLeaveTimer.Start();
             }
         }
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
@@ -664,12 +686,12 @@ namespace LezzetKitabi.Forms.Controls
                 MessageBox.Show("Geçerli bir malzeme sayisi aralığı girin.");
             }
         }
-        private void button3_Click(object sender, EventArgs e)
+        private async void button3_Click(object sender, EventArgs e)
         {
-            if (currentPage != 1)
+            if (currentPage > 1)
             {
                 currentPage--;
-                RefreshPanelsAsync();
+                await RefreshPanelsAsync();
             }
             else
             {
@@ -679,7 +701,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            if (currentPage < totalPages - 1)
+            if (currentPage < totalPages)
             {
                 currentPage++;
                 RefreshPanelsAsync();

@@ -32,16 +32,15 @@ namespace LezzetKitabi.Forms.Controls
             filterCriteriaList = new List<FilterCriteria>();
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
-            InitializeGradientPanel(panelElements);
             InitializeCustomPanelsAsync();
-            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            Color panelBackground = Color.FromArgb(50, Color.DarkRed);
-            panelItems.BackColor = panelBackground;
+
             panelFilter.BackColor = Color.White;
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
             comboBoxUnit.Items.AddRange(Enum.GetNames(typeof(UnitType)));
             InitializeSearchTextBox();
+
+
         }
         private async Task InitializeSearchTextBox()
         {
@@ -71,13 +70,15 @@ namespace LezzetKitabi.Forms.Controls
             int cornerRadius = 20;
 
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList);
-            totalPages = ingredients.Count / 18;
 
             if (ingredients == null || ingredients.Count == 0)
             {
                 MessageBox.Show("No ingredients found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            totalPages = (int)Math.Ceiling((double)ingredients.Count / 18);
+
 
             int startIndex = (currentPage - 1) * 18;
             int endIndex = Math.Min(startIndex + 18, ingredients.Count);
@@ -103,7 +104,7 @@ namespace LezzetKitabi.Forms.Controls
 
                     using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
                     {
-                        using (Brush brush = new SolidBrush(SystemColors.ActiveCaption))
+                        using (Brush brush = new SolidBrush(Color.FromArgb(186, 230, 253)))
                         {
                             g.FillPath(brush, path);
                         }
@@ -235,12 +236,11 @@ namespace LezzetKitabi.Forms.Controls
         {
             GraphicsPath path = new GraphicsPath();
             int arcDiameter = cornerRadius * 2;
-
-            path.AddArc(rect.X, rect.Y, arcDiameter, arcDiameter, 180, 90);
-            path.AddArc(rect.Right - arcDiameter, rect.Y, arcDiameter, arcDiameter, 270, 90);
-            path.AddArc(rect.Right - arcDiameter, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 0, 90);
-            path.AddArc(rect.X, rect.Bottom - arcDiameter, arcDiameter, arcDiameter, 90, 90);
-
+            Size arcSize = new Size(arcDiameter, arcDiameter);
+            path.AddArc(new Rectangle(rect.Location, arcSize), 180, 90);
+            path.AddArc(new Rectangle(new Point(rect.Right - arcDiameter, rect.Top), arcSize), 270, 90);
+            path.AddArc(new Rectangle(new Point(rect.Right - arcDiameter, rect.Bottom - arcDiameter), arcSize), 0, 90);
+            path.AddArc(new Rectangle(new Point(rect.Left, rect.Bottom - arcDiameter), arcSize), 90, 90);
             path.CloseFigure();
             return path;
         }
@@ -251,8 +251,29 @@ namespace LezzetKitabi.Forms.Controls
             {
                 overlayPanel.Visible = true;
                 overlayPanel.BringToFront();
-                overlayPanel.MouseEnter += (s, e) => overlayPanel.Visible = true;
-                overlayPanel.MouseLeave += (s, e) => overlayPanel.Visible = false;
+
+                System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
+                mouseLeaveTimer.Interval = 500; // 500 ms gecikme
+                mouseLeaveTimer.Tick += (s, e) =>
+                {
+                    if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
+                    {
+                        overlayPanel.Visible = false;
+                        mouseLeaveTimer.Stop();
+                        mouseLeaveTimer.Dispose();
+                    }
+                };
+
+                overlayPanel.MouseEnter += (s, e) =>
+                {
+                    overlayPanel.Visible = true;
+                    mouseLeaveTimer.Stop(); // Mouse tekrar girerse timer durur
+                };
+
+                overlayPanel.MouseLeave += (s, e) =>
+                {
+                    mouseLeaveTimer.Start(); // Mouse çıkınca gecikme başlar
+                };
             }
         }
         private void CheckMouseLeave(Panel panel)
@@ -260,24 +281,22 @@ namespace LezzetKitabi.Forms.Controls
             Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
             if (overlayPanel != null && overlayPanel.Visible)
             {
-                if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
-                {
-                    overlayPanel.Visible = false;
-                }
-            }
-        }
-        private void InitializeGradientPanel(Panel panel)
-        {
-            panel.Paint += (s, e) =>
-            {
-                Color startColor = Color.FromArgb(200, 255, 165, 0);
-                Color endColor = Color.FromArgb(255, 255, 99, 71);
+                System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
+                mouseLeaveTimer.Interval = 200; // 500 ms gecikme
 
-                using (LinearGradientBrush brush = new LinearGradientBrush(panel.ClientRectangle, startColor, endColor, 45f))
+                mouseLeaveTimer.Tick += (s, e) =>
                 {
-                    e.Graphics.FillRectangle(brush, panel.ClientRectangle);
-                }
-            };
+                    if (!overlayPanel.ClientRectangle.Contains(overlayPanel.PointToClient(MousePosition)))
+                    {
+                        overlayPanel.Visible = false;
+                        mouseLeaveTimer.Stop();
+                        mouseLeaveTimer.Dispose();
+                    }
+                };
+
+                overlayPanel.MouseEnter += (s, e) => mouseLeaveTimer.Stop();
+                overlayPanel.MouseLeave += (s, e) => mouseLeaveTimer.Start();
+            }
         }
         private async void DeleteButton_Click(object sender, EventArgs e)
         {
@@ -371,7 +390,7 @@ namespace LezzetKitabi.Forms.Controls
             RemoveExistingFilter("Stok");
             if (minStock.HasValue || maxStock.HasValue)
             {
-                filterCriteriaList.Add(new FilterCriteria { FilterType = "Stok", Value = $"{minStock} - {maxStock}"});
+                filterCriteriaList.Add(new FilterCriteria { FilterType = "Stok", Value = $"{minStock} - {maxStock}" });
                 AddFilterToPanel($"Stok: {minStock} - {maxStock}", RemoveFilter);
             }
         }
@@ -481,12 +500,12 @@ namespace LezzetKitabi.Forms.Controls
             RefreshPanelsAsync();
             InitializeCustomPanelsAsync();
         }
-        private void buttonPrevius_Click(object sender, EventArgs e)
+        private async void buttonPrevius_Click(object sender, EventArgs e)
         {
-            if (currentPage != 1)
+            if (currentPage > 1)
             {
                 currentPage--;
-                RefreshPanelsAsync();
+                await RefreshPanelsAsync();
             }
             else
             {
@@ -495,7 +514,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void buttonNext_Click(object sender, EventArgs e)
         {
-            if (currentPage < totalPages - 1)
+            if (currentPage < totalPages)
             {
                 currentPage++;
                 RefreshPanelsAsync();

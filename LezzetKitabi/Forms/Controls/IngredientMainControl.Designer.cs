@@ -424,6 +424,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
+            BackgroundImage = Properties.Resources.coverImage;
             Controls.Add(panelFilter);
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
