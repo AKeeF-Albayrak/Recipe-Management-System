@@ -49,23 +49,6 @@ namespace LezzetKitabi.Forms.Controls
             comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Category)));
             SetUpCombobox();
             InitializeSearchBar();
-
-            /*panelItems.Paint += (s, e) =>
-            {
-                Graphics g = e.Graphics;
-                Rectangle rect = panelItems.ClientRectangle;
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-
-                using (GraphicsPath path = CreateRoundedRectanglePath(rect, 20))
-                {
-                    using (Brush brush = new SolidBrush(Color.FromArgb(225, 243, 244, 246)))
-                    {
-                        g.FillPath(brush, path);
-                    }
-
-                    panelItems.Region = new Region(path);
-                }
-            };*/
         }
         public async void InitializeSearchBar()
         {

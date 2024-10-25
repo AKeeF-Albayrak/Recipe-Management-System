@@ -44,6 +44,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
             VALUES (@Id, @IngredientName, @TotalQuantity, @Unit, @UnitPrice, @Image);
             """;
 
+
             connection.Execute(sql, new
             {
                 Id = Guid.NewGuid(),
@@ -51,7 +52,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 TotalQuantity = entity.TotalQuantity,
                 Unit = entity.Unit,
                 UnitPrice = entity.UnitPrice,
-                Image = entity.Image ?? (object)DBNull.Value
+                Image = entity.Image ?? GlobalVariables.BaseImage
             });
 
             return true;
