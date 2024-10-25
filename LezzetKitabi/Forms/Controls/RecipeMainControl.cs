@@ -58,6 +58,7 @@ namespace LezzetKitabi.Forms.Controls
             textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
             AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
 
+
             foreach (var recipe in recipes)
             {
                 suggestions.Add(recipe.RecipeName);
@@ -69,6 +70,9 @@ namespace LezzetKitabi.Forms.Controls
             }
 
             textBoxSearch.AutoCompleteCustomSource = suggestions;
+
+            int totalRecipes = recipes.Count();
+            totalPages = (int)Math.Ceiling(totalRecipes / (double)8);
         }
         public async void SetUpCombobox()
         {
@@ -97,16 +101,11 @@ namespace LezzetKitabi.Forms.Controls
                 return;
             }
 
-            totalPages = (int)Math.Ceiling((double)recipes.Count / 8);
 
-
-            int startIndex = (currentPage - 1) * 8;
-            int endIndex = Math.Min(startIndex + 8, recipes.Count);
-
-            for (int i = startIndex; i < endIndex; i++)
+            for (int i = 0; i < recipes.Count; i++)
             {
-                int row = (i - startIndex) / cols;
-                int col = (i - startIndex) % cols;
+                int row = i / 4;
+                int col = i % 4;
 
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = recipes[i];
