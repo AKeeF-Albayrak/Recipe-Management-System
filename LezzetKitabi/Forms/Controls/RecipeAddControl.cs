@@ -15,6 +15,7 @@ namespace LezzetKitabi.Forms.Controls
 {
     public partial class RecipeAddControl : UserControl
     {
+        public event EventHandler RecipeAdded;
         private readonly IIngredientService _ingredientService;
         private readonly IRecipeService _recipeService;
         private readonly IRecipeIngredientService _recipeIngredientService;
@@ -36,6 +37,10 @@ namespace LezzetKitabi.Forms.Controls
             numericUpDownHours.Maximum = 23;
             numericUpDownMinutes.Minimum = 0;
             numericUpDownMinutes.Maximum = 59;
+        }
+        private void OnRecipeAdded()
+        {
+            RecipeAdded?.Invoke(this, EventArgs.Empty);
         }
         private void SetUpCategoryComboBox()
         {
@@ -217,6 +222,7 @@ namespace LezzetKitabi.Forms.Controls
             await _recipeIngredientService.AddRangeAsync(recipeIngredients);
 
             MessageBox.Show("Tarif başarıyla eklendi!", "Bilgilendirme", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            OnRecipeAdded();
 
             comboBoxIngredients.SelectedItem = null;
             textBoxAmount.Clear();

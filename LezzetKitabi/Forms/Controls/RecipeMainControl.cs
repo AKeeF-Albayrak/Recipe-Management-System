@@ -23,6 +23,7 @@ namespace LezzetKitabi.Forms.Controls
 {
     public partial class RecipeMainControl : UserControl
     {
+        public event EventHandler RecipeAdded;
         private readonly IRecipeService _recipeService;
         private readonly IIngredientService _ingredientService;
         private readonly IRecipeIngredientService _recipeIngredientService;
@@ -47,7 +48,10 @@ namespace LezzetKitabi.Forms.Controls
             panelDown.BackColor = Color.Transparent;
             comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Category)));
         }
-
+        private void OnRecipeAdded()
+        {
+            RecipeAdded?.Invoke(this, EventArgs.Empty);
+        }
         public async Task LoadBackgroundImageAsync()
         {
             await Task.Run(() =>
@@ -348,7 +352,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async void Form_RecipeUpdated(object sender, EventArgs e)
         {
-            await RefreshPanelsAsync();
+            OnRecipeAdded();
         }
         private GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int cornerRadius)
         {
@@ -483,6 +487,7 @@ namespace LezzetKitabi.Forms.Controls
 
                 AddFilterToPanel($"Fiyat: {minPrice} - {maxPrice}", RemoveFilter);
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Fiyat", Value = $"{minPrice} - {maxPrice}" });
+                RefreshPanelsAsync();
             }
             else
             {
@@ -510,6 +515,7 @@ namespace LezzetKitabi.Forms.Controls
 
                 AddFilterToPanel($"Hazırlama Süresi: {minTime} - {maxTime} dakika", RemoveFilter);
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Hazırlama Süresi", Value = $"{minTime} - {maxTime}" });
+                RefreshPanelsAsync();
             }
             else
             {
@@ -526,6 +532,7 @@ namespace LezzetKitabi.Forms.Controls
 
                 AddFilterToPanel($"Kategori: {selectedCategory}", RemoveFilter);
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Kategori", Value = selectedCategory });
+                RefreshPanelsAsync();
             }
             else
             {
@@ -544,6 +551,7 @@ namespace LezzetKitabi.Forms.Controls
                 {
                     AddFilterToPanel($"Malzeme: {selectedIngredient.IngredientName}", RemoveFilter);
                     filterCriteriaList.Add(new FilterCriteria { FilterType = "Malzeme", Value = selectedIngredient.IngredientName });
+                    RefreshPanelsAsync();
                 }
                 else
                 {
@@ -570,7 +578,6 @@ namespace LezzetKitabi.Forms.Controls
             }
 
             RefreshPanelsAsync();
-            InitializeCustomPanelsAsync();
         }
         private void buttonFilter_Click(object sender, EventArgs e)
         {

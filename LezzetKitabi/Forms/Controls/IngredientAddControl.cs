@@ -17,6 +17,7 @@ namespace LezzetKitabi.Forms.Controls
 {
     public partial class IngredientAddControl : UserControl
     {
+        public event EventHandler IngredientChanged;
         private readonly IIngredientService _ingredientService;
         private string _selectedImagePath;
 
@@ -27,7 +28,10 @@ namespace LezzetKitabi.Forms.Controls
             cmbUnit.DataSource = Enum.GetValues(typeof(UnitType));
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
         }
-
+        private void OnIngredientsChanged()
+        {
+            IngredientChanged?.Invoke(this, EventArgs.Empty);
+        }
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtIngredientName.Text) ||
@@ -59,6 +63,7 @@ namespace LezzetKitabi.Forms.Controls
                     if (isAdded)
                     {
                         MessageBox.Show("Malzeme Başarıyla Kaydedildi!", "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        OnIngredientsChanged();
                     }
                     else
                     {

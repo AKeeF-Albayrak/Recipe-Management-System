@@ -22,6 +22,7 @@ namespace LezzetKitabi.Forms.Controls
 {
     public partial class IngredientMainControl : UserControl
     {
+        public event EventHandler IngredientChanged;
         private readonly IIngredientService _ingredientService;
         IngredientSortingType _sortingType = IngredientSortingType.A_from_Z;
         private List<FilterCriteria> filterCriteriaList;
@@ -47,6 +48,10 @@ namespace LezzetKitabi.Forms.Controls
             });
 
             this.Invalidate();
+        }
+        private void OnIngredientsChanged()
+        {
+            IngredientChanged?.Invoke(this, EventArgs.Empty);
         }
         public async Task InitializeCustomPanelsAsync()
         {
@@ -254,7 +259,8 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async void Form_IngredientUpdated(object sender, EventArgs e)
         {
-            await RefreshPanelsAsync();
+            OnIngredientsChanged();
+            //await RefreshPanelsAsync();
         }
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -382,6 +388,7 @@ namespace LezzetKitabi.Forms.Controls
             {
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Fiyat", Value = $"{minPrice} - {maxPrice}" });
                 AddFilterToPanel($"Fiyat: {minPrice} - {maxPrice}", RemoveFilter);
+                RefreshPanelsAsync();
             }
         }
         private void buttonStockRangeAdd_Click(object sender, EventArgs e)
@@ -410,6 +417,7 @@ namespace LezzetKitabi.Forms.Controls
             {
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Stok", Value = $"{minStock} - {maxStock}" });
                 AddFilterToPanel($"Stok: {minStock} - {maxStock}", RemoveFilter);
+                RefreshPanelsAsync();
             }
         }
         private void buttonUnitAdd_Click(object sender, EventArgs e)
@@ -421,6 +429,7 @@ namespace LezzetKitabi.Forms.Controls
                 RemoveExistingFilter("Birim");
                 filterCriteriaList.Add(new FilterCriteria { FilterType = "Birim", Value = unit });
                 AddFilterToPanel($"Birim: {unit}", RemoveFilter);
+                RefreshPanelsAsync();
             }
             else
             {
