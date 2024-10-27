@@ -140,14 +140,12 @@ namespace LezzetKitabi.Forms.Controls
 
                 Label labelMiktar = new Label();
                 labelMiktar.AutoSize = true;
-                labelMiktar.Font = new Font("Segoe Print", 8F);
                 labelMiktar.Text = $"{ingredients[i].TotalQuantity} {ingredients[i].Unit}";
                 labelMiktar.Location = new Point((panelWidth - labelMiktar.Width) / 2, pictureBox.Bottom + 5);
                 labelMiktar.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Label labelBirimFiyati = new Label();
                 labelBirimFiyati.AutoSize = true;
-                labelBirimFiyati.Font = new Font("Segoe Print", 8F);
                 labelBirimFiyati.Text = $"₺{ingredients[i].UnitPrice:0.00}";
                 labelBirimFiyati.Location = new Point((panelWidth - labelBirimFiyati.Width) / 2, labelMiktar.Bottom + 5);
                 labelBirimFiyati.ForeColor = Color.FromArgb(3, 105, 161);

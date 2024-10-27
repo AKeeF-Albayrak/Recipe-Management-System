@@ -237,37 +237,32 @@ namespace LezzetKitabi.Forms.Controls
 
                 Label percentageLabel = new Label();
                 percentageLabel.AutoSize = true;
-                percentageLabel.Font = new Font("Segoe Print", 8F);
                 percentageLabel.Text = "Yüzde: " + recipes[i].AvailabilityPercentage.ToString("0.##") + "%";
-                percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2 - 15, 180);
+                percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2 , 180);
                 percentageLabel.ForeColor = labelColor;
 
                 Label costLabel = new Label();
                 costLabel.AutoSize = true;
-                costLabel.Font = new Font("Segoe Print", 8F);
                 costLabel.Text = "Maliyet: ₺" + recipes[i].TotalCost.ToString("0.00");
-                costLabel.Location = new Point((panelWidth - costLabel.Width) / 2 - 15, 200);
+                costLabel.Location = new Point((panelWidth - costLabel.Width) / 2 , 200);
                 costLabel.ForeColor = labelColor;
 
                 Label missingCostLabel = new Label();
                 missingCostLabel.AutoSize = true;
-                missingCostLabel.Font = new Font("Segoe Print", 8F);
                 missingCostLabel.Text = "Eksik Maliyet: ₺" + recipes[i].MissingCost.ToString("0.00");
-                missingCostLabel.Location = new Point((panelWidth - missingCostLabel.Width) / 2 - 15, 220);
+                missingCostLabel.Location = new Point((panelWidth - missingCostLabel.Width) / 2 , 220);
                 missingCostLabel.ForeColor = labelColor;
 
                 Label timeLabel = new Label();
                 timeLabel.AutoSize = true;
-                timeLabel.Font = new Font("Segoe Print", 8F);
                 timeLabel.Text = "Tarif Süresi: " + recipes[i].PreparationTime + " dk";
-                timeLabel.Location = new Point((panelWidth - timeLabel.Width) / 2 - 15, 240);
+                timeLabel.Location = new Point((panelWidth - timeLabel.Width) / 2 , 240);
                 timeLabel.ForeColor = labelColor;
 
                 Label MatchingpercentageLabel = new Label();
                 MatchingpercentageLabel.AutoSize = true;
-                MatchingpercentageLabel.Font = new Font("Segoe Print", 8F);
                 MatchingpercentageLabel.Text = "Yüzde: " + recipes[i].MatchingPercentage.ToString("0.##") + "%";
-                MatchingpercentageLabel.Location = new Point((panelWidth - MatchingpercentageLabel.Width) / 2 - 15, 260);
+                MatchingpercentageLabel.Location = new Point((panelWidth - MatchingpercentageLabel.Width) / 2 , 260);
                 MatchingpercentageLabel.ForeColor = labelColor;
 
                 mainPanel.Controls.Add(label);

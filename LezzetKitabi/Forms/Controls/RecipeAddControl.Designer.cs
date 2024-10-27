@@ -76,7 +76,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label2.Location = new Point(38, 268);
+            label2.Location = new Point(39, 264);
             label2.Name = "label2";
             label2.Size = new Size(135, 47);
             label2.TabIndex = 5;
@@ -223,7 +223,7 @@
             textBoxAmount.Location = new Point(38, 484);
             textBoxAmount.Name = "textBoxAmount";
             textBoxAmount.PlaceholderText = "Ingredient Amount";
-            textBoxAmount.Size = new Size(353, 33);
+            textBoxAmount.Size = new Size(278, 33);
             textBoxAmount.TabIndex = 24;
             textBoxAmount.KeyPress += textBoxAmount_KeyPress;
             // 
@@ -318,7 +318,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label11.Location = new Point(39, 550);
+            label11.Location = new Point(39, 542);
             label11.Name = "label11";
             label11.Size = new Size(128, 47);
             label11.TabIndex = 32;
@@ -338,7 +338,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label9.Location = new Point(631, 421);
+            label9.Location = new Point(631, 422);
             label9.Name = "label9";
             label9.Size = new Size(164, 47);
             label9.TabIndex = 34;
@@ -381,7 +381,7 @@
             // 
             labelUnit.AutoSize = true;
             labelUnit.Font = new Font("Segoe Print", 9F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            labelUnit.Location = new Point(402, 496);
+            labelUnit.Location = new Point(339, 491);
             labelUnit.Name = "labelUnit";
             labelUnit.Size = new Size(54, 21);
             labelUnit.TabIndex = 40;

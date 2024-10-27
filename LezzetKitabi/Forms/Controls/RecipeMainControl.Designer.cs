@@ -185,7 +185,7 @@
             button3.FlatStyle = FlatStyle.Flat;
             button3.Location = new Point(144, 10);
             button3.Name = "button3";
-            button3.Size = new Size(75, 23);
+            button3.Size = new Size(87, 38);
             button3.TabIndex = 0;
             button3.Text = "<---";
             button3.UseVisualStyleBackColor = true;
@@ -198,7 +198,7 @@
             button4.FlatStyle = FlatStyle.Flat;
             button4.Location = new Point(815, 10);
             button4.Name = "button4";
-            button4.Size = new Size(75, 23);
+            button4.Size = new Size(88, 38);
             button4.TabIndex = 1;
             button4.Text = "--->";
             button4.UseVisualStyleBackColor = true;
