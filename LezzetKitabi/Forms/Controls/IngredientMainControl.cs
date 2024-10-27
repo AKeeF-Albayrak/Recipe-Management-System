@@ -40,7 +40,7 @@ namespace LezzetKitabi.Forms.Controls
             
         }
 
-        public async Task LoadBackgroundImageAsync()
+        /*public async Task LoadBackgroundImageAsync()
         {
             await Task.Run(() =>
             {
@@ -48,7 +48,7 @@ namespace LezzetKitabi.Forms.Controls
             });
 
             this.Invalidate();
-        }
+        }*/
         private void OnIngredientsChanged()
         {
             IngredientChanged?.Invoke(this, EventArgs.Empty);

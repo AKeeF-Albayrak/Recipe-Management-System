@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            pictureBox1 = new PictureBox();
+            pictureBoxIngredient = new PictureBox();
             label1 = new Label();
             textBoxIngredientName = new TextBox();
             label2 = new Label();
@@ -39,73 +39,80 @@
             button2 = new Button();
             textBoxUnitPrice = new TextBox();
             label4 = new Label();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxIngredient).BeginInit();
             SuspendLayout();
             // 
-            // pictureBox1
+            // pictureBoxIngredient
             // 
-            pictureBox1.Location = new Point(55, 22);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(100, 100);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            pictureBoxIngredient.Location = new Point(54, 44);
+            pictureBoxIngredient.Name = "pictureBoxIngredient";
+            pictureBoxIngredient.Size = new Size(260, 260);
+            pictureBoxIngredient.TabIndex = 0;
+            pictureBoxIngredient.TabStop = false;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(196, 22);
+            label1.Font = new Font("Segoe UI", 15.75F);
+            label1.Location = new Point(347, 62);
             label1.Name = "label1";
-            label1.Size = new Size(79, 15);
+            label1.Size = new Size(140, 30);
             label1.TabIndex = 1;
             label1.Text = "Malzeme Adi:";
             // 
             // textBoxIngredientName
             // 
-            textBoxIngredientName.Location = new Point(297, 19);
+            textBoxIngredientName.Font = new Font("Segoe UI", 15.75F);
+            textBoxIngredientName.Location = new Point(510, 62);
             textBoxIngredientName.Name = "textBoxIngredientName";
-            textBoxIngredientName.Size = new Size(138, 23);
+            textBoxIngredientName.Size = new Size(138, 35);
             textBoxIngredientName.TabIndex = 2;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(237, 71);
+            label2.Font = new Font("Segoe UI", 15.75F);
+            label2.Location = new Point(422, 133);
             label2.Name = "label2";
-            label2.Size = new Size(38, 15);
+            label2.Size = new Size(65, 30);
             label2.TabIndex = 3;
             label2.Text = "Birim:";
             // 
             // textBoxAmount
             // 
-            textBoxAmount.Location = new Point(297, 114);
+            textBoxAmount.Font = new Font("Segoe UI", 15.75F);
+            textBoxAmount.Location = new Point(510, 202);
             textBoxAmount.Name = "textBoxAmount";
-            textBoxAmount.Size = new Size(138, 23);
+            textBoxAmount.Size = new Size(138, 35);
             textBoxAmount.TabIndex = 4;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(231, 114);
+            label3.Font = new Font("Segoe UI", 15.75F);
+            label3.Location = new Point(410, 202);
             label3.Name = "label3";
-            label3.Size = new Size(44, 15);
+            label3.Size = new Size(77, 30);
             label3.TabIndex = 5;
             label3.Text = "Miktar:";
             // 
             // comboBoxUnit
             // 
+            comboBoxUnit.Font = new Font("Segoe UI", 15.75F);
             comboBoxUnit.FormattingEnabled = true;
-            comboBoxUnit.Location = new Point(297, 68);
+            comboBoxUnit.Location = new Point(510, 125);
             comboBoxUnit.Name = "comboBoxUnit";
-            comboBoxUnit.Size = new Size(138, 23);
+            comboBoxUnit.Size = new Size(138, 38);
             comboBoxUnit.TabIndex = 6;
             // 
             // buttonEdit
             // 
-            buttonEdit.Location = new Point(55, 210);
+            buttonEdit.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonEdit.Location = new Point(33, 349);
             buttonEdit.Name = "buttonEdit";
-            buttonEdit.Size = new Size(380, 23);
+            buttonEdit.Size = new Size(670, 42);
             buttonEdit.TabIndex = 7;
-            buttonEdit.Text = "Duzenle";
+            buttonEdit.Text = "Düzenle";
             buttonEdit.UseVisualStyleBackColor = true;
             buttonEdit.Click += buttonEdit_Click;
             // 
@@ -121,17 +128,19 @@
             // 
             // textBoxUnitPrice
             // 
-            textBoxUnitPrice.Location = new Point(297, 159);
+            textBoxUnitPrice.Font = new Font("Segoe UI", 15.75F);
+            textBoxUnitPrice.Location = new Point(510, 269);
             textBoxUnitPrice.Name = "textBoxUnitPrice";
-            textBoxUnitPrice.Size = new Size(138, 23);
+            textBoxUnitPrice.Size = new Size(138, 35);
             textBoxUnitPrice.TabIndex = 9;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(209, 162);
+            label4.Font = new Font("Segoe UI", 15.75F);
+            label4.Location = new Point(373, 274);
             label4.Name = "label4";
-            label4.Size = new Size(66, 15);
+            label4.Size = new Size(114, 30);
             label4.TabIndex = 10;
             label4.Text = "Birim Fiyat:";
             // 
@@ -139,7 +148,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(534, 260);
+            ClientSize = new Size(737, 412);
             Controls.Add(label4);
             Controls.Add(textBoxUnitPrice);
             Controls.Add(button2);
@@ -150,19 +159,19 @@
             Controls.Add(label2);
             Controls.Add(textBoxIngredientName);
             Controls.Add(label1);
-            Controls.Add(pictureBox1);
+            Controls.Add(pictureBoxIngredient);
             FormBorderStyle = FormBorderStyle.None;
             Name = "IngredientEditForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "IngredientEditForm";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxIngredient).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private PictureBox pictureBox1;
+        private PictureBox pictureBoxIngredient;
         private Label label1;
         private TextBox textBoxIngredientName;
         private Label label2;

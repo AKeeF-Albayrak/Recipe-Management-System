@@ -33,6 +33,17 @@ namespace LezzetKitabi.Forms
             textBoxAmount.Text = ingredient.TotalQuantity;
             textBoxUnitPrice.Text = ingredient.UnitPrice.ToString();
             comboBoxUnit.SelectedItem = ingredient.Unit;
+
+            if (ingredient.Image != null)
+            {
+                using (MemoryStream ms = new MemoryStream(ingredient.Image))
+                {
+                    Image img = Image.FromStream(ms);
+                    pictureBoxIngredient.Image = img;
+                }
+            }
+
+            pictureBoxIngredient.SizeMode = PictureBoxSizeMode.StretchImage;
         }
         private void button2_Click(object sender, EventArgs e)
         {

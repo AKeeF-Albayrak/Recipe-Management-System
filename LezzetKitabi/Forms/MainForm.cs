@@ -56,7 +56,7 @@ namespace LezzetKitabi.Forms
 
             await _recipeMainControl.LoadBackgroundImageAsync();
             await _recipeMainControl.RefreshPanelsAsync();
-            await _ingredientMainControl.LoadBackgroundImageAsync();
+            //await _ingredientMainControl.LoadBackgroundImageAsync();
             await _ingredientMainControl.RefreshPanelsAsync();
         }
 
