@@ -87,7 +87,7 @@ namespace LezzetKitabi.Forms.Controls
             }
 
             int startIndex = (currentPage - 1) * 8;
-            int endIndex = Math.Min(startIndex + 8, ingredients.Count);
+            int endIndex = Math.Min(startIndex + 18, ingredients.Count);
 
             for (int i = startIndex; i < endIndex; i++)
             {
