@@ -34,14 +34,10 @@ namespace LezzetKitabi.Forms.Controls
             InitializeComponent();
             InitializeCustomPanelsAsync();
 
-            panelFilter.BackColor = Color.White;
-            panelElements.BackColor = Color.Transparent;
-            panelDown.BackColor = Color.Transparent;
             comboBoxUnit.Items.AddRange(Enum.GetNames(typeof(UnitType)));
             InitializeSearchTextBox();
-
-
         }
+
         private async Task InitializeSearchTextBox()
         {
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType);
@@ -139,7 +135,7 @@ namespace LezzetKitabi.Forms.Controls
                 labelBirimFiyati.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Panel overlayPanel = new Panel();
-                overlayPanel.BackColor = Color.Gray;
+                overlayPanel.BackColor = Color.FromArgb(186, 230, 253);
                 overlayPanel.Size = new Size(panelWidth, panelHeight);
                 overlayPanel.Location = new Point(0, 0);
                 overlayPanel.Visible = false;
@@ -287,7 +283,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void BringToFront(Panel panel)
         {
-            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.Gray);
+            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.FromArgb(186, 230, 253));
             if (overlayPanel != null)
             {
                 overlayPanel.Visible = true;
@@ -319,7 +315,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void CheckMouseLeave(Panel panel)
         {
-            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
+            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.FromArgb(186, 230, 253));
             if (overlayPanel != null && overlayPanel.Visible)
             {
                 System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();
@@ -344,6 +340,11 @@ namespace LezzetKitabi.Forms.Controls
             panelItems.Controls.Clear();
 
             await InitializeCustomPanelsAsync();
+        }
+        private void UpdatePaginationButtons()
+        {
+            buttonPrevious.Enabled = currentPage > 1;
+            buttonNext.Enabled = currentPage < totalPages;
         }
         private void buttonPriceRangeAdd_Click(object sender, EventArgs e)
         {
@@ -508,28 +509,20 @@ namespace LezzetKitabi.Forms.Controls
             RefreshPanelsAsync();
             InitializeCustomPanelsAsync();
         }
-        private async void buttonPrevius_Click(object sender, EventArgs e)
+        private async void buttonPrevious_Click(object sender, EventArgs e)
         {
             if (currentPage > 1)
             {
                 currentPage--;
                 await RefreshPanelsAsync();
             }
-            else
-            {
-                MessageBox.Show("Ilk Sayfaya Ulastiniz Daha Geri Gidemezsiniz!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
         }
-        private void buttonNext_Click(object sender, EventArgs e)
+        private async void buttonNext_Click(object sender, EventArgs e)
         {
             if (currentPage < totalPages)
             {
                 currentPage++;
-                RefreshPanelsAsync();
-            }
-            else
-            {
-                MessageBox.Show("Son sayfaya ulaştınız, daha ileri gidemiyorsunuz.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                await RefreshPanelsAsync();
             }
         }
     }

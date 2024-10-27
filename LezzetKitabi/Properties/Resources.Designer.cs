@@ -63,36 +63,6 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _360_F_646040778_qTRXJkBQGACPxxOBKYABSDUmLIPaopJZ {
-            get {
-                object obj = ResourceManager.GetObject("360_F_646040778_qTRXJkBQGACPxxOBKYABSDUmLIPaopJZ", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap bgTest {
-            get {
-                object obj = ResourceManager.GetObject("bgTest", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap coverImage {
-            get {
-                object obj = ResourceManager.GetObject("coverImage", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap DeleteIcon {
             get {
                 object obj = ResourceManager.GetObject("DeleteIcon", resourceCulture);
@@ -113,16 +83,6 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap domates {
-            get {
-                object obj = ResourceManager.GetObject("domates", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap EditIcon {
             get {
                 object obj = ResourceManager.GetObject("EditIcon", resourceCulture);
@@ -133,9 +93,9 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap istockphoto_1201059204_612x612 {
+        internal static System.Drawing.Bitmap kitchen_utensils_background_cookbook_seamless_600nw_2152405123 {
             get {
-                object obj = ResourceManager.GetObject("istockphoto-1201059204-612x612", resourceCulture);
+                object obj = ResourceManager.GetObject("kitchen-utensils-background-cookbook-seamless-600nw-2152405123", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +103,9 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap kitchen_utensils_background_cookbook_seamless_600nw_2152405123 {
+        internal static System.Drawing.Bitmap Kitchen_utensils_seamless_background_vector {
             get {
-                object obj = ResourceManager.GetObject("kitchen-utensils-background-cookbook-seamless-600nw-2152405123", resourceCulture);
+                object obj = ResourceManager.GetObject("Kitchen-utensils-seamless-background-vector", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,39 +133,9 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap seamless_pattern_background_doodle_kitchen_tools_cute_drawing_43503_28 {
-            get {
-                object obj = ResourceManager.GetObject("seamless-pattern-background-doodle-kitchen-tools-cute-drawing_43503-28", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap seamless_pattern_with_hand_drawn_cooking_ingredients_654192_292 {
-            get {
-                object obj = ResourceManager.GetObject("seamless-pattern-with-hand-drawn-cooking-ingredients_654192-292", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap spoons_with_powder_condiments_copy_space {
             get {
                 object obj = ResourceManager.GetObject("spoons-with-powder-condiments-copy-space", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap StockVectorBg {
-            get {
-                object obj = ResourceManager.GetObject("StockVectorBg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

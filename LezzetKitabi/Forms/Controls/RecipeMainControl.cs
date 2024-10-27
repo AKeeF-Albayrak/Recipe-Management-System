@@ -151,7 +151,7 @@ namespace LezzetKitabi.Forms.Controls
                 mainPanel.MouseLeave += (s, e) => CheckMouseLeave(mainPanel);
 
                 Panel overlayPanel = new Panel();
-                overlayPanel.BackColor = Color.SandyBrown;
+                overlayPanel.BackColor = mainPanel.BackColor;
                 overlayPanel.Size = new Size(panelWidth, panelHeight);
                 overlayPanel.Location = new Point(0, 0);
                 overlayPanel.Visible = false;
@@ -164,7 +164,7 @@ namespace LezzetKitabi.Forms.Controls
 
                     using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
                     {
-                        using (Brush brush = new SolidBrush(Color.SandyBrown))
+                        using (Brush brush = new SolidBrush(overlayPanel.BackColor)) // overlayPanel rengini burada da kullanıyoruz
                         {
                             g.FillPath(brush, path);
 
@@ -364,7 +364,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void BringToFront(Panel panel)
         {
-            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
+            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == panel.BackColor);
             if (overlayPanel != null)
             {
                 overlayPanel.Visible = true;
@@ -396,7 +396,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private void CheckMouseLeave(Panel panel)
         {
-            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == Color.SandyBrown);
+            Panel overlayPanel = panel.Controls.OfType<Panel>().FirstOrDefault(p => p.BackColor == panel.BackColor);
             if (overlayPanel != null && overlayPanel.Visible)
             {
                 System.Windows.Forms.Timer mouseLeaveTimer = new System.Windows.Forms.Timer();

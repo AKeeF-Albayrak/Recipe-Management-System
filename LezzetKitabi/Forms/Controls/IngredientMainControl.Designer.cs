@@ -36,7 +36,7 @@
             panelItems = new Panel();
             panelDown = new Panel();
             buttonNext = new Button();
-            buttonPrevius = new Button();
+            buttonPrevious = new Button();
             panelPrevius = new Panel();
             panelSort = new Panel();
             comboBoxSort = new ComboBox();
@@ -66,7 +66,6 @@
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
             panelDown.SuspendLayout();
-            panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
             panel6.SuspendLayout();
             panel5.SuspendLayout();
@@ -78,6 +77,7 @@
             // panelSearch
             // 
             panelSearch.BackColor = Color.Transparent;
+            panelSearch.Controls.Add(comboBoxSort);
             panelSearch.Controls.Add(button2);
             panelSearch.Controls.Add(textBoxSearch);
             panelSearch.Dock = DockStyle.Top;
@@ -107,7 +107,7 @@
             // 
             // panelElements
             // 
-            panelElements.BackColor = Color.Chocolate;
+            panelElements.BackColor = Color.Transparent;
             panelElements.Controls.Add(panelPage);
             panelElements.Controls.Add(panelSort);
             panelElements.Dock = DockStyle.Left;
@@ -118,6 +118,7 @@
             // 
             // panelPage
             // 
+            panelPage.BackColor = Color.Transparent;
             panelPage.Controls.Add(panelItems);
             panelPage.Controls.Add(panelDown);
             panelPage.Controls.Add(panelPrevius);
@@ -128,6 +129,7 @@
             // 
             // panelItems
             // 
+            panelItems.BackColor = Color.Transparent;
             panelItems.Dock = DockStyle.Left;
             panelItems.Location = new Point(48, 0);
             panelItems.Name = "panelItems";
@@ -137,7 +139,7 @@
             // panelDown
             // 
             panelDown.Controls.Add(buttonNext);
-            panelDown.Controls.Add(buttonPrevius);
+            panelDown.Controls.Add(buttonPrevious);
             panelDown.Dock = DockStyle.Bottom;
             panelDown.Location = new Point(48, 662);
             panelDown.Name = "panelDown";
@@ -160,16 +162,16 @@
             // 
             // buttonPrevius
             // 
-            buttonPrevius.BackColor = Color.Transparent;
-            buttonPrevius.FlatAppearance.BorderSize = 0;
-            buttonPrevius.FlatStyle = FlatStyle.Flat;
-            buttonPrevius.Location = new Point(273, 3);
-            buttonPrevius.Name = "buttonPrevius";
-            buttonPrevius.Size = new Size(75, 23);
-            buttonPrevius.TabIndex = 0;
-            buttonPrevius.Text = "<--";
-            buttonPrevius.UseVisualStyleBackColor = false;
-            buttonPrevius.Click += buttonPrevius_Click;
+            buttonPrevious.BackColor = Color.Transparent;
+            buttonPrevious.FlatAppearance.BorderSize = 0;
+            buttonPrevious.FlatStyle = FlatStyle.Flat;
+            buttonPrevious.Location = new Point(273, 3);
+            buttonPrevious.Name = "buttonPrevious";
+            buttonPrevious.Size = new Size(75, 23);
+            buttonPrevious.TabIndex = 0;
+            buttonPrevious.Text = "<--";
+            buttonPrevious.UseVisualStyleBackColor = false;
+            buttonPrevious.Click += buttonPrevious_Click;
             // 
             // panelPrevius
             // 
@@ -183,7 +185,6 @@
             // panelSort
             // 
             panelSort.BackColor = Color.Transparent;
-            panelSort.Controls.Add(comboBoxSort);
             panelSort.Location = new Point(0, 0);
             panelSort.Name = "panelSort";
             panelSort.Size = new Size(1126, 40);
@@ -193,7 +194,7 @@
             // 
             comboBoxSort.FormattingEnabled = true;
             comboBoxSort.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza" });
-            comboBoxSort.Location = new Point(397, 11);
+            comboBoxSort.Location = new Point(830, 22);
             comboBoxSort.Name = "comboBoxSort";
             comboBoxSort.Size = new Size(192, 23);
             comboBoxSort.TabIndex = 0;
@@ -424,7 +425,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            BackgroundImage = Properties.Resources.coverImage;
+            BackgroundImage = Properties.Resources.Kitchen_utensils_seamless_background_vector;
             Controls.Add(panelFilter);
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
@@ -435,7 +436,6 @@
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
             panelDown.ResumeLayout(false);
-            panelSort.ResumeLayout(false);
             panelFilter.ResumeLayout(false);
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
@@ -484,6 +484,6 @@
         private ComboBox comboBoxSort;
         private Button button1;
         private Button buttonNext;
-        private Button buttonPrevius;
+        private Button buttonPrevious;
     }
 }
