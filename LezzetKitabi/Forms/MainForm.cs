@@ -43,6 +43,7 @@ namespace LezzetKitabi.Forms
 
             LoadForm(_recipeMainControl);
             _recipeMainControl.RefreshPanelsAsync();
+            _recipeMainControl.LoadBackgroundImageAsync();
             page = "Recipes";
         }
         private async void button1_Click(object sender, EventArgs e)
