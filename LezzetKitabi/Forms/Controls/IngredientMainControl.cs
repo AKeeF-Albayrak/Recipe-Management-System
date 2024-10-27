@@ -27,17 +27,17 @@ namespace LezzetKitabi.Forms.Controls
         IngredientSortingType _sortingType = IngredientSortingType.A_from_Z;
         private List<FilterCriteria> filterCriteriaList;
         private int currentPage = 1;
-        private int totalPages;
+        public int totalPages;
 
         public IngredientMainControl(IServiceProvider serviceProvider)
         {
             filterCriteriaList = new List<FilterCriteria>();
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
-            
+
 
             comboBoxUnit.Items.AddRange(Enum.GetNames(typeof(UnitType)));
-            
+
         }
 
         /*public async Task LoadBackgroundImageAsync()
@@ -79,14 +79,14 @@ namespace LezzetKitabi.Forms.Controls
 
             textBoxSearch.AutoCompleteCustomSource = suggestions;
 
-            
+
             if (ingredients == null || ingredients.Count == 0)
             {
                 MessageBox.Show("No ingredients found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            int startIndex = (currentPage - 1) * 8;
+            int startIndex = (currentPage - 1) * 18;
             int endIndex = Math.Min(startIndex + 18, ingredients.Count);
 
             for (int i = startIndex; i < endIndex; i++)
@@ -133,18 +133,21 @@ namespace LezzetKitabi.Forms.Controls
 
                 Label label = new Label();
                 label.AutoSize = true;
+                label.Font = new Font("Segoe Print", 8F);
                 label.Text = ingredients[i].IngredientName;
-                label.Location = new Point((panelWidth - label.Width) / 2, 12);
+                label.Location = new Point((panelWidth - label.Width) / 2 +20, 12);
                 label.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Label labelMiktar = new Label();
                 labelMiktar.AutoSize = true;
+                labelMiktar.Font = new Font("Segoe Print", 8F);
                 labelMiktar.Text = $"{ingredients[i].TotalQuantity} {ingredients[i].Unit}";
                 labelMiktar.Location = new Point((panelWidth - labelMiktar.Width) / 2, pictureBox.Bottom + 5);
                 labelMiktar.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Label labelBirimFiyati = new Label();
                 labelBirimFiyati.AutoSize = true;
+                labelBirimFiyati.Font = new Font("Segoe Print", 8F);
                 labelBirimFiyati.Text = $"₺{ingredients[i].UnitPrice:0.00}";
                 labelBirimFiyati.Location = new Point((panelWidth - labelBirimFiyati.Width) / 2, labelMiktar.Bottom + 5);
                 labelBirimFiyati.ForeColor = Color.FromArgb(3, 105, 161);
@@ -507,11 +510,6 @@ namespace LezzetKitabi.Forms.Controls
                 }
             }
         }
-        private void buttonFilters_Click(object sender, EventArgs e)
-        {
-            RefreshPanelsAsync();
-            InitializeCustomPanelsAsync();
-        }
         private void buttonSearch_Click(object sender, EventArgs e)
         {
             string name = textBoxSearch.Text.Trim();
@@ -540,6 +538,14 @@ namespace LezzetKitabi.Forms.Controls
             if (currentPage < totalPages)
             {
                 currentPage++;
+                await RefreshPanelsAsync();
+            }
+        }
+
+        private async void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBoxSearch.Text))
+            {
                 await RefreshPanelsAsync();
             }
         }

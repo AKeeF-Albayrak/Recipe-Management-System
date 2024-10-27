@@ -30,7 +30,7 @@ namespace LezzetKitabi.Forms.Controls
         private readonly IServiceProvider _serviceProvider;
         RecipeSortingType _sortingType = RecipeSortingType.Descending_Percentage;
         private int currentPage = 1;
-        private int totalPages;
+        public int totalPages;
         private List<FilterCriteria> filterCriteriaList;
         public RecipeMainControl(IServiceProvider serviceProvider)
         {
@@ -42,7 +42,7 @@ namespace LezzetKitabi.Forms.Controls
             InitializeComponent();
 
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            
+
             panelFilter.BackColor = Color.White;
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
@@ -74,7 +74,7 @@ namespace LezzetKitabi.Forms.Controls
             int startY = 10;
             int cornerRadius = 20;
 
-            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType,filterCriteriaList);
+            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType, filterCriteriaList);
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
             textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -99,7 +99,7 @@ namespace LezzetKitabi.Forms.Controls
             comboBoxIngredients.DataSource = ingredients;
             comboBoxIngredients.DisplayMember = "IngredientName";
             comboBoxIngredients.ValueMember = "Id";
-
+            
             if (recipes == null || recipes.Count == 0)
             {
                 MessageBox.Show("No recipes found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -230,38 +230,44 @@ namespace LezzetKitabi.Forms.Controls
 
                 Label label = new Label();
                 label.AutoSize = true;
+                label.Font = new Font("Segoe Print", 13F);
                 label.Text = recipes[i].RecipeName;
                 label.Location = new Point((panelWidth - label.Width) / 2, 12);
                 label.ForeColor = labelColor;
 
                 Label percentageLabel = new Label();
                 percentageLabel.AutoSize = true;
+                percentageLabel.Font = new Font("Segoe Print", 8F);
                 percentageLabel.Text = "Yüzde: " + recipes[i].AvailabilityPercentage.ToString("0.##") + "%";
-                percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2, 180);
+                percentageLabel.Location = new Point((panelWidth - percentageLabel.Width) / 2 - 15, 180);
                 percentageLabel.ForeColor = labelColor;
 
                 Label costLabel = new Label();
                 costLabel.AutoSize = true;
+                costLabel.Font = new Font("Segoe Print", 8F);
                 costLabel.Text = "Maliyet: ₺" + recipes[i].TotalCost.ToString("0.00");
-                costLabel.Location = new Point((panelWidth - costLabel.Width) / 2, 200);
+                costLabel.Location = new Point((panelWidth - costLabel.Width) / 2 - 15, 200);
                 costLabel.ForeColor = labelColor;
 
                 Label missingCostLabel = new Label();
                 missingCostLabel.AutoSize = true;
+                missingCostLabel.Font = new Font("Segoe Print", 8F);
                 missingCostLabel.Text = "Eksik Maliyet: ₺" + recipes[i].MissingCost.ToString("0.00");
-                missingCostLabel.Location = new Point((panelWidth - missingCostLabel.Width) / 2, 220);
+                missingCostLabel.Location = new Point((panelWidth - missingCostLabel.Width) / 2 - 15, 220);
                 missingCostLabel.ForeColor = labelColor;
 
                 Label timeLabel = new Label();
                 timeLabel.AutoSize = true;
+                timeLabel.Font = new Font("Segoe Print", 8F);
                 timeLabel.Text = "Tarif Süresi: " + recipes[i].PreparationTime + " dk";
-                timeLabel.Location = new Point((panelWidth - timeLabel.Width) / 2, 240);
+                timeLabel.Location = new Point((panelWidth - timeLabel.Width) / 2 - 15, 240);
                 timeLabel.ForeColor = labelColor;
 
                 Label MatchingpercentageLabel = new Label();
                 MatchingpercentageLabel.AutoSize = true;
+                MatchingpercentageLabel.Font = new Font("Segoe Print", 8F);
                 MatchingpercentageLabel.Text = "Yüzde: " + recipes[i].MatchingPercentage.ToString("0.##") + "%";
-                MatchingpercentageLabel.Location = new Point((panelWidth - MatchingpercentageLabel.Width) / 2, 260);
+                MatchingpercentageLabel.Location = new Point((panelWidth - MatchingpercentageLabel.Width) / 2 - 15, 260);
                 MatchingpercentageLabel.ForeColor = labelColor;
 
                 mainPanel.Controls.Add(label);
@@ -579,10 +585,6 @@ namespace LezzetKitabi.Forms.Controls
 
             RefreshPanelsAsync();
         }
-        private void buttonFilter_Click(object sender, EventArgs e)
-        {
-            RefreshPanelsAsync();
-        }
         private void AddFilterToPanel(string filterText, Action<Control> removeAction)
         {
             Panel filterPanel = new Panel
@@ -690,22 +692,23 @@ namespace LezzetKitabi.Forms.Controls
                 currentPage--;
                 await RefreshPanelsAsync();
             }
-            else
-            {
-                MessageBox.Show("Ilk Sayfaya Ulastiniz Daha Geri Gidemezsiniz!","Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
 
         }
-        private void button4_Click(object sender, EventArgs e)
+        private async void button4_Click(object sender, EventArgs e)
         {
             if (currentPage < totalPages)
             {
                 currentPage++;
-                RefreshPanelsAsync();
+                await RefreshPanelsAsync();
             }
-            else
+
+        }
+
+        private async void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBoxSearch.Text))
             {
-                MessageBox.Show("Son sayfaya ulaştınız, daha ileri gidemiyorsunuz.","Hata",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                await RefreshPanelsAsync();
             }
         }
     }

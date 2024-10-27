@@ -19,8 +19,6 @@ namespace LezzetKitabi.Forms
 
         public RecipeMainControl _recipeMainControl;
         private IngredientMainControl _ingredientMainControl;
-        private IngredientAddControl _ingredientAddControl;
-        private RecipeAddControl _recipeAddControl;
         public MainForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -28,47 +26,24 @@ namespace LezzetKitabi.Forms
 
             _recipeMainControl = _serviceProvider.GetRequiredService<RecipeMainControl>();
             _ingredientMainControl = _serviceProvider.GetRequiredService<IngredientMainControl>();
-            _ingredientAddControl = _serviceProvider.GetRequiredService<IngredientAddControl>();
-            _recipeAddControl = _serviceProvider.GetRequiredService<RecipeAddControl>();
 
             panelForms.Controls.Add(_recipeMainControl);
             panelForms.Controls.Add(_ingredientMainControl);
-            panelForms.Controls.Add(_ingredientAddControl);
-            panelForms.Controls.Add(_recipeAddControl);
 
             _recipeMainControl.Visible = false;
             _ingredientMainControl.Visible = false;
-            _ingredientAddControl.Visible = false;
-            _recipeAddControl.Visible = false;
+            LoadForm(_recipeMainControl);
 
             Load();
-
-            LoadForm(_recipeMainControl);
-            
             page = "Recipes";
         }
         private async void Load()
         {
-            _ingredientMainControl.IngredientChanged += IngredientsChanged;
-            _ingredientAddControl.IngredientChanged += IngredientsChanged;
-            _recipeAddControl.RecipeAdded += RecipeAddControl_RecipeAdded;
-            _recipeMainControl.RecipeAdded += RecipeAddControl_RecipeAdded;
-
             await _recipeMainControl.LoadBackgroundImageAsync();
             await _recipeMainControl.RefreshPanelsAsync();
-            //await _ingredientMainControl.LoadBackgroundImageAsync();
             await _ingredientMainControl.RefreshPanelsAsync();
         }
 
-        private async void IngredientsChanged(object sender, EventArgs e)
-        {
-            await _recipeMainControl.RefreshPanelsAsync();
-            await _ingredientMainControl.RefreshPanelsAsync();
-        }
-        private async void RecipeAddControl_RecipeAdded(object sender, EventArgs e)
-        {
-            await _recipeMainControl.RefreshPanelsAsync();
-        }
         private async void button1_Click(object sender, EventArgs e)
         {
             if (isAnimating) return;
@@ -121,10 +96,9 @@ namespace LezzetKitabi.Forms
         }
         private void LoadForm(UserControl userControl)
         {
-            foreach (Control control in panelForms.Controls)
-            {
-                control.Visible = false;
-            }
+            panelForms.Controls.Clear();
+            userControl.Dock = DockStyle.Fill;
+            panelForms.Controls.Add(userControl);
 
             userControl.Visible = true;
             userControl.BringToFront();
@@ -134,9 +108,9 @@ namespace LezzetKitabi.Forms
         {
             if (page != "Recipes")
             {
+                await _recipeMainControl.RefreshPanelsAsync();
                 LoadForm(_recipeMainControl);
                 page = "Recipes";
-                await _recipeMainControl.RefreshPanelsAsync();
             }
         }
 
@@ -144,9 +118,10 @@ namespace LezzetKitabi.Forms
         {
             if (page != "Ingredients")
             {
+                await _ingredientMainControl.RefreshPanelsAsync();
                 LoadForm(_ingredientMainControl);
                 page = "Ingredients";
-                await _ingredientMainControl.RefreshPanelsAsync();
+                
             }
         }
 
@@ -154,7 +129,7 @@ namespace LezzetKitabi.Forms
         {
             if (page != "AddIngredient")
             {
-                LoadForm(_ingredientAddControl);
+                LoadForm(new IngredientAddControl(_serviceProvider));
                 page = "AddIngredient";
             }
         }
@@ -163,7 +138,7 @@ namespace LezzetKitabi.Forms
         {
             if (page != "AddRecipe")
             {
-                LoadForm(_recipeAddControl);
+                LoadForm(new RecipeAddControl(_serviceProvider));
                 page = "AddRecipe";
             }
         }

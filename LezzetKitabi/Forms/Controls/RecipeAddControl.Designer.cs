@@ -75,24 +75,24 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
             label2.Location = new Point(38, 268);
             label2.Name = "label2";
-            label2.Size = new Size(129, 37);
+            label2.Size = new Size(135, 47);
             label2.TabIndex = 5;
-            label2.Text = "Category";
+            label2.Text = "Kategori";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
             label1.AllowDrop = true;
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 162);
             label1.Location = new Point(38, 148);
             label1.Name = "label1";
-            label1.Size = new Size(70, 37);
+            label1.Size = new Size(178, 47);
             label1.TabIndex = 7;
-            label1.Text = "Title";
+            label1.Text = "Tarifin Ismi";
             // 
             // label3
             // 
@@ -107,12 +107,12 @@
             // 
             label4.AutoSize = true;
             label4.BackColor = Color.Transparent;
-            label4.Font = new Font("Segoe UI Black", 48F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label4.Location = new Point(739, 28);
+            label4.Font = new Font("Segoe Print", 48F, FontStyle.Bold);
+            label4.Location = new Point(772, 28);
             label4.Name = "label4";
-            label4.Size = new Size(547, 86);
+            label4.Size = new Size(457, 112);
             label4.TabIndex = 11;
-            label4.Text = "Add New Recipe";
+            label4.Text = "Tarif Ekleme";
             // 
             // numericUpDownHours
             // 
@@ -126,33 +126,33 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.Location = new Point(355, 201);
+            label5.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
+            label5.Location = new Point(339, 201);
             label5.Name = "label5";
-            label5.Size = new Size(227, 37);
+            label5.Size = new Size(252, 47);
             label5.TabIndex = 13;
-            label5.Text = "Preparation Time";
+            label5.Text = "Hazirlama Suresi";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
+            label6.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
             label6.Location = new Point(355, 273);
             label6.Name = "label6";
-            label6.Size = new Size(57, 32);
+            label6.Size = new Size(90, 47);
             label6.TabIndex = 14;
-            label6.Text = "Hrs:";
+            label6.Text = "Saat:";
             label6.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
-            label7.Location = new Point(355, 324);
+            label7.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
+            label7.Location = new Point(325, 320);
             label7.Name = "label7";
-            label7.Size = new Size(72, 32);
+            label7.Size = new Size(121, 47);
             label7.TabIndex = 16;
-            label7.Text = "Mins:";
+            label7.Text = "Dakika:";
             // 
             // numericUpDownMinutes
             // 
@@ -168,7 +168,7 @@
             metroSetButton1.DisabledBackColor = Color.FromArgb(120, 65, 177, 225);
             metroSetButton1.DisabledBorderColor = Color.FromArgb(120, 65, 177, 225);
             metroSetButton1.DisabledForeColor = Color.Gray;
-            metroSetButton1.Font = new Font("Segoe UI", 14.25F);
+            metroSetButton1.Font = new Font("Segoe Print", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
             metroSetButton1.HoverBorderColor = Color.FromArgb(95, 207, 255);
             metroSetButton1.HoverColor = Color.FromArgb(95, 207, 255);
             metroSetButton1.HoverTextColor = Color.White;
@@ -307,42 +307,42 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label10.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
             label10.Location = new Point(39, 381);
             label10.Name = "label10";
-            label10.Size = new Size(156, 37);
+            label10.Size = new Size(139, 47);
             label10.TabIndex = 31;
-            label10.Text = "Ingredients";
+            label10.Text = "Malzeme";
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label11.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
             label11.Location = new Point(39, 550);
             label11.Name = "label11";
-            label11.Size = new Size(163, 37);
+            label11.Size = new Size(128, 47);
             label11.TabIndex = 32;
-            label11.Text = "Instructions";
+            label11.Text = "Yonerge";
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
             label8.Location = new Point(631, 148);
             label8.Name = "label8";
-            label8.Size = new Size(156, 37);
+            label8.Size = new Size(175, 47);
             label8.TabIndex = 33;
-            label8.Text = "Ingredients";
+            label8.Text = "Malzemeler";
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI Semibold", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label9.Location = new Point(631, 429);
+            label9.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
+            label9.Location = new Point(631, 421);
             label9.Name = "label9";
-            label9.Size = new Size(163, 37);
+            label9.Size = new Size(164, 47);
             label9.TabIndex = 34;
-            label9.Text = "Instructions";
+            label9.Text = "Yonergeler";
             // 
             // comboBoxCategory
             // 
@@ -357,7 +357,7 @@
             // 
             // pictureBoxRecipe
             // 
-            pictureBoxRecipe.Location = new Point(193, 28);
+            pictureBoxRecipe.Location = new Point(193, 22);
             pictureBoxRecipe.Name = "pictureBoxRecipe";
             pictureBoxRecipe.Size = new Size(123, 118);
             pictureBoxRecipe.TabIndex = 38;
@@ -380,9 +380,10 @@
             // labelUnit
             // 
             labelUnit.AutoSize = true;
+            labelUnit.Font = new Font("Segoe Print", 9F, FontStyle.Regular, GraphicsUnit.Point, 162);
             labelUnit.Location = new Point(402, 496);
             labelUnit.Name = "labelUnit";
-            labelUnit.Size = new Size(44, 15);
+            labelUnit.Size = new Size(54, 21);
             labelUnit.TabIndex = 40;
             labelUnit.Text = "label12";
             // 

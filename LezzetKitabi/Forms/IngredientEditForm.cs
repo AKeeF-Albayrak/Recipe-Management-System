@@ -32,7 +32,8 @@ namespace LezzetKitabi.Forms
             textBoxIngredientName.Text = ingredient.IngredientName;
             textBoxAmount.Text = ingredient.TotalQuantity;
             textBoxUnitPrice.Text = ingredient.UnitPrice.ToString();
-            comboBoxUnit.SelectedItem = ingredient.Unit;
+            comboBoxUnit.SelectedItem = (UnitType)Enum.Parse(typeof(UnitType), ingredient.Unit);
+            MessageBox.Show(ingredient.Unit);
 
             if (ingredient.Image != null)
             {

@@ -110,6 +110,7 @@
             textBoxTime.Name = "textBoxTime";
             textBoxTime.Size = new Size(181, 23);
             textBoxTime.TabIndex = 6;
+            textBoxTime.KeyPress += textBoxAmount_KeyPress;
             // 
             // label3
             // 

@@ -47,7 +47,7 @@
             // 
             labelRecipeName.AutoSize = true;
             labelRecipeName.Font = new Font("Arial", 14.25F);
-            labelRecipeName.Location = new Point(246, 564);
+            labelRecipeName.Location = new Point(311, 555);
             labelRecipeName.Name = "labelRecipeName";
             labelRecipeName.Size = new Size(80, 22);
             labelRecipeName.TabIndex = 0;
@@ -59,15 +59,15 @@
             label1.Font = new Font("Segoe UI Black", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 162);
             label1.Location = new Point(531, 387);
             label1.Name = "label1";
-            label1.Size = new Size(179, 40);
+            label1.Size = new Size(185, 40);
             label1.TabIndex = 2;
-            label1.Text = "Ingredients";
+            label1.Text = "Malzemeler";
             // 
             // labelCategory
             // 
             labelCategory.AutoSize = true;
             labelCategory.Font = new Font("Arial", 14.25F);
-            labelCategory.Location = new Point(246, 602);
+            labelCategory.Location = new Point(311, 627);
             labelCategory.Name = "labelCategory";
             labelCategory.Size = new Size(122, 22);
             labelCategory.TabIndex = 3;
@@ -77,7 +77,7 @@
             // 
             labelPreparationTime.AutoSize = true;
             labelPreparationTime.Font = new Font("Arial", 14.25F);
-            labelPreparationTime.Location = new Point(246, 641);
+            labelPreparationTime.Location = new Point(296, 699);
             labelPreparationTime.Name = "labelPreparationTime";
             labelPreparationTime.Size = new Size(204, 22);
             labelPreparationTime.TabIndex = 4;
@@ -89,9 +89,9 @@
             labelInstructions.Font = new Font("Segoe UI Black", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             labelInstructions.Location = new Point(531, 19);
             labelInstructions.Name = "labelInstructions";
-            labelInstructions.Size = new Size(187, 40);
+            labelInstructions.Size = new Size(172, 40);
             labelInstructions.TabIndex = 6;
-            labelInstructions.Text = "Instructions";
+            labelInstructions.Text = "Yonergeler";
             // 
             // pictureBox1
             // 
@@ -104,26 +104,27 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            label4.Location = new Point(64, 635);
+            label4.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
+            label4.Location = new Point(12, 683);
             label4.Name = "label4";
-            label4.Size = new Size(164, 25);
+            label4.Size = new Size(278, 47);
             label4.TabIndex = 9;
-            label4.Text = "Preparation Time:";
+            label4.Text = "Hazirlanma Suresi:";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            label5.Location = new Point(90, 561);
+            label5.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
+            label5.Location = new Point(138, 539);
             label5.Name = "label5";
-            label5.Size = new Size(130, 25);
+            label5.Size = new Size(152, 47);
             label5.TabIndex = 10;
-            label5.Text = "Recipe Name:";
+            label5.Text = "Tarif Adi:";
             // 
             // panelInstructions
             // 
             panelInstructions.BackColor = SystemColors.ActiveBorder;
+            panelInstructions.Font = new Font("Segoe Print", 12F, FontStyle.Regular, GraphicsUnit.Point, 162);
             panelInstructions.Location = new Point(531, 78);
             panelInstructions.Name = "panelInstructions";
             panelInstructions.Size = new Size(672, 290);
@@ -132,6 +133,7 @@
             // panelIngredients
             // 
             panelIngredients.BackColor = SystemColors.ActiveBorder;
+            panelIngredients.Font = new Font("Segoe Print", 12F, FontStyle.Regular, GraphicsUnit.Point, 162);
             panelIngredients.Location = new Point(531, 440);
             panelIngredients.Name = "panelIngredients";
             panelIngredients.Size = new Size(672, 290);
@@ -141,7 +143,7 @@
             // 
             button1.Location = new Point(12, 19);
             button1.Name = "button1";
-            button1.Size = new Size(44, 23);
+            button1.Size = new Size(76, 40);
             button1.TabIndex = 14;
             button1.Text = "<";
             button1.UseVisualStyleBackColor = true;
@@ -150,12 +152,12 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold);
-            label3.Location = new Point(124, 599);
+            label3.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
+            label3.Location = new Point(147, 611);
             label3.Name = "label3";
-            label3.Size = new Size(96, 25);
+            label3.Size = new Size(143, 47);
             label3.TabIndex = 8;
-            label3.Text = "Category:";
+            label3.Text = "Kategori:";
             // 
             // RecipeDetailsForm
             // 

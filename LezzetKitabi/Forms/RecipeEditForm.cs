@@ -107,6 +107,11 @@ namespace LezzetKitabi.Forms
 
         private async void button3_Click(object sender, EventArgs e)
         {
+            if (textBoxName.Text == "" || textBoxTime.Text == "" || listBoxIngredients.Items.Count == 0 || listBoxInstructions.Items.Count == 0)
+            {
+                MessageBox.Show("Tarif güncellenirken bir hata oluştu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             var recipeUpdateDto = new RecipeUpdateDto
             {
                 Id = _recipe.Id,
