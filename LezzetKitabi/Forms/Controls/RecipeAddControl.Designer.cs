@@ -66,7 +66,7 @@
             // 
             textBoxTitle.BorderStyle = BorderStyle.FixedSingle;
             textBoxTitle.Font = new Font("Segoe UI", 14.25F);
-            textBoxTitle.Location = new Point(38, 201);
+            textBoxTitle.Location = new Point(38, 208);
             textBoxTitle.Name = "textBoxTitle";
             textBoxTitle.PlaceholderText = "Title";
             textBoxTitle.Size = new Size(278, 33);
@@ -76,7 +76,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label2.Location = new Point(39, 264);
+            label2.Location = new Point(39, 263);
             label2.Name = "label2";
             label2.Size = new Size(135, 47);
             label2.TabIndex = 5;
@@ -88,7 +88,7 @@
             label1.AllowDrop = true;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            label1.Location = new Point(38, 148);
+            label1.Location = new Point(38, 150);
             label1.Name = "label1";
             label1.Size = new Size(178, 47);
             label1.TabIndex = 7;
@@ -127,7 +127,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label5.Location = new Point(339, 201);
+            label5.Location = new Point(339, 205);
             label5.Name = "label5";
             label5.Size = new Size(252, 47);
             label5.TabIndex = 13;
@@ -137,7 +137,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label6.Location = new Point(355, 273);
+            label6.Location = new Point(365, 273);
             label6.Name = "label6";
             label6.Size = new Size(90, 47);
             label6.TabIndex = 14;
@@ -148,7 +148,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label7.Location = new Point(325, 320);
+            label7.Location = new Point(331, 320);
             label7.Name = "label7";
             label7.Size = new Size(121, 47);
             label7.TabIndex = 16;
@@ -308,7 +308,7 @@
             // 
             label10.AutoSize = true;
             label10.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label10.Location = new Point(39, 381);
+            label10.Location = new Point(39, 380);
             label10.Name = "label10";
             label10.Size = new Size(139, 47);
             label10.TabIndex = 31;
@@ -318,7 +318,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label11.Location = new Point(39, 542);
+            label11.Location = new Point(39, 540);
             label11.Name = "label11";
             label11.Size = new Size(128, 47);
             label11.TabIndex = 32;
@@ -328,7 +328,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label8.Location = new Point(631, 148);
+            label8.Location = new Point(631, 146);
             label8.Name = "label8";
             label8.Size = new Size(175, 47);
             label8.TabIndex = 33;
@@ -338,7 +338,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe Print", 20.25F, FontStyle.Bold);
-            label9.Location = new Point(631, 422);
+            label9.Location = new Point(631, 420);
             label9.Name = "label9";
             label9.Size = new Size(164, 47);
             label9.TabIndex = 34;
@@ -357,15 +357,15 @@
             // 
             // pictureBoxRecipe
             // 
-            pictureBoxRecipe.Location = new Point(193, 22);
+            pictureBoxRecipe.Location = new Point(268, 17);
             pictureBoxRecipe.Name = "pictureBoxRecipe";
-            pictureBoxRecipe.Size = new Size(123, 118);
+            pictureBoxRecipe.Size = new Size(163, 159);
             pictureBoxRecipe.TabIndex = 38;
             pictureBoxRecipe.TabStop = false;
             // 
             // button4
             // 
-            button4.Location = new Point(355, 113);
+            button4.Location = new Point(463, 88);
             button4.Name = "button4";
             button4.Size = new Size(90, 33);
             button4.TabIndex = 39;

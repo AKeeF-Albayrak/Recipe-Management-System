@@ -36,10 +36,10 @@
             panelElements = new Panel();
             panelPage = new Panel();
             panelItems = new Panel();
-            panelDown = new Panel();
-            button3 = new Button();
             button4 = new Button();
+            panelDown = new Panel();
             panelPrevius = new Panel();
+            button3 = new Button();
             panelSort = new Panel();
             panelFilter = new Panel();
             panel2 = new Panel();
@@ -108,12 +108,13 @@
             // 
             // buttonSearch
             // 
+            buttonSearch.BackColor = Color.LightGray;
             buttonSearch.Location = new Point(948, 22);
             buttonSearch.Name = "buttonSearch";
             buttonSearch.Size = new Size(125, 33);
             buttonSearch.TabIndex = 2;
             buttonSearch.Text = "Arama";
-            buttonSearch.UseVisualStyleBackColor = true;
+            buttonSearch.UseVisualStyleBackColor = false;
             buttonSearch.Click += buttonSearch_Click;
             // 
             // textBoxSearch
@@ -140,7 +141,7 @@
             // 
             // panelElements
             // 
-            panelElements.BackColor = Color.Chocolate;
+            panelElements.BackColor = Color.Transparent;
             panelElements.Controls.Add(panelPage);
             panelElements.Controls.Add(panelSort);
             panelElements.Dock = DockStyle.Left;
@@ -169,29 +170,9 @@
             panelItems.Size = new Size(1041, 639);
             panelItems.TabIndex = 3;
             // 
-            // panelDown
-            // 
-            panelDown.Dock = DockStyle.Bottom;
-            panelDown.Location = new Point(48, 639);
-            panelDown.Name = "panelDown";
-            panelDown.Size = new Size(1078, 51);
-            panelDown.TabIndex = 2;
-            // 
-            // button3
-            // 
-            button3.FlatAppearance.BorderSize = 0;
-            button3.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
-            button3.FlatStyle = FlatStyle.Flat;
-            button3.Location = new Point(-24, 161);
-            button3.Name = "button3";
-            button3.Size = new Size(87, 236);
-            button3.TabIndex = 0;
-            button3.Text = "<---";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
-            // 
             // button4
             // 
+            button4.BackColor = Color.LightGray;
             button4.FlatAppearance.BorderSize = 0;
             button4.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
             button4.FlatStyle = FlatStyle.Flat;
@@ -200,8 +181,17 @@
             button4.Size = new Size(88, 236);
             button4.TabIndex = 1;
             button4.Text = "--->";
-            button4.UseVisualStyleBackColor = true;
+            button4.UseVisualStyleBackColor = false;
             button4.Click += button4_Click;
+            // 
+            // panelDown
+            // 
+            panelDown.BackColor = Color.Transparent;
+            panelDown.Dock = DockStyle.Bottom;
+            panelDown.Location = new Point(48, 639);
+            panelDown.Name = "panelDown";
+            panelDown.Size = new Size(1078, 51);
+            panelDown.TabIndex = 2;
             // 
             // panelPrevius
             // 
@@ -212,6 +202,20 @@
             panelPrevius.Name = "panelPrevius";
             panelPrevius.Size = new Size(48, 690);
             panelPrevius.TabIndex = 1;
+            // 
+            // button3
+            // 
+            button3.BackColor = Color.LightGray;
+            button3.FlatAppearance.BorderSize = 0;
+            button3.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Location = new Point(-24, 161);
+            button3.Name = "button3";
+            button3.Size = new Size(87, 236);
+            button3.TabIndex = 0;
+            button3.Text = "<---";
+            button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
             // 
             // panelSort
             // 

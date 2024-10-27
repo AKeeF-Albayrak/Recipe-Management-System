@@ -43,9 +43,6 @@ namespace LezzetKitabi.Forms.Controls
 
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
 
-            panelFilter.BackColor = Color.White;
-            panelElements.BackColor = Color.Transparent;
-            panelDown.BackColor = Color.Transparent;
             comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Category)));
         }
         private void OnRecipeAdded()
