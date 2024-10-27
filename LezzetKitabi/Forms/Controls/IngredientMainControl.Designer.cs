@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panelSearch = new Panel();
+            comboBoxSort = new ComboBox();
             button2 = new Button();
             textBoxSearch = new TextBox();
             panelElements = new Panel();
@@ -39,7 +40,6 @@
             buttonPrevious = new Button();
             panelPrevius = new Panel();
             panelSort = new Panel();
-            comboBoxSort = new ComboBox();
             panelFilter = new Panel();
             panel6 = new Panel();
             label1 = new Label();
@@ -85,6 +85,16 @@
             panelSearch.Name = "panelSearch";
             panelSearch.Size = new Size(1323, 65);
             panelSearch.TabIndex = 0;
+            // 
+            // comboBoxSort
+            // 
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza" });
+            comboBoxSort.Location = new Point(830, 22);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(192, 23);
+            comboBoxSort.TabIndex = 0;
+            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
             // 
             // button2
             // 
@@ -160,7 +170,7 @@
             buttonNext.UseVisualStyleBackColor = false;
             buttonNext.Click += buttonNext_Click;
             // 
-            // buttonPrevius
+            // buttonPrevious
             // 
             buttonPrevious.BackColor = Color.Transparent;
             buttonPrevious.FlatAppearance.BorderSize = 0;
@@ -189,16 +199,6 @@
             panelSort.Name = "panelSort";
             panelSort.Size = new Size(1126, 40);
             panelSort.TabIndex = 1;
-            // 
-            // comboBoxSort
-            // 
-            comboBoxSort.FormattingEnabled = true;
-            comboBoxSort.Items.AddRange(new object[] { "Alfabetik(A-Z)", "Alfabetik(Z-A)", "Ucuzdan Pahaliya", "Pahalidan Ucuza" });
-            comboBoxSort.Location = new Point(830, 22);
-            comboBoxSort.Name = "comboBoxSort";
-            comboBoxSort.Size = new Size(192, 23);
-            comboBoxSort.TabIndex = 0;
-            comboBoxSort.SelectedIndexChanged += ComboBoxSort_SelectedIndexChanged;
             // 
             // panelFilter
             // 

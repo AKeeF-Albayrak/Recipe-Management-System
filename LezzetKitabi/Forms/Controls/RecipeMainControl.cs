@@ -39,7 +39,6 @@ namespace LezzetKitabi.Forms.Controls
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             _recipeIngredientService = serviceProvider.GetRequiredService<IRecipeIngredientService>();
             InitializeComponent();
-            InitializeCustomPanelsAsync();
 
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             
@@ -47,12 +46,31 @@ namespace LezzetKitabi.Forms.Controls
             panelElements.BackColor = Color.Transparent;
             panelDown.BackColor = Color.Transparent;
             comboBoxCategory.Items.AddRange(Enum.GetNames(typeof(Category)));
-            SetUpCombobox();
-            InitializeSearchBar();
         }
-        public async void InitializeSearchBar()
+
+        public async Task LoadBackgroundImageAsync()
         {
-            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType);
+            await Task.Run(() =>
+            {
+                BackgroundImage = Properties.Resources.kitchen_utensils_background_cookbook_seamless_600nw_2152405123;
+            });
+
+            this.Invalidate();
+        }
+
+        private async Task InitializeCustomPanelsAsync()
+        {
+            int rows = 2;
+            int cols = 4;
+            int panelWidth = 240;
+            int panelHeight = 285;
+            int xPadding = 12;
+            int yPadding = 12;
+            int startX = 10;
+            int startY = 10;
+            int cornerRadius = 20;
+
+            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType,filterCriteriaList);
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
             textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
@@ -73,27 +91,10 @@ namespace LezzetKitabi.Forms.Controls
 
             int totalRecipes = recipes.Count();
             totalPages = (int)Math.Ceiling(totalRecipes / (double)8);
-        }
-        public async void SetUpCombobox()
-        {
-            var ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(IngredientSortingType.A_from_Z);
+
             comboBoxIngredients.DataSource = ingredients;
             comboBoxIngredients.DisplayMember = "IngredientName";
             comboBoxIngredients.ValueMember = "Id";
-        }
-        private async Task InitializeCustomPanelsAsync()
-        {
-            int rows = 2;
-            int cols = 4;
-            int panelWidth = 240;
-            int panelHeight = 285;
-            int xPadding = 12;
-            int yPadding = 12;
-            int startX = 10;
-            int startY = 10;
-            int cornerRadius = 20;
-
-            List<RecipeViewGetDto> recipes = await _recipeService.GetAllRecipesByOrderAsync(_sortingType, filterCriteriaList, currentPage);
 
             if (recipes == null || recipes.Count == 0)
             {
@@ -270,7 +271,6 @@ namespace LezzetKitabi.Forms.Controls
 
                 panelItems.Controls.Add(mainPanel);
             }
-            InitializeSearchBar();
         }
         private async void DetailsIcon_Click(object sender, EventArgs e)
         {

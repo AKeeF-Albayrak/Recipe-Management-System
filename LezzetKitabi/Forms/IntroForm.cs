@@ -32,7 +32,7 @@ namespace LezzetKitabi.Forms
             mainForm.Hide();
 
             await Task.Delay(1500);//6000
-
+            pictureBox1.Image = null;
             mainForm.Show();
 
             this.Hide();

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -32,27 +33,20 @@ namespace LezzetKitabi.Forms.Controls
             filterCriteriaList = new List<FilterCriteria>();
             _ingredientService = serviceProvider.GetRequiredService<IIngredientService>();
             InitializeComponent();
-            InitializeCustomPanelsAsync();
+            
 
             comboBoxUnit.Items.AddRange(Enum.GetNames(typeof(UnitType)));
-            InitializeSearchTextBox();
+            
         }
 
-        private async Task InitializeSearchTextBox()
+        public async Task LoadBackgroundImageAsync()
         {
-            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType);
-
-            textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
-
-            foreach (var ingredient in ingredients)
+            await Task.Run(() =>
             {
-                suggestions.Add(ingredient.IngredientName);
-            }
-            totalPages = (int)Math.Ceiling((double)ingredients.Count / 18);
+                this.BackgroundImage = Properties.Resources.Kitchen_utensils_seamless_background_vector;
+            });
 
-            textBoxSearch.AutoCompleteCustomSource = suggestions;
+            this.Invalidate();
         }
         public async Task InitializeCustomPanelsAsync()
         {
@@ -66,18 +60,34 @@ namespace LezzetKitabi.Forms.Controls
             int startY = 10;
             int cornerRadius = 20;
 
-            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList, currentPage);
+            List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList);
 
+            textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            textBoxSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            AutoCompleteStringCollection suggestions = new AutoCompleteStringCollection();
+
+            foreach (var ingredient in ingredients)
+            {
+                suggestions.Add(ingredient.IngredientName);
+            }
+            totalPages = (int)Math.Ceiling((double)ingredients.Count / 18);
+
+            textBoxSearch.AutoCompleteCustomSource = suggestions;
+
+            
             if (ingredients == null || ingredients.Count == 0)
             {
                 MessageBox.Show("No ingredients found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            for (int i = 0; i < ingredients.Count; i++)
+            int startIndex = (currentPage - 1) * 8;
+            int endIndex = Math.Min(startIndex + 8, ingredients.Count);
+
+            for (int i = startIndex; i < endIndex; i++)
             {
-                int row = i / cols;
-                int col = i % cols;
+                int row = (i - startIndex) / cols;
+                int col = (i - startIndex) % cols;
 
                 Panel mainPanel = new Panel();
                 mainPanel.Tag = ingredients[i];
@@ -189,7 +199,6 @@ namespace LezzetKitabi.Forms.Controls
 
                 panelItems.Controls.Add(mainPanel);
             }
-            InitializeSearchTextBox();
         }
         private void EditIcon_Click(object sender, EventArgs e)
         {

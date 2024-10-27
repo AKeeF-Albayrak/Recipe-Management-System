@@ -1,6 +1,7 @@
 ﻿using LezzetKitabi.Data.Repositories.Abstract;
 using LezzetKitabi.Domain.Contracts;
 using LezzetKitabi.Forms.Controls;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Configuration;
 using System.Drawing;
@@ -15,11 +16,33 @@ namespace LezzetKitabi.Forms
         private readonly IServiceProvider _serviceProvider;
         private bool isAnimating = false;
         public static string page;
+
+        private RecipeMainControl _recipeMainControl;
+        private IngredientMainControl _ingredientMainControl;
+        private IngredientAddControl _ingredientAddControl;
+        private RecipeAddControl _recipeAddControl;
         public MainForm(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             InitializeComponent();
-            LoadForm(new RecipeMainControl(_serviceProvider));
+
+            _recipeMainControl = _serviceProvider.GetRequiredService<RecipeMainControl>();
+            _ingredientMainControl = _serviceProvider.GetRequiredService<IngredientMainControl>();
+            _ingredientAddControl = _serviceProvider.GetRequiredService<IngredientAddControl>();
+            _recipeAddControl = _serviceProvider.GetRequiredService<RecipeAddControl>();
+
+            panelForms.Controls.Add(_recipeMainControl);
+            panelForms.Controls.Add(_ingredientMainControl);
+            panelForms.Controls.Add(_ingredientAddControl);
+            panelForms.Controls.Add(_recipeAddControl);
+
+            _recipeMainControl.Visible = false;
+            _ingredientMainControl.Visible = false;
+            _ingredientAddControl.Visible = false;
+            _recipeAddControl.Visible = false;
+
+            LoadForm(_recipeMainControl);
+            _recipeMainControl.RefreshPanelsAsync();
             page = "Recipes";
         }
         private async void button1_Click(object sender, EventArgs e)
@@ -74,30 +97,53 @@ namespace LezzetKitabi.Forms
         }
         private void LoadForm(UserControl userControl)
         {
-            panelForms.Controls.Clear();
-            userControl.Dock = DockStyle.Fill;
-            panelForms.Controls.Add(userControl);
+            foreach (Control control in panelForms.Controls)
+            {
+                control.Visible = false;
+            }
+
+            userControl.Visible = true;
             userControl.BringToFront();
         }
-        private void btnRecipes_Click(object sender, EventArgs e)
+
+        private async void btnRecipes_Click(object sender, EventArgs e)
         {
-            if (page != "Recipes") LoadForm(new RecipeMainControl(_serviceProvider));
-            page = "Recipes";
+            if (page != "Recipes")
+            {
+                LoadForm(_recipeMainControl);
+                page = "Recipes";
+                await _recipeMainControl.RefreshPanelsAsync();
+                await _recipeMainControl.LoadBackgroundImageAsync();
+            }
         }
-        private void btnIngredients_Click(object sender, EventArgs e)
+
+        private async void btnIngredients_Click(object sender, EventArgs e)
         {
-            if (page != "Ingredients") LoadForm(new IngredientMainControl(_serviceProvider));
-            page = "Ingredients";
+            if (page != "Ingredients")
+            {
+                LoadForm(_ingredientMainControl);
+                page = "Ingredients";
+                await _ingredientMainControl.RefreshPanelsAsync();
+                await _ingredientMainControl.LoadBackgroundImageAsync();
+            }
         }
+
         public void btnAddIngredient_Click(object sender, EventArgs e)
         {
-            if (page != "AddIngredient") LoadForm(new IngredientAddControl(_serviceProvider));
-            page = "AddIngredient";
+            if (page != "AddIngredient")
+            {
+                LoadForm(_ingredientAddControl);
+                page = "AddIngredient";
+            }
         }
+
         private void btnAddRecipe_Click(object sender, EventArgs e)
         {
-            if (page != "AddRecipe") LoadForm(new RecipeAddControl(_serviceProvider));
-            page = "AddRecipe";
+            if (page != "AddRecipe")
+            {
+                LoadForm(_recipeAddControl);
+                page = "AddRecipe";
+            }
         }
     }
 }
