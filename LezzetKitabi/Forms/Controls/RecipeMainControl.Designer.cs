@@ -73,7 +73,7 @@
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
-            panelDown.SuspendLayout();
+            panelPrevius.SuspendLayout();
             panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
             panel2.SuspendLayout();
@@ -152,6 +152,7 @@
             // panelPage
             // 
             panelPage.Controls.Add(panelItems);
+            panelPage.Controls.Add(button4);
             panelPage.Controls.Add(panelDown);
             panelPage.Controls.Add(panelPrevius);
             panelPage.Location = new Point(0, 40);
@@ -170,8 +171,6 @@
             // 
             // panelDown
             // 
-            panelDown.Controls.Add(button3);
-            panelDown.Controls.Add(button4);
             panelDown.Dock = DockStyle.Bottom;
             panelDown.Location = new Point(48, 639);
             panelDown.Name = "panelDown";
@@ -183,9 +182,9 @@
             button3.FlatAppearance.BorderSize = 0;
             button3.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
             button3.FlatStyle = FlatStyle.Flat;
-            button3.Location = new Point(144, 10);
+            button3.Location = new Point(-24, 161);
             button3.Name = "button3";
-            button3.Size = new Size(87, 38);
+            button3.Size = new Size(87, 236);
             button3.TabIndex = 0;
             button3.Text = "<---";
             button3.UseVisualStyleBackColor = true;
@@ -196,9 +195,9 @@
             button4.FlatAppearance.BorderSize = 0;
             button4.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
             button4.FlatStyle = FlatStyle.Flat;
-            button4.Location = new Point(815, 10);
+            button4.Location = new Point(1066, 161);
             button4.Name = "button4";
-            button4.Size = new Size(88, 38);
+            button4.Size = new Size(88, 236);
             button4.TabIndex = 1;
             button4.Text = "--->";
             button4.UseVisualStyleBackColor = true;
@@ -207,6 +206,7 @@
             // panelPrevius
             // 
             panelPrevius.BackColor = Color.Transparent;
+            panelPrevius.Controls.Add(button3);
             panelPrevius.Dock = DockStyle.Left;
             panelPrevius.Location = new Point(0, 0);
             panelPrevius.Name = "panelPrevius";
@@ -524,7 +524,7 @@
             panelSearch.PerformLayout();
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
-            panelDown.ResumeLayout(false);
+            panelPrevius.ResumeLayout(false);
             panelSort.ResumeLayout(false);
             panelFilter.ResumeLayout(false);
             panel2.ResumeLayout(false);

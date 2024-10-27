@@ -36,9 +36,9 @@
             panelPage = new Panel();
             panelItems = new Panel();
             panelDown = new Panel();
-            buttonNext = new Button();
-            buttonPrevious = new Button();
             panelPrevius = new Panel();
+            buttonPrevious = new Button();
+            buttonNext = new Button();
             panelSort = new Panel();
             panelFilter = new Panel();
             panel6 = new Panel();
@@ -63,7 +63,7 @@
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
-            panelItems.SuspendLayout();
+            panelPrevius.SuspendLayout();
             panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
             panel6.SuspendLayout();
@@ -132,6 +132,7 @@
             panelPage.Controls.Add(panelItems);
             panelPage.Controls.Add(panelDown);
             panelPage.Controls.Add(panelPrevius);
+            panelPage.Controls.Add(buttonNext);
             panelPage.Location = new Point(0, 40);
             panelPage.Name = "panelPage";
             panelPage.Size = new Size(1126, 690);
@@ -140,8 +141,6 @@
             // panelItems
             // 
             panelItems.BackColor = Color.Transparent;
-            panelItems.Controls.Add(buttonNext);
-            panelItems.Controls.Add(buttonPrevious);
             panelItems.Dock = DockStyle.Left;
             panelItems.Location = new Point(48, 0);
             panelItems.Name = "panelItems";
@@ -156,19 +155,15 @@
             panelDown.Size = new Size(1078, 28);
             panelDown.TabIndex = 2;
             // 
-            // buttonNext
+            // panelPrevius
             // 
-            buttonNext.BackColor = Color.FromArgb(255, 128, 0);
-            buttonNext.FlatAppearance.BorderSize = 0;
-            buttonNext.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
-            buttonNext.FlatStyle = FlatStyle.Flat;
-            buttonNext.Location = new Point(752, 627);
-            buttonNext.Name = "buttonNext";
-            buttonNext.Size = new Size(103, 35);
-            buttonNext.TabIndex = 1;
-            buttonNext.Text = "-->";
-            buttonNext.UseVisualStyleBackColor = false;
-            buttonNext.Click += buttonNext_Click;
+            panelPrevius.BackColor = Color.Transparent;
+            panelPrevius.Controls.Add(buttonPrevious);
+            panelPrevius.Dock = DockStyle.Left;
+            panelPrevius.Location = new Point(0, 0);
+            panelPrevius.Name = "panelPrevius";
+            panelPrevius.Size = new Size(48, 690);
+            panelPrevius.TabIndex = 1;
             // 
             // buttonPrevious
             // 
@@ -177,22 +172,27 @@
             buttonPrevious.FlatAppearance.BorderSize = 0;
             buttonPrevious.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
             buttonPrevious.FlatStyle = FlatStyle.Flat;
-            buttonPrevious.Location = new Point(131, 627);
+            buttonPrevious.Location = new Point(-27, 156);
             buttonPrevious.Name = "buttonPrevious";
-            buttonPrevious.Size = new Size(91, 35);
+            buttonPrevious.Size = new Size(91, 261);
             buttonPrevious.TabIndex = 0;
             buttonPrevious.Text = "<--";
             buttonPrevious.UseVisualStyleBackColor = false;
             buttonPrevious.Click += buttonPrevious_Click;
             // 
-            // panelPrevius
+            // buttonNext
             // 
-            panelPrevius.BackColor = Color.Transparent;
-            panelPrevius.Dock = DockStyle.Left;
-            panelPrevius.Location = new Point(0, 0);
-            panelPrevius.Name = "panelPrevius";
-            panelPrevius.Size = new Size(48, 690);
-            panelPrevius.TabIndex = 1;
+            buttonNext.BackColor = Color.FromArgb(255, 128, 0);
+            buttonNext.FlatAppearance.BorderSize = 0;
+            buttonNext.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
+            buttonNext.FlatStyle = FlatStyle.Flat;
+            buttonNext.Location = new Point(1060, 156);
+            buttonNext.Name = "buttonNext";
+            buttonNext.Size = new Size(103, 261);
+            buttonNext.TabIndex = 1;
+            buttonNext.Text = "-->";
+            buttonNext.UseVisualStyleBackColor = false;
+            buttonNext.Click += buttonNext_Click;
             // 
             // panelSort
             // 
@@ -416,7 +416,7 @@
             panelSearch.PerformLayout();
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
-            panelItems.ResumeLayout(false);
+            panelPrevius.ResumeLayout(false);
             panelSort.ResumeLayout(false);
             panelFilter.ResumeLayout(false);
             panel6.ResumeLayout(false);
