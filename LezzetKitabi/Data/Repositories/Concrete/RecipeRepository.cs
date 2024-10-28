@@ -381,7 +381,6 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                     string insertIngredientSql = @"
                     INSERT INTO RecipeIngredients (RecipeID, IngredientID, IngredientAmount) 
                     VALUES (@RecipeID, @IngredientID, @IngredientAmount)";
-
                     await connection.ExecuteAsync(insertIngredientSql, new
                     {
                         RecipeID = recipeUpdateDto.Id,

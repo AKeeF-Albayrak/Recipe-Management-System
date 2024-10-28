@@ -9,11 +9,13 @@ using LezzetKitabi.Services.Abstract;
 using LezzetKitabi.Services.Concrete;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,14 +45,14 @@ namespace LezzetKitabi.Forms
         {
             public Guid IngredientId { get; set; }
             public string IngredientName { get; set; }
-            public string Amount { get; set; }
+            public float Amount { get; set; }
             public string Unit { get; set; }
 
             public string UnitPrice { get; set; }
 
             public override string ToString()
             {
-                return $"{IngredientName} - {Amount} {Unit}";
+                return $"{Amount} {Unit} {IngredientName}";
             }
         }
         public async void LoadRecipe()
@@ -89,7 +91,7 @@ namespace LezzetKitabi.Forms
                 {
                     IngredientId = ingredient.Id,
                     IngredientName = ingredient.IngredientName,
-                    Amount = ingredient.TotalQuantity,
+                    Amount = (float)ingredient.TotalQuantity,
                     Unit = ingredient.Unit,
                     UnitPrice = ingredient.UnitPrice.ToString()
                 };
@@ -112,6 +114,7 @@ namespace LezzetKitabi.Forms
                 MessageBox.Show("Tarif güncellenirken bir hata oluştu.", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             var recipeUpdateDto = new RecipeUpdateDto
             {
                 Id = _recipe.Id,
@@ -158,13 +161,15 @@ namespace LezzetKitabi.Forms
 
                 string amount = textBoxAmount.Text;
 
-                if (!string.IsNullOrWhiteSpace(amount))
+                // InvariantCulture ile TryParse kullanımı
+                if (float.TryParse(amount, NumberStyles.Float, CultureInfo.InvariantCulture, out float ingredientAmount))
                 {
+                    MessageBox.Show(ingredientAmount.ToString());
                     var listBoxItem = new ListBoxIngredient
                     {
                         IngredientId = ingredientId,
                         IngredientName = ingredientName,
-                        Amount = amount,
+                        Amount = ingredientAmount,
                         Unit = selectedIngredient.Unit,
                         UnitPrice = selectedIngredient.UnitPrice.ToString()
                     };

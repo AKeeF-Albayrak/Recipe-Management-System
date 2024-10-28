@@ -50,7 +50,7 @@ namespace LezzetKitabi.Application.Services
             {
                 Id = ingredient.Id,
                 IngredientName = ingredient.IngredientName,
-                TotalQuantity = ingredient.TotalQuantity,
+                TotalQuantity = float.Parse(ingredient.TotalQuantity),
                 Unit = ingredient.Unit,
                 UnitPrice = ingredient.UnitPrice
             };

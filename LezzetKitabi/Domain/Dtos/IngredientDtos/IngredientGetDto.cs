@@ -10,7 +10,7 @@ namespace LezzetKitabi.Domain.Dtos.IngredientDtos
     {
         public Guid Id { get; set; }
         public string IngredientName { get; set; }
-        public string TotalQuantity { get; set; }
+        public float TotalQuantity { get; set; }
         public string Unit { get; set; }
         public decimal UnitPrice { get; set; }
     }
