@@ -48,6 +48,7 @@ namespace LezzetKitabi.Forms
             btnAddRecipe.Dock = DockStyle.Top;
             btnAddRecipe.FlatAppearance.BorderSize = 0;
             btnAddRecipe.FlatStyle = FlatStyle.Flat;
+            btnAddRecipe.Font = new Font("Segoe UI", 9.75F);
             btnAddRecipe.ForeColor = Color.White;
             btnAddRecipe.Location = new Point(0, 305);
             btnAddRecipe.Name = "btnAddRecipe";
@@ -63,6 +64,7 @@ namespace LezzetKitabi.Forms
             btnAddIngredient.Dock = DockStyle.Top;
             btnAddIngredient.FlatAppearance.BorderSize = 0;
             btnAddIngredient.FlatStyle = FlatStyle.Flat;
+            btnAddIngredient.Font = new Font("Segoe UI", 9.75F);
             btnAddIngredient.ForeColor = Color.White;
             btnAddIngredient.Location = new Point(0, 230);
             btnAddIngredient.Name = "btnAddIngredient";
@@ -78,6 +80,7 @@ namespace LezzetKitabi.Forms
             btnIngredients.Dock = DockStyle.Top;
             btnIngredients.FlatAppearance.BorderSize = 0;
             btnIngredients.FlatStyle = FlatStyle.Flat;
+            btnIngredients.Font = new Font("Segoe UI", 9.75F);
             btnIngredients.ForeColor = Color.White;
             btnIngredients.Location = new Point(0, 155);
             btnIngredients.Name = "btnIngredients";
@@ -93,6 +96,7 @@ namespace LezzetKitabi.Forms
             btnRecipes.Dock = DockStyle.Top;
             btnRecipes.FlatAppearance.BorderSize = 0;
             btnRecipes.FlatStyle = FlatStyle.Flat;
+            btnRecipes.Font = new Font("Segoe UI", 9.75F);
             btnRecipes.ForeColor = Color.White;
             btnRecipes.Location = new Point(0, 80);
             btnRecipes.Name = "btnRecipes";
