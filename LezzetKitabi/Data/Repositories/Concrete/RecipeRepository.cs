@@ -42,7 +42,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 Category = entity.Category,
                 PreparationTime = entity.PreparationTime,
                 Instructions = entity.Instructions,
-                Image = entity.Image ?? GlobalVariables.BaseImage
+                Image = entity.Image ?? GlobalVariables.BaseRecipeImage,
             };
 
             connection.Execute(sql, parameters);

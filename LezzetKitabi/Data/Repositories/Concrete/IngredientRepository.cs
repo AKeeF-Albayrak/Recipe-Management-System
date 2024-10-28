@@ -53,7 +53,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 TotalQuantity = entity.TotalQuantity,
                 Unit = entity.Unit,
                 UnitPrice = entity.UnitPrice,
-                Image = entity.Image ?? GlobalVariables.BaseImage
+                Image = entity.Image ?? GlobalVariables.BaseIngredientImage
             });
 
             return true;
