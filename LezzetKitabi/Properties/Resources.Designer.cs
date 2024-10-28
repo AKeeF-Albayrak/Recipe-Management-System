@@ -153,16 +153,6 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Screenshot_2024_10_09_121511 {
-            get {
-                object obj = ResourceManager.GetObject("Screenshot 2024-10-09 121511", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap spoons_with_powder_condiments_copy_space {
             get {
                 object obj = ResourceManager.GetObject("spoons-with-powder-condiments-copy-space", resourceCulture);
