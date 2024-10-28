@@ -32,6 +32,7 @@ namespace LezzetKitabi.Forms
         private readonly IRecipeService _recipeService;
         private bool isChanging = false;
         public event EventHandler RecipeUpdated;
+        private string _selectedImagePath;
         public RecipeEditForm(RecipeUpdateDto recipe, IServiceProvider serviceProvider)
         {
             _recipe = recipe;
@@ -121,7 +122,7 @@ namespace LezzetKitabi.Forms
                 RecipeName = textBoxName.Text,
                 Category = comboBoxCatagory.SelectedItem.ToString(),
                 PreparationTime = int.Parse(textBoxTime.Text),
-                Image = _recipe.Image,
+                Image = _selectedImagePath != null ? ConvertImageToBytes(_selectedImagePath) : _recipe.Image,
                 Instructions = string.Join("\n", listBoxInstructions.Items.Cast<string>()),
 
                 Ingredients = listBoxIngredients.Items.Cast<ListBoxIngredient>().Select(item =>
@@ -160,8 +161,6 @@ namespace LezzetKitabi.Forms
                 Guid ingredientId = selectedIngredient.Id;
 
                 string amount = textBoxAmount.Text;
-
-               // amount = amount.Replace(',', '.');
 
                 if (float.TryParse(amount, out float ingredientAmount))
                 {
@@ -250,7 +249,7 @@ namespace LezzetKitabi.Forms
         }
 
 
-        
+
 
         private void buttonInstructuionDelete_Click(object sender, EventArgs e)
         {
@@ -298,6 +297,22 @@ namespace LezzetKitabi.Forms
             {
                 e.Handled = true;
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                _selectedImagePath = openFileDialog.FileName;
+                pictureBox1.Image = Image.FromFile(_selectedImagePath);
+            }
+        }
+
+        private byte[] ConvertImageToBytes(string filePath)
+        {
+            return File.ReadAllBytes(filePath);
         }
     }
 }

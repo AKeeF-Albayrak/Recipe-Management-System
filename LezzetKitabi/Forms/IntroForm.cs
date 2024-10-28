@@ -31,7 +31,7 @@ namespace LezzetKitabi.Forms
 
             mainForm.Hide();
 
-            await Task.Delay(1500);//6000
+            await Task.Delay(1500);
             pictureBox1.Image = null;
             mainForm.Show();
 

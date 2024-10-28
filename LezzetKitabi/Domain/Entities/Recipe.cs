@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LezzetKitabi.Domain.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,6 @@ namespace LezzetKitabi.Domain.Entities
         public string Category { get; set; }
         public int PreparationTime { get; set; }
         public string Instructions { get; set; }
-        public byte[] Image { get; set; }
+        public byte[] Image { get; set; } = GlobalVariables.BaseImage;
     }
 }

@@ -29,15 +29,16 @@
         private void InitializeComponent()
         {
             panelSearch = new Panel();
-            label7 = new Label();
             button2 = new Button();
             textBoxSearch = new TextBox();
+            label7 = new Label();
             comboBoxSort = new ComboBox();
             panelElements = new Panel();
             panelPage = new Panel();
             panel1 = new Panel();
             buttonNext = new Button();
             panelItems = new Panel();
+            label8 = new Label();
             panelPrevius = new Panel();
             buttonPrevious = new Button();
             panelSort = new Panel();
@@ -65,6 +66,7 @@
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
             panel1.SuspendLayout();
+            panelItems.SuspendLayout();
             panelPrevius.SuspendLayout();
             panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
@@ -84,16 +86,6 @@
             panelSearch.Name = "panelSearch";
             panelSearch.Size = new Size(1334, 65);
             panelSearch.TabIndex = 0;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI Semibold", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(993, 0);
-            label7.Name = "label7";
-            label7.Size = new Size(29, 40);
-            label7.TabIndex = 0;
-            label7.Text = "1";
             // 
             // button2
             // 
@@ -115,6 +107,17 @@
             textBoxSearch.Size = new Size(781, 33);
             textBoxSearch.TabIndex = 0;
             textBoxSearch.TextChanged += textBoxSearch_TextChanged;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.BackColor = Color.White;
+            label7.Font = new Font("Segoe UI Semibold", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.Location = new Point(533, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(29, 40);
+            label7.TabIndex = 0;
+            label7.Text = "1";
             // 
             // comboBoxSort
             // 
@@ -177,11 +180,21 @@
             // panelItems
             // 
             panelItems.BackColor = Color.Transparent;
+            panelItems.Controls.Add(label8);
             panelItems.Dock = DockStyle.Left;
             panelItems.Location = new Point(40, 0);
             panelItems.Name = "panelItems";
             panelItems.Size = new Size(1048, 690);
             panelItems.TabIndex = 3;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(464, 675);
+            label8.Name = "label8";
+            label8.Size = new Size(38, 15);
+            label8.TabIndex = 0;
+            label8.Text = "label8";
             // 
             // panelPrevius
             // 
@@ -247,10 +260,10 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Rockwell", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.Location = new Point(31, 9);
             label1.Name = "label1";
-            label1.Size = new Size(154, 42);
+            label1.Size = new Size(141, 42);
             label1.TabIndex = 0;
             label1.Text = "Filtreler";
             // 
@@ -468,6 +481,8 @@
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
             panel1.ResumeLayout(false);
+            panelItems.ResumeLayout(false);
+            panelItems.PerformLayout();
             panelPrevius.ResumeLayout(false);
             panelSort.ResumeLayout(false);
             panelSort.PerformLayout();
@@ -518,5 +533,6 @@
         private Button buttonNext;
         private Label label5;
         private Label label7;
+        private Label label8;
     }
 }

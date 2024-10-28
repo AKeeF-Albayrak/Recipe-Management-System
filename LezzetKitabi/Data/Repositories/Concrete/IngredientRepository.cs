@@ -14,6 +14,7 @@ using static Dapper.SqlMapper;
 using LezzetKitabi.Application.Services;
 using System.ComponentModel;
 using System.Data.Common;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 namespace LezzetKitabi.Data.Repositories.Concrete
 {
     public class IngredientRepository : IIngredientRepository
@@ -94,7 +95,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
 
             return ingredient;
         }
-        public async Task<bool> UpdateIngredientAsync(Ingredient ingredient)
+        public async Task<bool> UpdateIngredientAsync(IngredientUpdateDto ingredient)
         {
             using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
@@ -121,7 +122,8 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                         SET IngredientName = @IngredientName, 
                             TotalQuantity = @TotalQuantity, 
                             Unit = @Unit, 
-                            UnitPrice = @UnitPrice
+                            UnitPrice = @UnitPrice,
+                            Image = @Image
                         WHERE Id = @Id";
 
             var affectedRows = await connection.ExecuteAsync(updateSql, new
@@ -130,6 +132,7 @@ namespace LezzetKitabi.Data.Repositories.Concrete
                 TotalQuantity = ingredient.TotalQuantity,
                 Unit = ingredient.Unit,
                 UnitPrice = ingredient.UnitPrice,
+                Image = ingredient.Image,
                 Id = ingredient.Id
             });
 

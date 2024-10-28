@@ -1,4 +1,5 @@
-﻿using LezzetKitabi.Domain.Entities;
+﻿using LezzetKitabi.Domain.Dtos.IngredientDtos;
+using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
 using LezzetKitabi.Forms.Controls;
 using LezzetKitabi.Services.Abstract;
@@ -18,15 +19,16 @@ namespace LezzetKitabi.Forms
     public partial class IngredientEditForm : Form
     {
         private readonly IIngredientService _ingredientService;
-        private Ingredient ingredient1;
+        private IngredientUpdateDto ingredient1;
         public event EventHandler IngredientUpdated;
+        private string _selectedImagePath;
         public IngredientEditForm(IIngredientService ingredientService)
         {
             InitializeComponent();
             _ingredientService = ingredientService;
             comboBoxUnit.DataSource = Enum.GetValues(typeof(UnitType));
         }
-        public async void LoadIngredientDetails(Ingredient ingredient)
+        public async void LoadIngredientDetails(IngredientUpdateDto ingredient)
         {
             ingredient1 = ingredient;
             textBoxIngredientName.Text = ingredient.IngredientName;
@@ -52,13 +54,14 @@ namespace LezzetKitabi.Forms
         }
         private async void buttonEdit_Click(object sender, EventArgs e)
         {
-            Ingredient updatedIngredient = new Ingredient
+            IngredientUpdateDto updatedIngredient = new IngredientUpdateDto
             {
                 Id = ingredient1.Id,
                 IngredientName = textBoxIngredientName.Text,
                 TotalQuantity = textBoxAmount.Text,
                 UnitPrice = decimal.TryParse(textBoxUnitPrice.Text, out var unitPrice) ? unitPrice : 0,
-                Unit = comboBoxUnit.SelectedItem.ToString()
+                Unit = comboBoxUnit.SelectedItem.ToString(),
+                Image = _selectedImagePath != null ? ConvertImageToBytes(_selectedImagePath) : ingredient1.Image,
             };
             bool isUpdated = await _ingredientService.UpdateIngredientAsync(updatedIngredient);
             if (isUpdated)
@@ -67,8 +70,25 @@ namespace LezzetKitabi.Forms
             }
             else
             {
+                MessageBox.Show("Basarisiz");
                 LoadIngredientDetails(updatedIngredient);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                _selectedImagePath = openFileDialog.FileName;
+                pictureBoxIngredient.Image = Image.FromFile(_selectedImagePath);
+            }
+        }
+
+        private byte[] ConvertImageToBytes(string filePath)
+        {
+            return File.ReadAllBytes(filePath);
         }
     }
 }

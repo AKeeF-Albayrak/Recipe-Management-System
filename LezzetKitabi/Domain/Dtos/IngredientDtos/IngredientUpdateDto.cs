@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace LezzetKitabi.Domain.Dtos.IngredientDtos
 {
-    public class IngredientAddDto
+    public class IngredientUpdateDto
     {
+        public Guid Id { get; set; }
         public string IngredientName { get; set; }
         public string TotalQuantity { get; set; }
         public string Unit { get; set; }

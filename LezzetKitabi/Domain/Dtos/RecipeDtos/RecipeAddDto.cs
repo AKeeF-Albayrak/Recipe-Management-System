@@ -1,4 +1,5 @@
-﻿using LezzetKitabi.Domain.Dtos.CrossTableDtos;
+﻿using LezzetKitabi.Domain.Contracts;
+using LezzetKitabi.Domain.Dtos.CrossTableDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace LezzetKitabi.Domain.Dtos.RecipeDtos
         public int PreparationTime { get; set; }
         public string Instructions { get; set; }
         public List<AddRecipeIngredientDto> Ingredients { get; set; }
-        public byte[] Image { get; set; }
+        public byte[] Image { get; set; } = GlobalVariables.BaseImage;
     }
 }

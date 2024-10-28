@@ -39,6 +39,7 @@
             button2 = new Button();
             textBoxUnitPrice = new TextBox();
             label4 = new Label();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBoxIngredient).BeginInit();
             SuspendLayout();
             // 
@@ -46,7 +47,7 @@
             // 
             pictureBoxIngredient.Location = new Point(54, 44);
             pictureBoxIngredient.Name = "pictureBoxIngredient";
-            pictureBoxIngredient.Size = new Size(260, 260);
+            pictureBoxIngredient.Size = new Size(232, 232);
             pictureBoxIngredient.TabIndex = 0;
             pictureBoxIngredient.TabStop = false;
             // 
@@ -144,11 +145,22 @@
             label4.TabIndex = 10;
             label4.Text = "Birim Fiyat:";
             // 
+            // button1
+            // 
+            button1.Location = new Point(128, 298);
+            button1.Name = "button1";
+            button1.Size = new Size(91, 23);
+            button1.TabIndex = 11;
+            button1.Text = "Resmi Duzen";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // IngredientEditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(737, 412);
+            Controls.Add(button1);
             Controls.Add(label4);
             Controls.Add(textBoxUnitPrice);
             Controls.Add(button2);
@@ -182,5 +194,6 @@
         private Button button2;
         private TextBox textBoxUnitPrice;
         private Label label4;
+        private Button button1;
     }
 }

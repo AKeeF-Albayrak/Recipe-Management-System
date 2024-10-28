@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LezzetKitabi.Domain.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,6 @@ namespace LezzetKitabi.Domain.Dtos.RecipeDtos
         public decimal TotalCost { get; set; }
         public decimal AvailabilityPercentage { get; set; }
         public decimal MissingCost { get; set; }
-        public byte[] Image { get; set; }
+        public byte[] Image { get; set; } = GlobalVariables.BaseImage;
     }
 }

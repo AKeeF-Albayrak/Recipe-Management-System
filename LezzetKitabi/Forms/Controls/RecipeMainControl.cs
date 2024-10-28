@@ -166,7 +166,7 @@ namespace LezzetKitabi.Forms.Controls
 
                     using (GraphicsPath path = CreateRoundedRectanglePath(rect, cornerRadius))
                     {
-                        using (Brush brush = new SolidBrush(overlayPanel.BackColor)) // overlayPanel rengini burada da kullanıyoruz
+                        using (Brush brush = new SolidBrush(overlayPanel.BackColor))
                         {
                             g.FillPath(brush, path);
 
@@ -226,11 +226,11 @@ namespace LezzetKitabi.Forms.Controls
                 recipeImageBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 Label label = new Label();
-                label.Size = new Size(panelWidth, 30); // Set a fixed width to align it centrally
-                label.TextAlign = ContentAlignment.MiddleCenter; // Center align text within the label
-                label.Font = new Font("Segoe UI", 12F, FontStyle.Bold); // Use a clearer font and bold style
+                label.Size = new Size(panelWidth, 30);
+                label.TextAlign = ContentAlignment.MiddleCenter;
+                label.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
                 label.Text = recipes[i].RecipeName;
-                label.Location = new Point(0, 12); // Adjust Y-position as needed
+                label.Location = new Point(0, 12);
                 label.ForeColor = labelColor;
 
                 Label percentageLabel = new Label();

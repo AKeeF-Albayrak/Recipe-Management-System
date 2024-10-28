@@ -1,5 +1,6 @@
 ﻿using LezzetKitabi.Application.Services;
 using LezzetKitabi.Domain.Contracts;
+using LezzetKitabi.Domain.Dtos.IngredientDtos;
 using LezzetKitabi.Domain.Dtos.RecipeDtos;
 using LezzetKitabi.Domain.Entities;
 using LezzetKitabi.Domain.Enums;
@@ -40,15 +41,6 @@ namespace LezzetKitabi.Forms.Controls
 
         }
 
-        /*public async Task LoadBackgroundImageAsync()
-        {
-            await Task.Run(() =>
-            {
-                this.BackgroundImage = Properties.Resources.Kitchen_utensils_seamless_background_vector;
-            });
-
-            this.Invalidate();
-        }*/
         private void OnIngredientsChanged()
         {
             IngredientChanged?.Invoke(this, EventArgs.Empty);
@@ -138,11 +130,11 @@ namespace LezzetKitabi.Forms.Controls
 
 
                 Label label = new Label();
-                label.Size = new Size(panelWidth, 20); // Sabit genişlik ayarlayarak ortalamayı sağla
-                label.TextAlign = ContentAlignment.MiddleCenter; // Etiket içinde metni ortala
-                label.Font = new Font("Segoe UI", 8F, FontStyle.Bold); // Daha net bir font ve kalın stil kullan
+                label.Size = new Size(panelWidth, 20);
+                label.TextAlign = ContentAlignment.MiddleCenter;
+                label.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
                 label.Text = ingredients[i].IngredientName;
-                label.Location = new Point(0, 12); // X pozisyonunu sıfırla, Y pozisyonunu ihtiyaca göre ayarla
+                label.Location = new Point(0, 12);
                 label.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Label labelMiktar = new Label();
@@ -224,7 +216,16 @@ namespace LezzetKitabi.Forms.Controls
                 if (ingredient != null)
                 {
                     IngredientEditForm form = new IngredientEditForm(_ingredientService);
-                    form.LoadIngredientDetails(ingredient);
+                    IngredientUpdateDto dto = new IngredientUpdateDto
+                    {
+                        Id = ingredient.Id,
+                        IngredientName = ingredient.IngredientName,
+                        TotalQuantity = ingredient.TotalQuantity,
+                        Unit = ingredient.Unit,
+                        UnitPrice = ingredient.UnitPrice,
+                        Image = ingredient.Image
+                    };
+                    form.LoadIngredientDetails(dto);
 
                     form.IngredientUpdated += Form_IngredientUpdated;
 

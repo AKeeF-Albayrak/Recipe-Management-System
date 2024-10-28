@@ -57,7 +57,7 @@ namespace LezzetKitabi.Application.Services
 
             return ingredientGetDto;
         }
-        public async Task<bool> UpdateIngredientAsync(Ingredient ingredient)
+        public async Task<bool> UpdateIngredientAsync(IngredientUpdateDto ingredient)
         {
             return await _ingredientRepository.UpdateIngredientAsync(ingredient);
         }

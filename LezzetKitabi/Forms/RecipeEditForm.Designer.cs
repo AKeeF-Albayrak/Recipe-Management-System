@@ -48,12 +48,13 @@
             buttonIngredientDelete = new Button();
             buttonInstructuionDelete = new Button();
             textBoxAmount = new TextBox();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(98, 39);
+            pictureBox1.Location = new Point(98, 12);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(200, 200);
             pictureBox1.TabIndex = 0;
@@ -240,11 +241,22 @@
             textBoxAmount.TabIndex = 23;
             textBoxAmount.KeyPress += textBoxAmount_KeyPress;
             // 
+            // button2
+            // 
+            button2.Location = new Point(159, 228);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 24;
+            button2.Text = "Duzenle";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // RecipeEditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1175, 688);
+            Controls.Add(button2);
             Controls.Add(textBoxAmount);
             Controls.Add(buttonInstructuionDelete);
             Controls.Add(buttonIngredientDelete);
@@ -296,5 +308,6 @@
         private Button buttonIngredientDelete;
         private Button buttonInstructuionDelete;
         private TextBox textBoxAmount;
+        private Button button2;
     }
 }
