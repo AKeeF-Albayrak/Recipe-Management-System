@@ -21,7 +21,7 @@ namespace LezzetKitabi.Domain.Contracts
 
         private static byte[] LoadBaseImageRecipeImage()
         {
-            Image img = Properties.Resources.IngredientBase;
+            Image img = Properties.Resources.images;
             using (var ms = new MemoryStream())
             {
                 img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
