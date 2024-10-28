@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecipeDetailsForm));
             labelRecipeName = new Label();
             label1 = new Label();
             labelCategory = new Label();
@@ -178,6 +179,7 @@
             Controls.Add(labelCategory);
             Controls.Add(labelRecipeName);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RecipeDetailsForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Tarif Detay Sayfası";

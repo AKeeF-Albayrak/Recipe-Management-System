@@ -553,6 +553,7 @@ namespace LezzetKitabi.Forms.Controls
         {
             if (string.IsNullOrWhiteSpace(textBoxSearch.Text))
             {
+                RemoveExistingFilter("Malzeme Adi");
                 await RefreshPanelsAsync();
             }
         }

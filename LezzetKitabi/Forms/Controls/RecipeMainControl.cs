@@ -701,6 +701,7 @@ namespace LezzetKitabi.Forms.Controls
         {
             if (string.IsNullOrWhiteSpace(textBoxSearch.Text))
             {
+                RemoveExistingFilter("Tarif Adi");
                 await RefreshPanelsAsync();
             }
         }

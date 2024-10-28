@@ -16,6 +16,7 @@ namespace LezzetKitabi.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             panelMenu = new Panel();
             btnAddRecipe = new Button();
             btnAddIngredient = new Button();
@@ -137,6 +138,7 @@ namespace LezzetKitabi.Forms
             ClientSize = new Size(1548, 795);
             Controls.Add(panelForms);
             Controls.Add(panelMenu);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Lezzet Kitabı";
