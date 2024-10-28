@@ -131,11 +131,14 @@ namespace LezzetKitabi.Forms.Controls
                 pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBox.Location = new Point((panelWidth - pictureBox.Width) / 2, 35);
 
+
+
                 Label label = new Label();
-                label.AutoSize = true;
-                label.Font = new Font("Segoe Print", 8F);
+                label.Size = new Size(panelWidth, 20); // Sabit genişlik ayarlayarak ortalamayı sağla
+                label.TextAlign = ContentAlignment.MiddleCenter; // Etiket içinde metni ortala
+                label.Font = new Font("Segoe UI", 8F, FontStyle.Bold); // Daha net bir font ve kalın stil kullan
                 label.Text = ingredients[i].IngredientName;
-                label.Location = new Point((panelWidth - label.Width) / 2 +20, 12);
+                label.Location = new Point(0, 12); // X pozisyonunu sıfırla, Y pozisyonunu ihtiyaca göre ayarla
                 label.ForeColor = Color.FromArgb(3, 105, 161);
 
                 Label labelMiktar = new Label();
