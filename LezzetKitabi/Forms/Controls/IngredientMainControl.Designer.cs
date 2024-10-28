@@ -89,33 +89,39 @@
             // 
             // button2
             // 
+            button2.BackColor = Color.FromArgb(5, 150, 105);
+            button2.FlatAppearance.BorderColor = Color.FromArgb(16, 185, 129);
+            button2.FlatAppearance.BorderSize = 2;
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.ForeColor = Color.White;
             button2.Location = new Point(993, 22);
             button2.Name = "button2";
             button2.Size = new Size(75, 33);
             button2.TabIndex = 2;
             button2.Text = "Arama";
-            button2.UseVisualStyleBackColor = true;
+            button2.UseVisualStyleBackColor = false;
             button2.Click += buttonSearch_Click;
             // 
             // textBoxSearch
             // 
             textBoxSearch.BackColor = Color.White;
+            textBoxSearch.BorderStyle = BorderStyle.FixedSingle;
             textBoxSearch.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
             textBoxSearch.Location = new Point(195, 22);
             textBoxSearch.Name = "textBoxSearch";
             textBoxSearch.PlaceholderText = "Arama";
             textBoxSearch.Size = new Size(781, 33);
-            textBoxSearch.TabIndex = 0;
+            textBoxSearch.TabIndex = 2;
             textBoxSearch.TextChanged += textBoxSearch_TextChanged;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.BackColor = Color.White;
-            label7.Font = new Font("Segoe UI Semibold", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(533, 0);
+            label7.BackColor = Color.Transparent;
+            label7.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.Location = new Point(1003, 7);
             label7.Name = "label7";
-            label7.Size = new Size(29, 40);
+            label7.Size = new Size(21, 30);
             label7.TabIndex = 0;
             label7.Text = "1";
             // 
@@ -163,7 +169,7 @@
             // 
             // buttonNext
             // 
-            buttonNext.BackColor = Color.White;
+            buttonNext.BackColor = Color.Transparent;
             buttonNext.FlatAppearance.BorderSize = 0;
             buttonNext.FlatAppearance.MouseOverBackColor = Color.FromArgb(191, 219, 254);
             buttonNext.FlatStyle = FlatStyle.Flat;
@@ -208,7 +214,7 @@
             // 
             // buttonPrevious
             // 
-            buttonPrevious.BackColor = Color.White;
+            buttonPrevious.BackColor = Color.Transparent;
             buttonPrevious.FlatAppearance.BorderColor = Color.Black;
             buttonPrevious.FlatAppearance.BorderSize = 0;
             buttonPrevious.FlatAppearance.MouseOverBackColor = Color.FromArgb(191, 219, 254);
@@ -254,7 +260,7 @@
             panel6.Dock = DockStyle.Fill;
             panel6.Location = new Point(0, 0);
             panel6.Name = "panel6";
-            panel6.Size = new Size(207, 60);
+            panel6.Size = new Size(207, 57);
             panel6.TabIndex = 18;
             // 
             // label1
@@ -276,9 +282,9 @@
             panel5.Controls.Add(textBoxMaxPrice);
             panel5.Controls.Add(label2);
             panel5.Dock = DockStyle.Bottom;
-            panel5.Location = new Point(0, 60);
+            panel5.Location = new Point(0, 57);
             panel5.Name = "panel5";
-            panel5.Size = new Size(207, 137);
+            panel5.Size = new Size(207, 131);
             panel5.TabIndex = 0;
             // 
             // label5
@@ -294,11 +300,13 @@
             // buttonPriceRangeAdd
             // 
             buttonPriceRangeAdd.BackColor = Color.FromArgb(5, 150, 105);
+            buttonPriceRangeAdd.FlatAppearance.BorderColor = Color.FromArgb(16, 185, 129);
+            buttonPriceRangeAdd.FlatAppearance.BorderSize = 2;
             buttonPriceRangeAdd.FlatStyle = FlatStyle.Flat;
             buttonPriceRangeAdd.ForeColor = Color.White;
             buttonPriceRangeAdd.Location = new Point(15, 88);
             buttonPriceRangeAdd.Name = "buttonPriceRangeAdd";
-            buttonPriceRangeAdd.Size = new Size(171, 23);
+            buttonPriceRangeAdd.Size = new Size(171, 27);
             buttonPriceRangeAdd.TabIndex = 14;
             buttonPriceRangeAdd.Text = "Filtrele";
             buttonPriceRangeAdd.UseVisualStyleBackColor = false;
@@ -332,7 +340,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            label2.Location = new Point(12, 17);
+            label2.Location = new Point(15, 15);
             label2.Name = "label2";
             label2.Size = new Size(120, 30);
             label2.TabIndex = 0;
@@ -348,16 +356,16 @@
             panel4.Controls.Add(label6);
             panel4.Controls.Add(textBoxMaxStock);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(0, 197);
+            panel4.Location = new Point(0, 188);
             panel4.Name = "panel4";
-            panel4.Size = new Size(207, 121);
+            panel4.Size = new Size(207, 130);
             panel4.TabIndex = 17;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            label3.Location = new Point(15, 14);
+            label3.Location = new Point(15, 11);
             label3.Name = "label3";
             label3.Size = new Size(55, 30);
             label3.TabIndex = 1;
@@ -367,11 +375,13 @@
             // 
             buttonStockRangeAdd.BackColor = Color.FromArgb(5, 150, 105);
             buttonStockRangeAdd.BackgroundImageLayout = ImageLayout.None;
+            buttonStockRangeAdd.FlatAppearance.BorderColor = Color.FromArgb(16, 185, 129);
+            buttonStockRangeAdd.FlatAppearance.BorderSize = 2;
             buttonStockRangeAdd.FlatStyle = FlatStyle.Flat;
             buttonStockRangeAdd.ForeColor = Color.White;
-            buttonStockRangeAdd.Location = new Point(15, 84);
+            buttonStockRangeAdd.Location = new Point(15, 82);
             buttonStockRangeAdd.Name = "buttonStockRangeAdd";
-            buttonStockRangeAdd.Size = new Size(171, 23);
+            buttonStockRangeAdd.Size = new Size(171, 30);
             buttonStockRangeAdd.TabIndex = 13;
             buttonStockRangeAdd.Text = "Filtrele";
             buttonStockRangeAdd.UseVisualStyleBackColor = false;
@@ -382,7 +392,7 @@
             textBoxMinStock.BackColor = Color.FromArgb(241, 245, 249);
             textBoxMinStock.BorderStyle = BorderStyle.FixedSingle;
             textBoxMinStock.Font = new Font("Segoe UI", 9.75F);
-            textBoxMinStock.Location = new Point(15, 50);
+            textBoxMinStock.Location = new Point(15, 47);
             textBoxMinStock.Name = "textBoxMinStock";
             textBoxMinStock.PlaceholderText = "Min Stock";
             textBoxMinStock.Size = new Size(66, 25);
@@ -393,7 +403,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI Black", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.Location = new Point(89, 44);
+            label6.Location = new Point(89, 41);
             label6.Name = "label6";
             label6.Size = new Size(22, 30);
             label6.TabIndex = 9;
@@ -404,7 +414,7 @@
             textBoxMaxStock.BackColor = Color.FromArgb(241, 245, 249);
             textBoxMaxStock.BorderStyle = BorderStyle.FixedSingle;
             textBoxMaxStock.Font = new Font("Segoe UI", 9.75F);
-            textBoxMaxStock.Location = new Point(119, 50);
+            textBoxMaxStock.Location = new Point(119, 47);
             textBoxMaxStock.Name = "textBoxMaxStock";
             textBoxMaxStock.PlaceholderText = "Max Stock";
             textBoxMaxStock.Size = new Size(66, 25);
@@ -426,11 +436,13 @@
             // buttonUnitAdd
             // 
             buttonUnitAdd.BackColor = Color.FromArgb(5, 150, 105);
+            buttonUnitAdd.FlatAppearance.BorderColor = Color.FromArgb(16, 185, 129);
+            buttonUnitAdd.FlatAppearance.BorderSize = 2;
             buttonUnitAdd.FlatStyle = FlatStyle.Flat;
             buttonUnitAdd.ForeColor = Color.White;
             buttonUnitAdd.Location = new Point(15, 86);
             buttonUnitAdd.Name = "buttonUnitAdd";
-            buttonUnitAdd.Size = new Size(170, 23);
+            buttonUnitAdd.Size = new Size(170, 32);
             buttonUnitAdd.TabIndex = 12;
             buttonUnitAdd.Text = "Filtrele";
             buttonUnitAdd.UseVisualStyleBackColor = false;
@@ -442,7 +454,7 @@
             comboBoxUnit.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxUnit.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             comboBoxUnit.FormattingEnabled = true;
-            comboBoxUnit.Location = new Point(15, 53);
+            comboBoxUnit.Location = new Point(15, 51);
             comboBoxUnit.Name = "comboBoxUnit";
             comboBoxUnit.Size = new Size(170, 25);
             comboBoxUnit.TabIndex = 10;
@@ -451,7 +463,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            label4.Location = new Point(22, 17);
+            label4.Location = new Point(15, 14);
             label4.Name = "label4";
             label4.Size = new Size(63, 30);
             label4.TabIndex = 2;

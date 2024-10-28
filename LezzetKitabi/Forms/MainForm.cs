@@ -39,7 +39,7 @@ namespace LezzetKitabi.Forms
         }
         private async void Load()
         {
-            await _recipeMainControl.LoadBackgroundImageAsync();
+            //await _recipeMainControl.LoadBackgroundImageAsync();
             await _recipeMainControl.RefreshPanelsAsync();
             await _ingredientMainControl.RefreshPanelsAsync();
         }
