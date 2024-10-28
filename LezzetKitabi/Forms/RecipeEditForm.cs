@@ -161,8 +161,9 @@ namespace LezzetKitabi.Forms
 
                 string amount = textBoxAmount.Text;
 
-                // InvariantCulture ile TryParse kullanımı
-                if (float.TryParse(amount, NumberStyles.Float, CultureInfo.InvariantCulture, out float ingredientAmount))
+                amount = amount.Replace(',', '.');
+
+                if (float.TryParse(amount, out float ingredientAmount))
                 {
                     MessageBox.Show(ingredientAmount.ToString());
                     var listBoxItem = new ListBoxIngredient
