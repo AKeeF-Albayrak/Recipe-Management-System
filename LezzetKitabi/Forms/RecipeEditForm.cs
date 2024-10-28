@@ -325,7 +325,6 @@ namespace LezzetKitabi.Forms
                 {
                     int itemWidth = (int)g.MeasureString(item.ToString(), listBoxInstructions.Font).Width;
 
-                    // En geniş metni bul
                     if (itemWidth > maxWidth)
                     {
                         maxWidth = itemWidth;
