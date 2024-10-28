@@ -161,7 +161,7 @@ namespace LezzetKitabi.Forms
 
                 string amount = textBoxAmount.Text;
 
-                amount = amount.Replace(',', '.');
+               // amount = amount.Replace(',', '.');
 
                 if (float.TryParse(amount, out float ingredientAmount))
                 {
