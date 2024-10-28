@@ -252,6 +252,7 @@
             // 
             // panel8
             // 
+            panel8.BackColor = Color.Silver;
             panel8.Controls.Add(comboBoxIngredients);
             panel8.Controls.Add(buttonAddIngredient);
             panel8.Controls.Add(label9);
@@ -291,6 +292,7 @@
             // 
             // panel7
             // 
+            panel7.BackColor = Color.Silver;
             panel7.Controls.Add(comboBoxCategory);
             panel7.Controls.Add(buttonCatagory);
             panel7.Controls.Add(label7);
@@ -330,6 +332,7 @@
             // 
             // panel5
             // 
+            panel5.BackColor = Color.Silver;
             panel5.Controls.Add(buttonTimeAdd);
             panel5.Controls.Add(label4);
             panel5.Controls.Add(textBoxMaxPrepTime);
@@ -365,19 +368,23 @@
             // 
             // textBoxMaxPrepTime
             // 
-            textBoxMaxPrepTime.BorderStyle = BorderStyle.None;
+            textBoxMaxPrepTime.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMaxPrepTime.Font = new Font("Segoe UI", 9F);
             textBoxMaxPrepTime.Location = new Point(127, 41);
             textBoxMaxPrepTime.Name = "textBoxMaxPrepTime";
-            textBoxMaxPrepTime.Size = new Size(64, 16);
+            textBoxMaxPrepTime.Size = new Size(64, 23);
             textBoxMaxPrepTime.TabIndex = 2;
+            textBoxMaxPrepTime.TextAlign = HorizontalAlignment.Center;
             // 
             // textBoxMinPrepTime
             // 
-            textBoxMinPrepTime.BorderStyle = BorderStyle.None;
+            textBoxMinPrepTime.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMinPrepTime.Font = new Font("Segoe UI", 9F);
             textBoxMinPrepTime.Location = new Point(24, 42);
             textBoxMinPrepTime.Name = "textBoxMinPrepTime";
-            textBoxMinPrepTime.Size = new Size(64, 16);
+            textBoxMinPrepTime.Size = new Size(64, 23);
             textBoxMinPrepTime.TabIndex = 1;
+            textBoxMinPrepTime.TextAlign = HorizontalAlignment.Center;
             // 
             // label5
             // 
@@ -387,10 +394,11 @@
             label5.Name = "label5";
             label5.Size = new Size(138, 21);
             label5.TabIndex = 0;
-            label5.Text = "Hazirlanma Araligi";
+            label5.Text = "Hazırlanma Aralığı";
             // 
             // panelFilterPrice
             // 
+            panelFilterPrice.BackColor = Color.Silver;
             panelFilterPrice.Controls.Add(buttonPriceTagAdd);
             panelFilterPrice.Controls.Add(label3);
             panelFilterPrice.Controls.Add(textBoxMaxPrice);
@@ -423,32 +431,37 @@
             // 
             // textBoxMaxPrice
             // 
-            textBoxMaxPrice.BorderStyle = BorderStyle.None;
+            textBoxMaxPrice.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMaxPrice.Font = new Font("Segoe UI", 9F);
             textBoxMaxPrice.Location = new Point(121, 41);
             textBoxMaxPrice.Name = "textBoxMaxPrice";
-            textBoxMaxPrice.Size = new Size(64, 16);
+            textBoxMaxPrice.Size = new Size(64, 23);
             textBoxMaxPrice.TabIndex = 2;
+            textBoxMaxPrice.TextAlign = HorizontalAlignment.Center;
             // 
             // textBoxMinPrice
             // 
-            textBoxMinPrice.BorderStyle = BorderStyle.None;
+            textBoxMinPrice.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMinPrice.Font = new Font("Segoe UI", 9F);
             textBoxMinPrice.Location = new Point(18, 42);
             textBoxMinPrice.Name = "textBoxMinPrice";
-            textBoxMinPrice.Size = new Size(64, 16);
+            textBoxMinPrice.Size = new Size(64, 23);
             textBoxMinPrice.TabIndex = 1;
+            textBoxMinPrice.TextAlign = HorizontalAlignment.Center;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            label2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 162);
             label2.Location = new Point(46, 12);
             label2.Name = "label2";
-            label2.Size = new Size(110, 21);
+            label2.Size = new Size(115, 21);
             label2.TabIndex = 0;
-            label2.Text = "Maliyet Araligi";
+            label2.Text = "Maliyet Aralığı";
             // 
             // panel6
             // 
+            panel6.BackColor = Color.Silver;
             panel6.Controls.Add(button2);
             panel6.Controls.Add(label8);
             panel6.Controls.Add(textBoxmaxIngredientCount);
@@ -462,7 +475,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(65, 65);
+            button2.Location = new Point(67, 69);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 5;
@@ -473,37 +486,42 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(90, 41);
+            label8.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Location = new Point(91, 40);
             label8.Name = "label8";
-            label8.Size = new Size(22, 15);
+            label8.Size = new Size(27, 20);
             label8.TabIndex = 5;
             label8.Text = "---";
             // 
             // textBoxmaxIngredientCount
             // 
-            textBoxmaxIngredientCount.BorderStyle = BorderStyle.None;
-            textBoxmaxIngredientCount.Location = new Point(118, 41);
+            textBoxmaxIngredientCount.BorderStyle = BorderStyle.FixedSingle;
+            textBoxmaxIngredientCount.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxmaxIngredientCount.Location = new Point(124, 40);
             textBoxmaxIngredientCount.Name = "textBoxmaxIngredientCount";
-            textBoxmaxIngredientCount.Size = new Size(64, 16);
+            textBoxmaxIngredientCount.Size = new Size(64, 23);
             textBoxmaxIngredientCount.TabIndex = 3;
+            textBoxmaxIngredientCount.TextAlign = HorizontalAlignment.Center;
             // 
             // textBoxminIngredientCount
             // 
-            textBoxminIngredientCount.BorderStyle = BorderStyle.None;
-            textBoxminIngredientCount.Location = new Point(22, 43);
+            textBoxminIngredientCount.BorderStyle = BorderStyle.FixedSingle;
+            textBoxminIngredientCount.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxminIngredientCount.Location = new Point(21, 40);
             textBoxminIngredientCount.Name = "textBoxminIngredientCount";
-            textBoxminIngredientCount.Size = new Size(64, 16);
+            textBoxminIngredientCount.Size = new Size(64, 23);
             textBoxminIngredientCount.TabIndex = 2;
+            textBoxminIngredientCount.TextAlign = HorizontalAlignment.Center;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label6.Location = new Point(34, 11);
+            label6.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            label6.Location = new Point(18, 8);
             label6.Name = "label6";
-            label6.Size = new Size(137, 17);
+            label6.Size = new Size(177, 21);
             label6.TabIndex = 0;
-            label6.Text = "Malzeme Sayisin Gore";
+            label6.Text = "Malzeme Sayısına Göre";
             // 
             // panelCurrentFilters
             // 

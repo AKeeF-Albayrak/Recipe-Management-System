@@ -351,7 +351,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async void Form_RecipeUpdated(object sender, EventArgs e)
         {
-            OnRecipeAdded();
+            await RefreshPanelsAsync(); //??
         }
         private GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int cornerRadius)
         {
@@ -587,7 +587,7 @@ namespace LezzetKitabi.Forms.Controls
                 Height = 30,
                 Margin = new Padding(10),
                 Dock = DockStyle.Top,
-                BackColor = Color.Gray
+                BackColor = Color.FromArgb(5, 150, 105)
             };
 
             Label label = new Label

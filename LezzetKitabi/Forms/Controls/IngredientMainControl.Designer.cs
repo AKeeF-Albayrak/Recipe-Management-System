@@ -29,24 +29,25 @@
         private void InitializeComponent()
         {
             panelSearch = new Panel();
+            label7 = new Label();
             button2 = new Button();
             textBoxSearch = new TextBox();
             comboBoxSort = new ComboBox();
             panelElements = new Panel();
             panelPage = new Panel();
+            panel1 = new Panel();
+            buttonNext = new Button();
             panelItems = new Panel();
-            panelDown = new Panel();
             panelPrevius = new Panel();
             buttonPrevious = new Button();
-            buttonNext = new Button();
             panelSort = new Panel();
             panelFilter = new Panel();
             panel6 = new Panel();
             label1 = new Label();
             panel5 = new Panel();
+            label5 = new Label();
             buttonPriceRangeAdd = new Button();
             textBoxMinPrice = new TextBox();
-            label5 = new Label();
             textBoxMaxPrice = new TextBox();
             label2 = new Label();
             panel4 = new Panel();
@@ -63,6 +64,7 @@
             panelSearch.SuspendLayout();
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
+            panel1.SuspendLayout();
             panelPrevius.SuspendLayout();
             panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
@@ -82,6 +84,16 @@
             panelSearch.Name = "panelSearch";
             panelSearch.Size = new Size(1334, 65);
             panelSearch.TabIndex = 0;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI Semibold", 21.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.Location = new Point(993, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(29, 40);
+            label7.TabIndex = 0;
+            label7.Text = "1";
             // 
             // button2
             // 
@@ -129,31 +141,47 @@
             // panelPage
             // 
             panelPage.BackColor = Color.Transparent;
+            panelPage.Controls.Add(panel1);
             panelPage.Controls.Add(panelItems);
-            panelPage.Controls.Add(panelDown);
             panelPage.Controls.Add(panelPrevius);
-            panelPage.Controls.Add(buttonNext);
             panelPage.Location = new Point(0, 40);
             panelPage.Name = "panelPage";
             panelPage.Size = new Size(1126, 690);
             panelPage.TabIndex = 2;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(buttonNext);
+            panel1.Dock = DockStyle.Right;
+            panel1.Location = new Point(1086, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(40, 690);
+            panel1.TabIndex = 2;
+            // 
+            // buttonNext
+            // 
+            buttonNext.BackColor = Color.White;
+            buttonNext.FlatAppearance.BorderSize = 0;
+            buttonNext.FlatAppearance.MouseOverBackColor = Color.FromArgb(191, 219, 254);
+            buttonNext.FlatStyle = FlatStyle.Flat;
+            buttonNext.Font = new Font("Comic Sans MS", 36F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            buttonNext.ForeColor = Color.FromArgb(71, 85, 105);
+            buttonNext.Location = new Point(0, 261);
+            buttonNext.Name = "buttonNext";
+            buttonNext.Size = new Size(41, 105);
+            buttonNext.TabIndex = 1;
+            buttonNext.Text = ">";
+            buttonNext.UseVisualStyleBackColor = false;
+            buttonNext.Click += buttonNext_Click;
+            // 
             // panelItems
             // 
             panelItems.BackColor = Color.Transparent;
             panelItems.Dock = DockStyle.Left;
-            panelItems.Location = new Point(48, 0);
+            panelItems.Location = new Point(40, 0);
             panelItems.Name = "panelItems";
-            panelItems.Size = new Size(1041, 662);
+            panelItems.Size = new Size(1048, 690);
             panelItems.TabIndex = 3;
-            // 
-            // panelDown
-            // 
-            panelDown.Dock = DockStyle.Bottom;
-            panelDown.Location = new Point(48, 662);
-            panelDown.Name = "panelDown";
-            panelDown.Size = new Size(1078, 28);
-            panelDown.TabIndex = 2;
             // 
             // panelPrevius
             // 
@@ -162,41 +190,30 @@
             panelPrevius.Dock = DockStyle.Left;
             panelPrevius.Location = new Point(0, 0);
             panelPrevius.Name = "panelPrevius";
-            panelPrevius.Size = new Size(48, 690);
+            panelPrevius.Size = new Size(40, 690);
             panelPrevius.TabIndex = 1;
             // 
             // buttonPrevious
             // 
-            buttonPrevious.BackColor = Color.FromArgb(255, 128, 0);
+            buttonPrevious.BackColor = Color.White;
             buttonPrevious.FlatAppearance.BorderColor = Color.Black;
             buttonPrevious.FlatAppearance.BorderSize = 0;
-            buttonPrevious.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
+            buttonPrevious.FlatAppearance.MouseOverBackColor = Color.FromArgb(191, 219, 254);
             buttonPrevious.FlatStyle = FlatStyle.Flat;
-            buttonPrevious.Location = new Point(-27, 156);
+            buttonPrevious.Font = new Font("Comic Sans MS", 36F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            buttonPrevious.ForeColor = Color.FromArgb(71, 85, 105);
+            buttonPrevious.Location = new Point(0, 261);
             buttonPrevious.Name = "buttonPrevious";
-            buttonPrevious.Size = new Size(91, 261);
+            buttonPrevious.Size = new Size(38, 105);
             buttonPrevious.TabIndex = 0;
-            buttonPrevious.Text = "<--";
+            buttonPrevious.Text = "<";
             buttonPrevious.UseVisualStyleBackColor = false;
             buttonPrevious.Click += buttonPrevious_Click;
-            // 
-            // buttonNext
-            // 
-            buttonNext.BackColor = Color.FromArgb(255, 128, 0);
-            buttonNext.FlatAppearance.BorderSize = 0;
-            buttonNext.FlatAppearance.MouseOverBackColor = Color.FromArgb(128, 255, 255);
-            buttonNext.FlatStyle = FlatStyle.Flat;
-            buttonNext.Location = new Point(1060, 156);
-            buttonNext.Name = "buttonNext";
-            buttonNext.Size = new Size(103, 261);
-            buttonNext.TabIndex = 1;
-            buttonNext.Text = "-->";
-            buttonNext.UseVisualStyleBackColor = false;
-            buttonNext.Click += buttonNext_Click;
             // 
             // panelSort
             // 
             panelSort.BackColor = Color.Transparent;
+            panelSort.Controls.Add(label7);
             panelSort.Controls.Add(comboBoxSort);
             panelSort.Location = new Point(0, 0);
             panelSort.Name = "panelSort";
@@ -219,144 +236,171 @@
             // 
             // panel6
             // 
+            panel6.BorderStyle = BorderStyle.FixedSingle;
             panel6.Controls.Add(label1);
             panel6.Dock = DockStyle.Fill;
             panel6.Location = new Point(0, 0);
             panel6.Name = "panel6";
-            panel6.Size = new Size(207, 64);
+            panel6.Size = new Size(207, 60);
             panel6.TabIndex = 18;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label1.Location = new Point(55, 20);
+            label1.Font = new Font("Rockwell", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(31, 9);
             label1.Name = "label1";
-            label1.Size = new Size(94, 32);
+            label1.Size = new Size(154, 42);
             label1.TabIndex = 0;
             label1.Text = "Filtreler";
             // 
             // panel5
             // 
+            panel5.BorderStyle = BorderStyle.FixedSingle;
+            panel5.Controls.Add(label5);
             panel5.Controls.Add(buttonPriceRangeAdd);
             panel5.Controls.Add(textBoxMinPrice);
-            panel5.Controls.Add(label5);
             panel5.Controls.Add(textBoxMaxPrice);
             panel5.Controls.Add(label2);
             panel5.Dock = DockStyle.Bottom;
-            panel5.Location = new Point(0, 64);
+            panel5.Location = new Point(0, 60);
             panel5.Name = "panel5";
-            panel5.Size = new Size(207, 121);
+            panel5.Size = new Size(207, 137);
             panel5.TabIndex = 0;
-            // 
-            // buttonPriceRangeAdd
-            // 
-            buttonPriceRangeAdd.Location = new Point(22, 86);
-            buttonPriceRangeAdd.Name = "buttonPriceRangeAdd";
-            buttonPriceRangeAdd.Size = new Size(166, 23);
-            buttonPriceRangeAdd.TabIndex = 14;
-            buttonPriceRangeAdd.Text = "Ekle";
-            buttonPriceRangeAdd.UseVisualStyleBackColor = true;
-            buttonPriceRangeAdd.Click += buttonPriceRangeAdd_Click;
-            // 
-            // textBoxMinPrice
-            // 
-            textBoxMinPrice.BorderStyle = BorderStyle.FixedSingle;
-            textBoxMinPrice.Location = new Point(22, 54);
-            textBoxMinPrice.Name = "textBoxMinPrice";
-            textBoxMinPrice.PlaceholderText = "Min Price";
-            textBoxMinPrice.Size = new Size(66, 23);
-            textBoxMinPrice.TabIndex = 3;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(91, 55);
+            label5.Font = new Font("Segoe UI Black", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(89, 50);
             label5.Name = "label5";
-            label5.Size = new Size(22, 15);
-            label5.TabIndex = 5;
-            label5.Text = "---";
+            label5.Size = new Size(22, 30);
+            label5.TabIndex = 15;
+            label5.Text = "-";
+            // 
+            // buttonPriceRangeAdd
+            // 
+            buttonPriceRangeAdd.BackColor = Color.FromArgb(5, 150, 105);
+            buttonPriceRangeAdd.FlatStyle = FlatStyle.Flat;
+            buttonPriceRangeAdd.ForeColor = Color.White;
+            buttonPriceRangeAdd.Location = new Point(15, 88);
+            buttonPriceRangeAdd.Name = "buttonPriceRangeAdd";
+            buttonPriceRangeAdd.Size = new Size(171, 23);
+            buttonPriceRangeAdd.TabIndex = 14;
+            buttonPriceRangeAdd.Text = "Filtrele";
+            buttonPriceRangeAdd.UseVisualStyleBackColor = false;
+            buttonPriceRangeAdd.Click += buttonPriceRangeAdd_Click;
+            // 
+            // textBoxMinPrice
+            // 
+            textBoxMinPrice.BackColor = Color.FromArgb(241, 245, 249);
+            textBoxMinPrice.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMinPrice.Font = new Font("Segoe UI", 9.75F);
+            textBoxMinPrice.Location = new Point(15, 54);
+            textBoxMinPrice.Name = "textBoxMinPrice";
+            textBoxMinPrice.PlaceholderText = "Min Price";
+            textBoxMinPrice.Size = new Size(66, 25);
+            textBoxMinPrice.TabIndex = 3;
+            textBoxMinPrice.TextAlign = HorizontalAlignment.Center;
             // 
             // textBoxMaxPrice
             // 
-            textBoxMaxPrice.BackColor = Color.White;
-            textBoxMaxPrice.Location = new Point(122, 54);
+            textBoxMaxPrice.BackColor = Color.FromArgb(241, 245, 249);
+            textBoxMaxPrice.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMaxPrice.Font = new Font("Segoe UI", 9.75F);
+            textBoxMaxPrice.Location = new Point(120, 54);
             textBoxMaxPrice.Name = "textBoxMaxPrice";
             textBoxMaxPrice.PlaceholderText = "Max Price";
-            textBoxMaxPrice.Size = new Size(66, 23);
+            textBoxMaxPrice.Size = new Size(66, 25);
             textBoxMaxPrice.TabIndex = 6;
+            textBoxMaxPrice.TextAlign = HorizontalAlignment.Center;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label2.Location = new Point(9, 14);
+            label2.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            label2.Location = new Point(12, 17);
             label2.Name = "label2";
-            label2.Size = new Size(109, 25);
+            label2.Size = new Size(120, 30);
             label2.TabIndex = 0;
-            label2.Text = "Birim Fiyati:";
+            label2.Text = "Birim Fiyatı";
+            label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel4
             // 
+            panel4.BorderStyle = BorderStyle.FixedSingle;
             panel4.Controls.Add(label3);
             panel4.Controls.Add(buttonStockRangeAdd);
             panel4.Controls.Add(textBoxMinStock);
             panel4.Controls.Add(label6);
             panel4.Controls.Add(textBoxMaxStock);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(0, 185);
+            panel4.Location = new Point(0, 197);
             panel4.Name = "panel4";
-            panel4.Size = new Size(207, 133);
+            panel4.Size = new Size(207, 121);
             panel4.TabIndex = 17;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label3.Location = new Point(9, 11);
+            label3.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            label3.Location = new Point(15, 14);
             label3.Name = "label3";
-            label3.Size = new Size(51, 25);
+            label3.Size = new Size(55, 30);
             label3.TabIndex = 1;
-            label3.Text = "Stok:";
+            label3.Text = "Stok";
             // 
             // buttonStockRangeAdd
             // 
-            buttonStockRangeAdd.Location = new Point(19, 89);
+            buttonStockRangeAdd.BackColor = Color.FromArgb(5, 150, 105);
+            buttonStockRangeAdd.BackgroundImageLayout = ImageLayout.None;
+            buttonStockRangeAdd.FlatStyle = FlatStyle.Flat;
+            buttonStockRangeAdd.ForeColor = Color.White;
+            buttonStockRangeAdd.Location = new Point(15, 84);
             buttonStockRangeAdd.Name = "buttonStockRangeAdd";
-            buttonStockRangeAdd.Size = new Size(166, 23);
+            buttonStockRangeAdd.Size = new Size(171, 23);
             buttonStockRangeAdd.TabIndex = 13;
-            buttonStockRangeAdd.Text = "Ekle";
-            buttonStockRangeAdd.UseVisualStyleBackColor = true;
+            buttonStockRangeAdd.Text = "Filtrele";
+            buttonStockRangeAdd.UseVisualStyleBackColor = false;
             buttonStockRangeAdd.Click += buttonStockRangeAdd_Click;
             // 
             // textBoxMinStock
             // 
-            textBoxMinStock.Location = new Point(19, 49);
+            textBoxMinStock.BackColor = Color.FromArgb(241, 245, 249);
+            textBoxMinStock.BorderStyle = BorderStyle.FixedSingle;
+            textBoxMinStock.Font = new Font("Segoe UI", 9.75F);
+            textBoxMinStock.Location = new Point(15, 50);
             textBoxMinStock.Name = "textBoxMinStock";
             textBoxMinStock.PlaceholderText = "Min Stock";
-            textBoxMinStock.Size = new Size(66, 23);
+            textBoxMinStock.Size = new Size(66, 25);
             textBoxMinStock.TabIndex = 7;
+            textBoxMinStock.TextAlign = HorizontalAlignment.Center;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(91, 52);
+            label6.Font = new Font("Segoe UI Black", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label6.Location = new Point(89, 44);
             label6.Name = "label6";
-            label6.Size = new Size(22, 15);
+            label6.Size = new Size(22, 30);
             label6.TabIndex = 9;
-            label6.Text = "---";
+            label6.Text = "-";
             // 
             // textBoxMaxStock
             // 
+            textBoxMaxStock.BackColor = Color.FromArgb(241, 245, 249);
             textBoxMaxStock.BorderStyle = BorderStyle.FixedSingle;
-            textBoxMaxStock.Location = new Point(119, 49);
+            textBoxMaxStock.Font = new Font("Segoe UI", 9.75F);
+            textBoxMaxStock.Location = new Point(119, 50);
             textBoxMaxStock.Name = "textBoxMaxStock";
             textBoxMaxStock.PlaceholderText = "Max Stock";
-            textBoxMaxStock.Size = new Size(66, 23);
+            textBoxMaxStock.Size = new Size(66, 25);
             textBoxMaxStock.TabIndex = 8;
+            textBoxMaxStock.TextAlign = HorizontalAlignment.Center;
             // 
             // panel2
             // 
+            panel2.BorderStyle = BorderStyle.FixedSingle;
             panel2.Controls.Add(buttonUnitAdd);
             panel2.Controls.Add(comboBoxUnit);
             panel2.Controls.Add(label4);
@@ -368,34 +412,41 @@
             // 
             // buttonUnitAdd
             // 
-            buttonUnitAdd.Location = new Point(22, 85);
+            buttonUnitAdd.BackColor = Color.FromArgb(5, 150, 105);
+            buttonUnitAdd.FlatStyle = FlatStyle.Flat;
+            buttonUnitAdd.ForeColor = Color.White;
+            buttonUnitAdd.Location = new Point(15, 86);
             buttonUnitAdd.Name = "buttonUnitAdd";
-            buttonUnitAdd.Size = new Size(163, 23);
+            buttonUnitAdd.Size = new Size(170, 23);
             buttonUnitAdd.TabIndex = 12;
-            buttonUnitAdd.Text = "Ekle";
-            buttonUnitAdd.UseVisualStyleBackColor = true;
+            buttonUnitAdd.Text = "Filtrele";
+            buttonUnitAdd.UseVisualStyleBackColor = false;
             buttonUnitAdd.Click += buttonUnitAdd_Click;
             // 
             // comboBoxUnit
             // 
+            comboBoxUnit.BackColor = Color.FromArgb(241, 245, 249);
+            comboBoxUnit.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxUnit.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             comboBoxUnit.FormattingEnabled = true;
-            comboBoxUnit.Location = new Point(22, 56);
+            comboBoxUnit.Location = new Point(15, 53);
             comboBoxUnit.Name = "comboBoxUnit";
-            comboBoxUnit.Size = new Size(163, 23);
+            comboBoxUnit.Size = new Size(170, 25);
             comboBoxUnit.TabIndex = 10;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label4.Location = new Point(15, 15);
+            label4.Font = new Font("Segoe UI Semibold", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            label4.Location = new Point(22, 17);
             label4.Name = "label4";
-            label4.Size = new Size(60, 25);
+            label4.Size = new Size(63, 30);
             label4.TabIndex = 2;
-            label4.Text = "Birim:";
+            label4.Text = "Birim";
             // 
             // panelCurrentFilters
             // 
+            panelCurrentFilters.BorderStyle = BorderStyle.FixedSingle;
             panelCurrentFilters.Dock = DockStyle.Bottom;
             panelCurrentFilters.Location = new Point(0, 443);
             panelCurrentFilters.Name = "panelCurrentFilters";
@@ -406,7 +457,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
+            BackColor = Color.FromArgb(248, 250, 252);
             Controls.Add(panelFilter);
             Controls.Add(panelElements);
             Controls.Add(panelSearch);
@@ -416,8 +467,10 @@
             panelSearch.PerformLayout();
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             panelPrevius.ResumeLayout(false);
             panelSort.ResumeLayout(false);
+            panelSort.PerformLayout();
             panelFilter.ResumeLayout(false);
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
@@ -439,13 +492,10 @@
         private Panel panelPage;
         private Panel panelPrevius;
         private Panel panelSort;
-        private Panel panelItems;
-        private Panel panelDown;
         private Panel panelFilter;
         private Label label2;
         private Label label1;
         private TextBox textBoxMaxPrice;
-        private Label label5;
         private TextBox textBoxMinPrice;
         private Label label4;
         private Label label3;
@@ -462,7 +512,11 @@
         private Panel panel6;
         private Panel panel5;
         private ComboBox comboBoxSort;
-        private Button buttonNext;
         private Button buttonPrevious;
+        private Panel panelItems;
+        private Panel panel1;
+        private Button buttonNext;
+        private Label label5;
+        private Label label7;
     }
 }

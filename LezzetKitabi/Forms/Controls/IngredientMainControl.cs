@@ -65,6 +65,7 @@ namespace LezzetKitabi.Forms.Controls
             int startY = 10;
             int cornerRadius = 20;
 
+
             List<Ingredient> ingredients = await _ingredientService.GetAllIngredientsByOrderAndFilterAsync(_sortingType, filterCriteriaList);
 
             textBoxSearch.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -76,6 +77,9 @@ namespace LezzetKitabi.Forms.Controls
                 suggestions.Add(ingredient.IngredientName);
             }
             totalPages = (int)Math.Ceiling((double)ingredients.Count / 18);
+
+            label7.Text = $"{currentPage}  / {totalPages}";
+
 
             textBoxSearch.AutoCompleteCustomSource = suggestions;
 
@@ -263,8 +267,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async void Form_IngredientUpdated(object sender, EventArgs e)
         {
-            OnIngredientsChanged();
-            //await RefreshPanelsAsync();
+            await RefreshPanelsAsync();
         }
         private async void ComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -449,7 +452,7 @@ namespace LezzetKitabi.Forms.Controls
                 Height = 30,
                 Margin = new Padding(10),
                 Dock = DockStyle.Top,
-                BackColor = Color.Gray
+                BackColor = Color.FromArgb(5, 150, 105)
             };
 
             Label label = new Label
@@ -531,18 +534,20 @@ namespace LezzetKitabi.Forms.Controls
             if (currentPage > 1)
             {
                 currentPage--;
+                label7.Text = $"{currentPage}  / {totalPages}";
                 await RefreshPanelsAsync();
             }
+
         }
         private async void buttonNext_Click(object sender, EventArgs e)
         {
             if (currentPage < totalPages)
             {
                 currentPage++;
+                label7.Text = $"{currentPage}  / {totalPages}";
                 await RefreshPanelsAsync();
             }
         }
-
         private async void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxSearch.Text))
@@ -550,5 +555,6 @@ namespace LezzetKitabi.Forms.Controls
                 await RefreshPanelsAsync();
             }
         }
+
     }
 }
