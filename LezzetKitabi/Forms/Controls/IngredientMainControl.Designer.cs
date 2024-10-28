@@ -38,7 +38,6 @@
             panel1 = new Panel();
             buttonNext = new Button();
             panelItems = new Panel();
-            label8 = new Label();
             panelPrevius = new Panel();
             buttonPrevious = new Button();
             panelSort = new Panel();
@@ -66,7 +65,6 @@
             panelElements.SuspendLayout();
             panelPage.SuspendLayout();
             panel1.SuspendLayout();
-            panelItems.SuspendLayout();
             panelPrevius.SuspendLayout();
             panelSort.SuspendLayout();
             panelFilter.SuspendLayout();
@@ -186,21 +184,11 @@
             // panelItems
             // 
             panelItems.BackColor = Color.Transparent;
-            panelItems.Controls.Add(label8);
             panelItems.Dock = DockStyle.Left;
             panelItems.Location = new Point(40, 0);
             panelItems.Name = "panelItems";
             panelItems.Size = new Size(1048, 690);
             panelItems.TabIndex = 3;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(464, 675);
-            label8.Name = "label8";
-            label8.Size = new Size(38, 15);
-            label8.TabIndex = 0;
-            label8.Text = "label8";
             // 
             // panelPrevius
             // 
@@ -493,8 +481,6 @@
             panelElements.ResumeLayout(false);
             panelPage.ResumeLayout(false);
             panel1.ResumeLayout(false);
-            panelItems.ResumeLayout(false);
-            panelItems.PerformLayout();
             panelPrevius.ResumeLayout(false);
             panelSort.ResumeLayout(false);
             panelSort.PerformLayout();
@@ -545,6 +531,5 @@
         private Button buttonNext;
         private Label label5;
         private Label label7;
-        private Label label8;
     }
 }

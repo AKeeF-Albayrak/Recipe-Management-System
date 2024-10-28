@@ -93,6 +93,9 @@ namespace LezzetKitabi.Forms.Controls
             int totalRecipes = recipes.Count();
             totalPages = (int)Math.Ceiling(totalRecipes / (double)8);
 
+            label10.Text = $"{currentPage}  / {totalPages}";
+
+
             comboBoxIngredients.DataSource = ingredients;
             comboBoxIngredients.DisplayMember = "IngredientName";
             comboBoxIngredients.ValueMember = "Id";
@@ -683,6 +686,7 @@ namespace LezzetKitabi.Forms.Controls
             if (currentPage > 1)
             {
                 currentPage--;
+                label10.Text = $"{currentPage}  / {totalPages}";
                 await RefreshPanelsAsync();
             }
 
@@ -692,6 +696,7 @@ namespace LezzetKitabi.Forms.Controls
             if (currentPage < totalPages)
             {
                 currentPage++;
+                label10.Text = $"{currentPage}  / {totalPages}";
                 await RefreshPanelsAsync();
             }
 
