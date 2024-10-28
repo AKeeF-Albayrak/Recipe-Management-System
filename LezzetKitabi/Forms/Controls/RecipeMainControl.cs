@@ -354,7 +354,7 @@ namespace LezzetKitabi.Forms.Controls
         }
         private async void Form_RecipeUpdated(object sender, EventArgs e)
         {
-            await RefreshPanelsAsync(); //??
+            await RefreshPanelsAsync();
         }
         private GraphicsPath CreateRoundedRectanglePath(Rectangle rect, int cornerRadius)
         {
