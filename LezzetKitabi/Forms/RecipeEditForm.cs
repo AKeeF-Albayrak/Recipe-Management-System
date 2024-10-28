@@ -99,6 +99,7 @@ namespace LezzetKitabi.Forms
 
                 listBoxIngredients.Items.Add(listBoxItem);
             }
+            AdjustHorizontalScrollbar();
         }
 
 
@@ -164,7 +165,6 @@ namespace LezzetKitabi.Forms
 
                 if (float.TryParse(amount, out float ingredientAmount))
                 {
-                    MessageBox.Show(ingredientAmount.ToString());
                     var listBoxItem = new ListBoxIngredient
                     {
                         IngredientId = ingredientId,
@@ -239,7 +239,7 @@ namespace LezzetKitabi.Forms
             if (!string.IsNullOrEmpty(instruction))
             {
                 listBoxInstructions.Items.Add(instruction);
-
+                AdjustHorizontalScrollbar();
                 textBoxInstructions.Clear();
             }
             else
@@ -313,6 +313,28 @@ namespace LezzetKitabi.Forms
         private byte[] ConvertImageToBytes(string filePath)
         {
             return File.ReadAllBytes(filePath);
+        }
+
+        private void AdjustHorizontalScrollbar()
+        {
+            int maxWidth = 0;
+
+            using (Graphics g = listBoxInstructions.CreateGraphics())
+            {
+                foreach (var item in listBoxInstructions.Items)
+                {
+                    int itemWidth = (int)g.MeasureString(item.ToString(), listBoxInstructions.Font).Width;
+
+                    // En geniş metni bul
+                    if (itemWidth > maxWidth)
+                    {
+                        maxWidth = itemWidth;
+                    }
+                }
+            }
+
+            listBoxInstructions.HorizontalScrollbar = true;
+            listBoxInstructions.HorizontalExtent = maxWidth;
         }
     }
 }
