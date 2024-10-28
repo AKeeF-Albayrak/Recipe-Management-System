@@ -63,6 +63,16 @@ namespace LezzetKitabi.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _6330592__1_ {
+            get {
+                object obj = ResourceManager.GetObject("6330592 (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Application_Icon {
             get {
                 object obj = ResourceManager.GetObject("Application Icon", resourceCulture);
@@ -96,6 +106,16 @@ namespace LezzetKitabi.Properties {
         internal static System.Drawing.Bitmap EditIcon {
             get {
                 object obj = ResourceManager.GetObject("EditIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IngredientBase {
+            get {
+                object obj = ResourceManager.GetObject("IngredientBase", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

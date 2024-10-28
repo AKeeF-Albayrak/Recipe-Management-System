@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LezzetKitabi.Domain.Dtos.CrossTableDtos;
 using System.Text.RegularExpressions;
+using LezzetKitabi.Domain.Contracts;
 
 namespace LezzetKitabi.Forms.Controls
 {
@@ -197,7 +198,7 @@ namespace LezzetKitabi.Forms.Controls
                 Category = comboBoxCategory.SelectedItem.ToString(),
                 PreparationTime = (int)(numericUpDownHours.Value * 60) + (int)numericUpDownMinutes.Value,
                 Instructions = instructions,
-                Image = _recipeImage
+                Image = _recipeImage != null ? _recipeImage : GlobalVariables.BaseRecipeImage,
             };
 
             Guid id = _recipeService.AddRecipe(recipeAddDto);

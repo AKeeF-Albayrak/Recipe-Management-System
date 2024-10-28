@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using MetroSet_UI.Controls;
 using LezzetKitabi.Domain.Dtos.IngredientDtos;
 using LezzetKitabi.Domain.Enums;
+using LezzetKitabi.Domain.Contracts;
 
 namespace LezzetKitabi.Forms.Controls
 {
@@ -48,7 +49,7 @@ namespace LezzetKitabi.Forms.Controls
                 IngredientName = txtIngredientName.Text,
                 TotalQuantity = txtTotalQuantity.Text,
                 Unit = cmbUnit.SelectedItem.ToString(),
-                Image = _selectedImagePath != null ? ConvertImageToBytes(_selectedImagePath) : null
+                Image = _selectedImagePath != null ? ConvertImageToBytes(_selectedImagePath) : GlobalVariables.BaseIngredientImage,
             };
 
             if (int.TryParse(txtTotalQuantity.Text, out int totalQuantity))
