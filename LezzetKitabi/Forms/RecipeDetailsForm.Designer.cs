@@ -47,10 +47,10 @@
             // labelRecipeName
             // 
             labelRecipeName.AutoSize = true;
-            labelRecipeName.Font = new Font("Arial", 14.25F);
-            labelRecipeName.Location = new Point(311, 555);
+            labelRecipeName.Font = new Font("Segoe UI", 18F);
+            labelRecipeName.Location = new Point(296, 547);
             labelRecipeName.Name = "labelRecipeName";
-            labelRecipeName.Size = new Size(80, 22);
+            labelRecipeName.Size = new Size(100, 32);
             labelRecipeName.TabIndex = 0;
             labelRecipeName.Text = "Tarif Adı";
             // 
@@ -67,20 +67,20 @@
             // labelCategory
             // 
             labelCategory.AutoSize = true;
-            labelCategory.Font = new Font("Arial", 14.25F);
-            labelCategory.Location = new Point(311, 627);
+            labelCategory.Font = new Font("Segoe UI", 18F);
+            labelCategory.Location = new Point(296, 619);
             labelCategory.Name = "labelCategory";
-            labelCategory.Size = new Size(122, 22);
+            labelCategory.Size = new Size(154, 32);
             labelCategory.TabIndex = 3;
             labelCategory.Text = "Tarif Kategori";
             // 
             // labelPreparationTime
             // 
             labelPreparationTime.AutoSize = true;
-            labelPreparationTime.Font = new Font("Arial", 14.25F);
-            labelPreparationTime.Location = new Point(296, 699);
+            labelPreparationTime.Font = new Font("Segoe UI", 18F);
+            labelPreparationTime.Location = new Point(296, 691);
             labelPreparationTime.Name = "labelPreparationTime";
-            labelPreparationTime.Size = new Size(204, 22);
+            labelPreparationTime.Size = new Size(255, 32);
             labelPreparationTime.TabIndex = 4;
             labelPreparationTime.Text = "Tarif Hazırlanma Süresi";
             // 
@@ -90,9 +90,9 @@
             labelInstructions.Font = new Font("Segoe UI Black", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             labelInstructions.Location = new Point(531, 19);
             labelInstructions.Name = "labelInstructions";
-            labelInstructions.Size = new Size(172, 40);
+            labelInstructions.Size = new Size(173, 40);
             labelInstructions.TabIndex = 6;
-            labelInstructions.Text = "Yonergeler";
+            labelInstructions.Text = "Yönergeler";
             // 
             // pictureBox1
             // 
@@ -110,7 +110,7 @@
             label4.Name = "label4";
             label4.Size = new Size(278, 47);
             label4.TabIndex = 9;
-            label4.Text = "Hazirlanma Suresi:";
+            label4.Text = "Hazırlanma Süresi:";
             // 
             // label5
             // 
@@ -120,7 +120,7 @@
             label5.Name = "label5";
             label5.Size = new Size(152, 47);
             label5.TabIndex = 10;
-            label5.Text = "Tarif Adi:";
+            label5.Text = "Tarif Adı:";
             // 
             // panelInstructions
             // 

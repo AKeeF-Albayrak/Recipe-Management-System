@@ -59,7 +59,7 @@
             label1.Name = "label1";
             label1.Size = new Size(140, 30);
             label1.TabIndex = 1;
-            label1.Text = "Malzeme Adi:";
+            label1.Text = "Malzeme Adı:";
             // 
             // textBoxIngredientName
             // 
@@ -147,11 +147,11 @@
             // 
             // button1
             // 
-            button1.Location = new Point(128, 298);
+            button1.Location = new Point(54, 289);
             button1.Name = "button1";
-            button1.Size = new Size(91, 23);
+            button1.Size = new Size(232, 23);
             button1.TabIndex = 11;
-            button1.Text = "Resmi Duzen";
+            button1.Text = "Resmi Düzenle";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 

@@ -54,7 +54,7 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(98, 12);
+            pictureBox1.Location = new Point(98, 52);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(200, 200);
             pictureBox1.TabIndex = 0;
@@ -74,24 +74,26 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe Print", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label1.Location = new Point(98, 267);
+            label1.Location = new Point(98, 314);
             label1.Name = "label1";
             label1.Size = new Size(110, 33);
             label1.TabIndex = 2;
-            label1.Text = "Tarif Adi:";
+            label1.Text = "Tarif Adı:";
             // 
             // textBoxName
             // 
-            textBoxName.Location = new Point(98, 313);
+            textBoxName.BorderStyle = BorderStyle.FixedSingle;
+            textBoxName.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxName.Location = new Point(98, 360);
             textBoxName.Name = "textBoxName";
-            textBoxName.Size = new Size(181, 23);
+            textBoxName.Size = new Size(200, 29);
             textBoxName.TabIndex = 3;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe Print", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label2.Location = new Point(98, 374);
+            label2.Location = new Point(98, 411);
             label2.Name = "label2";
             label2.Size = new Size(103, 33);
             label2.TabIndex = 4;
@@ -99,18 +101,20 @@
             // 
             // comboBoxCatagory
             // 
+            comboBoxCatagory.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             comboBoxCatagory.FormattingEnabled = true;
-            comboBoxCatagory.Location = new Point(98, 431);
+            comboBoxCatagory.Location = new Point(98, 465);
             comboBoxCatagory.Name = "comboBoxCatagory";
-            comboBoxCatagory.Size = new Size(181, 23);
+            comboBoxCatagory.Size = new Size(200, 29);
             comboBoxCatagory.TabIndex = 5;
             // 
             // textBoxTime
             // 
-            textBoxTime.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            textBoxTime.Location = new Point(98, 523);
+            textBoxTime.BorderStyle = BorderStyle.FixedSingle;
+            textBoxTime.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            textBoxTime.Location = new Point(98, 546);
             textBoxTime.Name = "textBoxTime";
-            textBoxTime.Size = new Size(181, 27);
+            textBoxTime.Size = new Size(200, 29);
             textBoxTime.TabIndex = 6;
             textBoxTime.KeyPress += textBoxAmount_KeyPress;
             // 
@@ -118,35 +122,38 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe Print", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label3.Location = new Point(98, 478);
+            label3.Location = new Point(98, 501);
             label3.Name = "label3";
             label3.Size = new Size(65, 33);
             label3.TabIndex = 7;
-            label3.Text = "Sure:";
+            label3.Text = "Süre:";
             // 
             // buttonIngredientAdd
             // 
-            buttonIngredientAdd.Location = new Point(409, 138);
+            buttonIngredientAdd.BackColor = Color.FromArgb(34, 197, 94);
+            buttonIngredientAdd.FlatStyle = FlatStyle.Flat;
+            buttonIngredientAdd.Location = new Point(381, 152);
             buttonIngredientAdd.Name = "buttonIngredientAdd";
-            buttonIngredientAdd.Size = new Size(144, 23);
+            buttonIngredientAdd.Size = new Size(140, 34);
             buttonIngredientAdd.TabIndex = 8;
             buttonIngredientAdd.Text = "Malzeme Ekle";
-            buttonIngredientAdd.UseVisualStyleBackColor = true;
+            buttonIngredientAdd.UseVisualStyleBackColor = false;
             buttonIngredientAdd.Click += buttonAddIngredient_Click;
             // 
             // comboBoxIngredients
             // 
+            comboBoxIngredients.Font = new Font("Segoe UI", 12F);
             comboBoxIngredients.FormattingEnabled = true;
-            comboBoxIngredients.Location = new Point(409, 68);
+            comboBoxIngredients.Location = new Point(381, 77);
             comboBoxIngredients.Name = "comboBoxIngredients";
-            comboBoxIngredients.Size = new Size(281, 23);
+            comboBoxIngredients.Size = new Size(281, 29);
             comboBoxIngredients.TabIndex = 9;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe Print", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label4.Location = new Point(409, 25);
+            label4.Location = new Point(381, 34);
             label4.Name = "label4";
             label4.Size = new Size(130, 33);
             label4.TabIndex = 10;
@@ -156,58 +163,65 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe Print", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
-            label5.Location = new Point(788, 25);
+            label5.Location = new Point(750, 34);
             label5.Name = "label5";
             label5.Size = new Size(124, 33);
             label5.TabIndex = 13;
-            label5.Text = "Yonergeler:";
+            label5.Text = "Yönergeler:";
             // 
             // textBoxInstructions
             // 
-            textBoxInstructions.Location = new Point(788, 97);
+            textBoxInstructions.BorderStyle = BorderStyle.FixedSingle;
+            textBoxInstructions.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxInstructions.Location = new Point(750, 77);
             textBoxInstructions.Name = "textBoxInstructions";
-            textBoxInstructions.Size = new Size(319, 23);
+            textBoxInstructions.Size = new Size(319, 29);
             textBoxInstructions.TabIndex = 14;
             // 
             // buttonInstructionAdd
             // 
-            buttonInstructionAdd.Location = new Point(788, 138);
+            buttonInstructionAdd.BackColor = Color.FromArgb(34, 197, 94);
+            buttonInstructionAdd.FlatStyle = FlatStyle.Flat;
+            buttonInstructionAdd.Location = new Point(750, 115);
             buttonInstructionAdd.Name = "buttonInstructionAdd";
-            buttonInstructionAdd.Size = new Size(165, 23);
+            buttonInstructionAdd.Size = new Size(153, 46);
             buttonInstructionAdd.TabIndex = 15;
             buttonInstructionAdd.Text = "Yonerge Ekle";
-            buttonInstructionAdd.UseVisualStyleBackColor = true;
+            buttonInstructionAdd.UseVisualStyleBackColor = false;
             buttonInstructionAdd.Click += button4_Click;
             // 
             // button3
             // 
-            button3.Location = new Point(98, 595);
+            button3.BackColor = Color.FromArgb(192, 255, 255);
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button3.Location = new Point(98, 605);
             button3.Name = "button3";
-            button3.Size = new Size(181, 51);
+            button3.Size = new Size(200, 41);
             button3.TabIndex = 18;
-            button3.Text = "Kaydet";
-            button3.UseVisualStyleBackColor = true;
+            button3.Text = "Düzenlemeleri Kaydet";
+            button3.UseVisualStyleBackColor = false;
             button3.Click += button3_Click;
             // 
             // listBoxIngredients
             // 
-            listBoxIngredients.BackColor = Color.Gray;
+            listBoxIngredients.BackColor = Color.FromArgb(244, 244, 245);
             listBoxIngredients.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
             listBoxIngredients.FormattingEnabled = true;
             listBoxIngredients.ItemHeight = 25;
-            listBoxIngredients.Location = new Point(409, 167);
+            listBoxIngredients.Location = new Point(381, 192);
             listBoxIngredients.Name = "listBoxIngredients";
-            listBoxIngredients.Size = new Size(281, 479);
+            listBoxIngredients.Size = new Size(281, 454);
             listBoxIngredients.TabIndex = 19;
             listBoxIngredients.SelectedIndexChanged += listBoxIngredients_SelectedIndexChanged;
             // 
             // listBoxInstructions
             // 
-            listBoxInstructions.BackColor = Color.Gray;
+            listBoxInstructions.BackColor = Color.FromArgb(244, 244, 245);
             listBoxInstructions.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 162);
             listBoxInstructions.FormattingEnabled = true;
             listBoxInstructions.ItemHeight = 25;
-            listBoxInstructions.Location = new Point(788, 167);
+            listBoxInstructions.Location = new Point(750, 167);
             listBoxInstructions.Name = "listBoxInstructions";
             listBoxInstructions.Size = new Size(319, 479);
             listBoxInstructions.TabIndex = 20;
@@ -215,47 +229,57 @@
             // 
             // buttonIngredientDelete
             // 
-            buttonIngredientDelete.Location = new Point(559, 138);
+            buttonIngredientDelete.BackColor = Color.FromArgb(248, 113, 113);
+            buttonIngredientDelete.FlatStyle = FlatStyle.Flat;
+            buttonIngredientDelete.Location = new Point(527, 152);
             buttonIngredientDelete.Name = "buttonIngredientDelete";
-            buttonIngredientDelete.Size = new Size(131, 23);
+            buttonIngredientDelete.Size = new Size(135, 34);
             buttonIngredientDelete.TabIndex = 21;
             buttonIngredientDelete.Text = "Malzeme Sil";
-            buttonIngredientDelete.UseVisualStyleBackColor = true;
+            buttonIngredientDelete.UseVisualStyleBackColor = false;
             buttonIngredientDelete.Click += buttonIngredientDelete_Click;
             // 
             // buttonInstructuionDelete
             // 
-            buttonInstructuionDelete.Location = new Point(959, 138);
+            buttonInstructuionDelete.BackColor = Color.FromArgb(248, 113, 113);
+            buttonInstructuionDelete.FlatStyle = FlatStyle.Flat;
+            buttonInstructuionDelete.Location = new Point(909, 115);
             buttonInstructuionDelete.Name = "buttonInstructuionDelete";
-            buttonInstructuionDelete.Size = new Size(148, 23);
+            buttonInstructuionDelete.Size = new Size(160, 46);
             buttonInstructuionDelete.TabIndex = 22;
             buttonInstructuionDelete.Text = "Yonerge Sil";
-            buttonInstructuionDelete.UseVisualStyleBackColor = true;
+            buttonInstructuionDelete.UseVisualStyleBackColor = false;
             buttonInstructuionDelete.Click += buttonInstructuionDelete_Click;
             // 
             // textBoxAmount
             // 
-            textBoxAmount.Location = new Point(409, 97);
+            textBoxAmount.BorderStyle = BorderStyle.FixedSingle;
+            textBoxAmount.Font = new Font("Segoe UI", 12F);
+            textBoxAmount.Location = new Point(381, 115);
             textBoxAmount.Name = "textBoxAmount";
-            textBoxAmount.Size = new Size(281, 23);
+            textBoxAmount.Size = new Size(281, 29);
             textBoxAmount.TabIndex = 23;
             textBoxAmount.KeyPress += textBoxAmount_KeyPress;
             // 
             // button2
             // 
-            button2.Location = new Point(159, 228);
+            button2.BackColor = Color.FromArgb(165, 180, 252);
+            button2.FlatStyle = FlatStyle.Flat;
+            button2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Location = new Point(98, 262);
             button2.Name = "button2";
-            button2.Size = new Size(75, 23);
+            button2.Size = new Size(200, 34);
             button2.TabIndex = 24;
-            button2.Text = "Duzenle";
-            button2.UseVisualStyleBackColor = true;
+            button2.Text = "Resmi Düzenle";
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
             // RecipeEditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1175, 688);
+            BackColor = Color.FromArgb(248, 250, 252);
+            ClientSize = new Size(1129, 688);
             Controls.Add(button2);
             Controls.Add(textBoxAmount);
             Controls.Add(buttonInstructuionDelete);

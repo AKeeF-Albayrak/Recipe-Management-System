@@ -48,7 +48,7 @@
             lblIngredientName.AutoSize = true;
             lblIngredientName.BackColor = Color.Transparent;
             lblIngredientName.Font = new Font("Segoe Print", 15.75F);
-            lblIngredientName.Location = new Point(745, 226);
+            lblIngredientName.Location = new Point(745, 256);
             lblIngredientName.Margin = new Padding(4, 0, 4, 0);
             lblIngredientName.Name = "lblIngredientName";
             lblIngredientName.Size = new Size(158, 36);
@@ -58,7 +58,7 @@
             // txtIngredientName
             // 
             txtIngredientName.Font = new Font("Segoe UI", 15.75F);
-            txtIngredientName.Location = new Point(955, 227);
+            txtIngredientName.Location = new Point(955, 257);
             txtIngredientName.Margin = new Padding(4, 3, 4, 3);
             txtIngredientName.Name = "txtIngredientName";
             txtIngredientName.Size = new Size(233, 35);
@@ -69,7 +69,7 @@
             lblTotalQuantity.AutoSize = true;
             lblTotalQuantity.BackColor = Color.Transparent;
             lblTotalQuantity.Font = new Font("Segoe Print", 15.75F);
-            lblTotalQuantity.Location = new Point(745, 290);
+            lblTotalQuantity.Location = new Point(745, 320);
             lblTotalQuantity.Margin = new Padding(4, 0, 4, 0);
             lblTotalQuantity.Name = "lblTotalQuantity";
             lblTotalQuantity.Size = new Size(180, 36);
@@ -79,7 +79,7 @@
             // txtTotalQuantity
             // 
             txtTotalQuantity.Font = new Font("Segoe UI", 15.75F);
-            txtTotalQuantity.Location = new Point(955, 289);
+            txtTotalQuantity.Location = new Point(955, 319);
             txtTotalQuantity.Margin = new Padding(4, 3, 4, 3);
             txtTotalQuantity.Name = "txtTotalQuantity";
             txtTotalQuantity.Size = new Size(233, 35);
@@ -91,7 +91,7 @@
             lblUnit.AutoSize = true;
             lblUnit.BackColor = Color.Transparent;
             lblUnit.Font = new Font("Segoe Print", 15.75F);
-            lblUnit.Location = new Point(745, 353);
+            lblUnit.Location = new Point(745, 383);
             lblUnit.Margin = new Padding(4, 0, 4, 0);
             lblUnit.Name = "lblUnit";
             lblUnit.Size = new Size(81, 36);
@@ -103,7 +103,7 @@
             lblUnitPrice.AutoSize = true;
             lblUnitPrice.BackColor = Color.Transparent;
             lblUnitPrice.Font = new Font("Segoe Print", 15.75F);
-            lblUnitPrice.Location = new Point(745, 418);
+            lblUnitPrice.Location = new Point(745, 448);
             lblUnitPrice.Margin = new Padding(4, 0, 4, 0);
             lblUnitPrice.Name = "lblUnitPrice";
             lblUnitPrice.Size = new Size(147, 36);
@@ -113,7 +113,7 @@
             // txtUnitPrice
             // 
             txtUnitPrice.Font = new Font("Segoe UI", 15.75F);
-            txtUnitPrice.Location = new Point(955, 419);
+            txtUnitPrice.Location = new Point(955, 449);
             txtUnitPrice.Margin = new Padding(4, 3, 4, 3);
             txtUnitPrice.Name = "txtUnitPrice";
             txtUnitPrice.Size = new Size(233, 35);
@@ -123,14 +123,15 @@
             // btnAdd
             // 
             btnAdd.BackColor = Color.FromArgb(40, 167, 69);
-            btnAdd.Font = new Font("Segoe Print", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(868, 545);
+            btnAdd.Location = new Point(737, 543);
             btnAdd.Margin = new Padding(4, 3, 4, 3);
             btnAdd.Name = "btnAdd";
             btnAdd.Padding = new Padding(10, 20, 10, 20);
-            btnAdd.Size = new Size(228, 79);
-            btnAdd.TabIndex = 8;
+            btnAdd.Size = new Size(451, 81);
+            btnAdd.TabIndex = 0;
             btnAdd.Text = "Ekle";
             btnAdd.UseVisualStyleBackColor = false;
             btnAdd.Click += btnAdd_Click;
@@ -141,25 +142,25 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe Print", 36F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = SystemColors.ActiveCaptionText;
-            label1.Location = new Point(637, 70);
+            label1.Location = new Point(701, 101);
             label1.Name = "label1";
-            label1.Size = new Size(606, 85);
+            label1.Size = new Size(487, 85);
             label1.TabIndex = 9;
-            label1.Text = "  Add New Ingredient  ";
+            label1.Text = "Yeni Malzeme Ekle";
             // 
             // cmbUnit
             // 
             cmbUnit.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbUnit.Font = new Font("Segoe UI", 15.75F);
             cmbUnit.FormattingEnabled = true;
-            cmbUnit.Location = new Point(955, 353);
+            cmbUnit.Location = new Point(955, 383);
             cmbUnit.Name = "cmbUnit";
             cmbUnit.Size = new Size(233, 38);
             cmbUnit.TabIndex = 10;
             // 
             // pictureBox1
             // 
-            pictureBox1.BackColor = SystemColors.ActiveCaption;
+            pictureBox1.BackColor = Color.FromArgb(244, 244, 245);
             pictureBox1.Location = new Point(92, 101);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(514, 469);
@@ -168,18 +169,22 @@
             // 
             // button1
             // 
+            button1.BackColor = Color.FromArgb(165, 180, 252);
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.ForeColor = Color.White;
             button1.Location = new Point(92, 588);
             button1.Name = "button1";
             button1.Size = new Size(514, 36);
             button1.TabIndex = 12;
             button1.Text = "Resim Yükle";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click_1;
             // 
             // IngredientAddControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.GradientInactiveCaption;
             BackgroundImageLayout = ImageLayout.Stretch;
             Controls.Add(button1);
             Controls.Add(pictureBox1);

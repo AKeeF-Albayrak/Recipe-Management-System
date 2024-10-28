@@ -35,7 +35,7 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.BackColor = SystemColors.ActiveCaption;
+            pictureBox1.BackColor = Color.FromArgb(186, 230, 253);
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.Image = Properties.Resources.output_onlinegiftools;
             pictureBox1.InitialImage = null;
